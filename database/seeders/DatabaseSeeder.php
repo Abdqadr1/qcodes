@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Admin;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +24,11 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Admin::factory(20)->create();
+        // Admin::factory(20)->create();
+
+        // $roles = config('enum.roles');
+        // foreach ($roles as $role) {
+        //     Role::create($role);
+        // }
     }
 }

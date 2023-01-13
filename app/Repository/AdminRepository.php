@@ -4,13 +4,14 @@ namespace App\Repository;
 
 use App\Interfaces\AdminRepositoryInterface;
 use App\Models\Admin;
+use App\Models\Role;
 
 class AdminRepository implements AdminRepositoryInterface
 {
 
     public function getAllAdmins()
     {
-        return Admin::paginate(8);
+        return Admin::orderBy('created_at', 'DESC')->paginate(8);
     }
 
     public function createAdmin(array $details)
@@ -20,7 +21,8 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function updateAdmin($id, array $details)
     {
-        return Admin::whereId($id)->update($details);
+        Admin::whereId($id)->update($details);
+        return Admin::find($id);
     }
 
     public function getAdminById($id)
@@ -31,5 +33,10 @@ class AdminRepository implements AdminRepositoryInterface
     public function deleteAdmin($id)
     {
         return Admin::destroy($id);
+    }
+
+    public function getAllRoles()
+    {
+        return Role::all();
     }
 }

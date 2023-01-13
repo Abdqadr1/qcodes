@@ -15,6 +15,8 @@ class Admin extends Model
         'enabled' => 'boolean'
     ];
 
+    protected $with = ['roles'];
+
     protected $fillable = [
         "first_name", "last_name",
         "mobile", "email_verified_at",

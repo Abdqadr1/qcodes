@@ -20,3 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/admin/all', [AdminController::class, 'getAllAdmin']);
+
+
+Route::get('/admin/roles', [AdminController::class, 'getAllRoles']);
+
+
+Route::post('/admin/edit/{id}', [AdminController::class, 'editAdmin']);
+Route::post('/admin/create', [AdminController::class, 'createAdmin']);
+
+Route::delete('/admin/delete/{id}', [AdminController::class, 'deleteAdmin']);

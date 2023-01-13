@@ -5,10 +5,12 @@ import Pages from './paginate';
 import React, { useState } from "react";
 import AdminEditModal from './AdminEdit';
 import Button from 'react-bootstrap/Button';
+import AdminCreateModal from './AdminCreate';
 
 
 const Admin = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
+    const [create, setCreate] = useState(false);
 
     const queryClient = useQueryClient();
 
@@ -18,22 +20,51 @@ const Admin = ({ httpClient }) => {
         }
     );
 
-    const mutation = useMutation(url => httpClient.get(url), {
+    const { isLoading:roleLoading, error:roleError, data:roleData } = useQuery('roleData', () =>
+        httpClient.get('/api/admin/roles'),{ 
+            refetchOnWindowFocus: false 
+        }
+    );
 
+    const pageMutation = useMutation(url => httpClient.get(url), {
         onSuccess: data => {
-
             queryClient.setQueryData('adminData', data);
-
         },
+        onError: error => {
+            const response = error?.response;
+            const message = response?.data?.message ?? "An error occurred";
+            console.info(message);
+        }
+    });
 
-    })
+     const deleteMutation = useMutation(id => httpClient.delete(`/api/admin/delete/${id}`), {
+        onSuccess: (data, id) => {
+            queryClient.setQueryData('adminData', oldData => {
+                const list = oldData.data.data;
+                const index = list.findIndex(l => l.id === id);
+                list.splice(index, 1);
+                return oldData;
+            });
+        },
+        onError: error => {
+            const response = error?.response;
+            const message = response?.data?.message ?? "An error occurred";
+            console.info(message);
+        }
+    });
 
-    const handleDelete = e => {
-        confirm("Are you sure?");
+    const handleDelete = id => {
+        if (confirm("Are you sure?")) {
+            deleteMutation.mutate(id);
+        }
+    }
+
+    const showCreateModal = () => {
+        setCreate(true);
     }
 
 
-    if (isLoading || mutation?.loading) return <b>Loading...</b>;
+    if (isLoading || pageMutation.isLoading || roleLoading) return <b>Loading...</b>;
 
     if (error) return 'An error has occurred: ' + error.message
 
@@ -42,8 +73,9 @@ const Admin = ({ httpClient }) => {
             <div className="row">
                 <div className="col-12">
                     <div className="card mb-4">
-                        <div className="card-header pb-0">
+                        <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Admins table</h6>
+                            <Button onClick={showCreateModal} variant="primary" size="sm">Add Admin</Button>
                         </div>
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">
@@ -86,7 +118,7 @@ const Admin = ({ httpClient }) => {
                                                         <Button size="sm" onClick={() => setEdit(s => ({ ...s, show: true, data: admin }))}
                                                             variant="secondary">Edit</Button>
                                                         {' '}
-                                                        <Button onClick={()=>handleDelete()} variant="danger" size="sm">Delete</Button>
+                                                        <Button onClick={()=>handleDelete(admin.id)} variant="danger" size="sm">Delete</Button>
                                                     </td>
                                                 </tr>
                                             )
@@ -96,7 +128,7 @@ const Admin = ({ httpClient }) => {
                             </div>
                             {/* pagination */}
                             <Pages
-                                links={data.data.links} mutation={mutation}
+                                links={data.data.links} mutation={pageMutation}
                                 from={data.data.from} perPage={data.data.per_page}
                                 total={data.data.total} lastPage={data.data.last_page}
                                 firstPageUrl={data.data.first_page_url} lastPageUrl={data.data.last_page_url}
@@ -107,7 +139,8 @@ const Admin = ({ httpClient }) => {
                     </div>
                 </div>
             </div>
-            <AdminEditModal edit={edit} setEdit={setEdit} />
+            <AdminEditModal edit={edit} setEdit={setEdit} httpClient={httpClient} roles={roleData.data} />
+            <AdminCreateModal show={create} setCreate={setCreate} httpClient={httpClient} roles={roleData.data} />
         </div>
      );
 }
