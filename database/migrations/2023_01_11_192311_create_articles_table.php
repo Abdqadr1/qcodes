@@ -15,15 +15,16 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('author_id');
-            $table->bigInteger('parent_id');
-            $table->string('title', 100);
-            $table->string('meta_title', 100);
-            $table->string('slug', 100);
-            $table->tinyText('summary');
-            $table->boolean('is_published');
-            $table->timestamp('published_at');
-            $table->text('content')->index();
+            $table->bigInteger('author_id')->nullable();
+            $table->bigInteger('parent_id')->nullable();
+            $table->bigInteger('visit')->nullable();
+            $table->string('title', 100)->nullable();
+            $table->string('meta_title', 100)->nullable();
+            $table->string('slug', 100)->nullable();
+            $table->tinyText('summary')->nullable();
+            $table->boolean('is_published')->default(false);
+            $table->timestamp('published_at')->nullable();
+            $table->text('content')->index()->nullable();
             $table->timestamps();
         });
     }

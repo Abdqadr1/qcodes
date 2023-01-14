@@ -19,7 +19,8 @@ class Article extends Model
         "title", "meta_title",
         "slug", "summary",
         "author_id", "parent_id",
-        "content"
+        "content", 'published_at',
+        'visit', 'is_published'
     ];
 
     public function author()

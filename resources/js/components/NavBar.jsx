@@ -8,7 +8,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 const NavBar = () => {
     return ( 
-        <Navbar bg="dark" expand="lg" sticky="top" variant="dark" className="mb-3">
+        <Navbar bg="dark" expand="lg" sticky="top" variant="dark" className="mb-1">
           <Container fluid>
             <Navbar.Brand href="#">QCodes</Navbar.Brand>
             <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" />
@@ -25,7 +25,7 @@ const NavBar = () => {
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="/admin">Admins</Nav.Link>
-                  <Nav.Link href="#action2">Link</Nav.Link>
+                  <Nav.Link href="/admin/articles">My Articles</Nav.Link>
                   <NavDropdown
                     title="Dropdown"
                     id={`offcanvasNavbarDropdown-expand-lg`}
@@ -40,14 +40,15 @@ const NavBar = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
-                <Form className="d-flex">
+                <Form className="d-flex align-items-center">
                   <Form.Control
-                    type="search"
-                    placeholder="Search"
-                    className="me-2"
-                    aria-label="Search"
-                  />
-                  <Button variant="outline-success">Search</Button>
+                      size='sm'
+                      type="search"
+                      placeholder="Search"
+                      className="me-2"
+                      aria-label="Search"
+                    />
+                  <Button size='sm' variant="outline-success">Search</Button>
                 </Form>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

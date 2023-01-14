@@ -6,6 +6,7 @@ namespace App\Interfaces;
 interface ArticleRepositoryInterface
 {
     public function getAllArticles();
+    public function getMyArticles();
     public function createArticle(array $details);
     public function updateArticle($id, array $details);
     public function getArticleById($id);

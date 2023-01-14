@@ -5,15 +5,20 @@ namespace App\Repository;
 use App\Interfaces\ArticleRepositoryInterface;
 use App\Models\Article;
 
-class AdminRepository implements ArticleRepositoryInterface
+class ArticleRepository implements ArticleRepositoryInterface
 {
+    public function getMyArticles()
+    {
+        return Article::select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+            ->paginate(5);
+    }
     public function getAllArticles()
     {
         return Article::all();
     }
     public function createArticle(array $details)
     {
-        return Article::create($details);
+        return Article::create($details)->id;
     }
     public function updateArticle($id, array $details)
     {

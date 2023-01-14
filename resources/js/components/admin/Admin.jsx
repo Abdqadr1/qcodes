@@ -1,11 +1,10 @@
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import Pages from './paginate';
+import Pages from '../paginate';
 import React, { useState } from "react";
-import AdminEditModal from './AdminEdit';
+import AdminEditModal from '../admin/AdminEdit';
 import Button from 'react-bootstrap/Button';
-import AdminCreateModal from './AdminCreate';
+import AdminCreateModal from '../admin/AdminCreate';
 
 
 const Admin = ({ httpClient }) => {

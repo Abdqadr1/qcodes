@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Admin from './Admin';
+import Admin from './admin/Admin';
 import NavBar from './NavBar';
 import axios from 'axios';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import MyArticles from './article/MyArticles';
+import NewArticle from './article/NewArticle';
 
 function App() {
 
@@ -30,6 +32,9 @@ function App() {
                     <NavBar />
                     <Routes>
                         <Route path='/admin' element={<Admin httpClient={http} />} />
+                        <Route path='/admin/articles' element={<MyArticles httpClient={http} />} />
+                        <Route path='/admin/article/new' element={<NewArticle httpClient={http} />} />
+                        <Route path='/admin/article/edit' element={<MyArticles httpClient={http} />} />
                         <Route path='*' element={<h4>404: Not Found</h4>} />
                     </Routes>
                 </QueryClientProvider>
