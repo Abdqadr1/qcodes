@@ -6,6 +6,11 @@ type tag = {
 };
 const BLOG_TAGS: tag[] = [
     {
+        tag: 'b',
+        title: 'Bold',
+        children: [],
+    },
+    {
         tag: 'p',
         title: 'Paragraph',
         children: [],

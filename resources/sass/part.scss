@@ -9,15 +9,24 @@
     position: relative;
 }
 
-.blog-side input {
+.blog-side input, .blog-side textarea, 
+.blog-card-body {
     height: auto;
     background: transparent !important;
     border: none !important;
     outline: none !important;
+    resize: none;
 }
 
-.blog-side input:focus {
+.blog-side input:focus, .blog-side textarea:focus, 
+.blog-card-body:focus {
     box-shadow: none;
+    border: none !important;
+    outline: none !important;
+}
+
+.blog-card-body{
+    min-height: 80px;
 }
 
 .blog-banner label {
