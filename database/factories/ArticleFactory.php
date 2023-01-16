@@ -20,7 +20,7 @@ class ArticleFactory extends Factory
             "title" => fake()->text(100),
             "meta_title" => fake()->text(100),
             "slug" => fake()->text(100),
-            "summary" => fake()->text(100),
+            "summary" => fake()->text(150),
             "author_id" => fake()->numberBetween(1, 39),
             "parent_id" => fake()->numberBetween(1, 50),
             "content" => fake()->text(100),

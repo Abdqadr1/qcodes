@@ -1,5 +1,6 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import Editor from 'ckeditor5-custom-build';
+
 
 const ArticleEditor = ({ httpClient }) => {
     let isChanged = false;
@@ -22,21 +23,31 @@ const ArticleEditor = ({ httpClient }) => {
     return ( 
         <>
             <CKEditor
-                    editor={ InlineEditor }
-                    data="<p>Start typing...</p>"
-                    onReady={ editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log( 'Editor is ready to use!', editor );
-                    } }
-                    onChange={ ( event, editor ) => {
-                        handleChange();
-                    } }
-                    onBlur={ ( event, editor ) => {
-                        handleBlur(editor);
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
-                    } }
+                config={{
+                    removePlugins: []
+                } }
+                editor={Editor}
+                data="<p>Start typing...</p>"
+                onReady={ editor => {
+                    // You can store the "editor" and use when it is needed.
+                    console.log('Editor is ready to use!', editor);
+                     editor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "80vh",
+                            editor.editing.view.document.getRoot()
+                        );
+                    });
+                } }
+                onChange={ ( event, editor ) => {
+                    handleChange();
+                } }
+                onBlur={ ( event, editor ) => {
+                    handleBlur(editor);
+                } }
+                onFocus={ ( event, editor ) => {
+                    console.log( 'Focus.', editor );
+                } }
                 />
         </>
      );

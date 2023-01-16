@@ -30,17 +30,28 @@ const NewArticle = ({ httpClient }) => {
 
     return ( 
         <Row className='mx-0'>
-            <Col sm={9} className='px-1 blog-side' ref={blogRef}>
-                <div className='blog-banner'>
-                    <Form.Control name='bio' className='mb-3 fs-3' as='textarea' defaultValue="Blog Title Here..." required />
+            <Col sm={8} className='px-1 blog-side pt-5' ref={blogRef}>
+                <div>
+                    <ArticleEditor httpClient={httpClient} />
+                </div>
+            </Col>
+            <Col sm={4} className='border-start border-secondary p-1' id='right-side'>
+                <Form.Control name='title' className='mb-3 fs-4' as='textarea' defaultValue="Blog Title..." maxLength={100} required />
+                <div className='blog-banner mb-3'>
                     <Form.Control type='file' accept='image/jpg, image/png, image/jpeg' className='d-none' id='banner' onChange={uploadBanner} />
                     <label htmlFor='banner'>upload banner</label>
                 </div>
-                <ArticleEditor httpClient={httpClient} />
-            </Col>
-            <Col sm={3} className='border-start border-secondary px-0'>
-                <div className='side-flex'>
-                </div>
+                <Form.Control name='meta_title' className='mb-3' as='textarea' maxLength={160} defaultValue="Meta Title..." required />
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label className='fw-bold'>Categories</Form.Label>
+                    <Form.Control type="text" />
+                </Form.Group>
+
+                 <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label className='fw-bold'>Tags</Form.Label>
+                    <Form.Control type="text" />
+                </Form.Group>
             </Col>
         </Row>
      );

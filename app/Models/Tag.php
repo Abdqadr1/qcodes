@@ -11,10 +11,7 @@ class Tag extends Model
 
     protected $table = "tags";
 
-    protected $fillable = [
-        "name", "meta_title",
-        "slug", "content",
-    ];
+    protected $fillable = ['name', 'meta_title', 'content', 'slug'];
 
     public function articles()
     {

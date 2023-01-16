@@ -1,11 +1,11 @@
 export default class UploadPlugin{
-    private uploadUrl: string;
+    uploadUrl;
 
     constructor(url='') {
         this.uploadUrl = url;
     }
 
-    public upload() :void {
+    upload() {
         
     }
 }

@@ -1,7 +1,7 @@
 export default class Blog {
-    public id: number;
+     id;
 
-    constructor(id:number) {
+    constructor(id) {
         this.id = id;
     }
 

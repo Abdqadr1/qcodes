@@ -7,6 +7,8 @@ import axios from 'axios';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import MyArticles from './article/MyArticles';
 import NewArticle from './article/NewArticle';
+import Categories from './category/Categories';
+import Tags from './tag/Tags';
 
 function App() {
 
@@ -32,6 +34,8 @@ function App() {
                     <NavBar />
                     <Routes>
                         <Route path='/admin' element={<Admin httpClient={http} />} />
+                        <Route path='/admin/categories' element={<Categories httpClient={http} />} />
+                        <Route path='/admin/tags' element={<Tags httpClient={http} />} />
                         <Route path='/admin/articles' element={<MyArticles httpClient={http} />} />
                         <Route path='/admin/article/new' element={<NewArticle httpClient={http} />} />
                         <Route path='/admin/article/edit' element={<MyArticles httpClient={http} />} />

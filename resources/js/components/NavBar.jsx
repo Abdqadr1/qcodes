@@ -19,12 +19,14 @@ const NavBar = () => {
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
-                  Offcanvas
+                  Navigation
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="/admin">Admins</Nav.Link>
+                  <Nav.Link href="/admin/categories">Categories</Nav.Link>
+                  <Nav.Link href="/admin/tags">Tags</Nav.Link>
                   <Nav.Link href="/admin/articles">My Articles</Nav.Link>
                   <NavDropdown
                     title="Dropdown"

@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
+ */
+class TagFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition()
+    {
+        return [
+            'name' => fake()->name(),
+            'meta_title' => fake()->text(100),
+            'slug' => fake()->text(100),
+            'content' => fake()->text(100)
+        ];
+    }
+}

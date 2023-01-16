@@ -11,6 +11,14 @@ export default defineConfig({
             ],
             refresh: true,
         }),
-        react(),
+        react()
     ],
+    optimizeDeps: {
+        include: ['ckeditor5-custom-build']
+    },
+    build: {
+        commonjsOptions: {
+            include: [/ckeditor5-custom-build/, /node_modules/],
+        }
+    }
 });
