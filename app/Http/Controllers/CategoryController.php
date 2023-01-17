@@ -16,6 +16,11 @@ class CategoryController extends Controller
         $this->categoryRepo = $repo;
     }
 
+    public function getAllCategoriesPaginate()
+    {
+        return $this->categoryRepo->getAllCategoriesPaginate();
+    }
+
     public function getAllCategories()
     {
         return $this->categoryRepo->getAllCategories();

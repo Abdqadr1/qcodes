@@ -15,6 +15,8 @@ const Categories = ({ httpClient }) => {
             refetchOnWindowFocus: false 
         }
     );
+
+
     const pageMutation = useMutation(url => httpClient.get(url), {
         onSuccess: data => {
             queryClient.setQueryData('categoryData', data);

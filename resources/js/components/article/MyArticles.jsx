@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Pages from '../paginate';
 import React, { useState } from "react";
-import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
 import Util from '../utility';
 
 const MyArticles = ({ httpClient }) => {
@@ -62,7 +62,8 @@ const MyArticles = ({ httpClient }) => {
                     <div className="card mb-4">
                         <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Articles table</h6>
-                            <a className='btn btn-primary' href='/admin/article/new' variant="primary" size="sm">New Article</a>
+                            <Button href='/admin/article/new' color='secondary'
+                                variant="contained" size="small">New Article</Button>
                         </div>
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">
@@ -97,10 +98,13 @@ const MyArticles = ({ httpClient }) => {
                                                         <p className="text-xs font-weight-bold mb-0">{article.visit}</p>
                                                     </td>
                                                     <td className="align-middle">
-                                                        <Button size="sm" onClick={() => setEdit(s => ({ ...s, show: true, data: article }))}
-                                                            variant="outline-secondary">Edit</Button>
+                                                        <Button size='small' variant="outlined"
+                                                            onClick={() => setEdit(s => ({ ...s, show: true, data: article }))}
+                                                            >Edit</Button>
                                                         {' '}
-                                                        <Button onClick={()=>handleDelete(article.id)} variant="outline-danger" size="sm">Delete</Button>
+                                                        <Button variant="outlined" size='small' color='error'
+                                                            onClick={() => handleDelete(article.id)} 
+                                                        >Delete</Button>
                                                     </td>
                                                 </tr>
                                             )

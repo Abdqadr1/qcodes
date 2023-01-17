@@ -8,9 +8,14 @@ use App\Models\Tag;
 class TagRepository implements TagRepositoryInterface
 {
 
-    public function getAllTags()
+    public function getAllTagsPaginate()
     {
         return Tag::orderBy('created_at', 'DESC')->paginate(8);
+    }
+
+    public function getAllTags()
+    {
+        return Tag::select(['id', 'name'])->get();
     }
 
     public function createTag(array $details)

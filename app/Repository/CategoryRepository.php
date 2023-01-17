@@ -10,6 +10,11 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function getAllCategories()
     {
+        return Category::select(['id', 'name'])->get();
+    }
+
+    public function getAllCategoriesPaginate()
+    {
         return Category::orderBy('created_at', 'DESC')->paginate(8);
     }
 

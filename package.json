@@ -18,6 +18,11 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-react": "^5.0.6",
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
+        "@fontsource/roboto": "^4.5.8",
+        "@mui/icons-material": "^5.11.0",
+        "@mui/material": "^5.11.4",
         "@vitejs/plugin-react": "^3.0.1",
         "ckeditor5-custom-build": "file:ckeditor5",
         "react-bootstrap": "^2.7.0",
