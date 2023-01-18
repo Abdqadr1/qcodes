@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import Button  from '@mui/material/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useMutation, useQueryClient } from 'react-query';
+import Autocompletion from '../article/Autocompletion';
+import Stack  from '@mui/material/Stack';
 
 
 const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
     const handleClose = e => setCreate(false);
+    const [parent, setParent] = useState({isError: false, data:null, errorMessage: ""});
     const queryClient = useQueryClient();
     const { mutate, isLoading, } = useMutation(
         (form) => httpClient.post(`/api/category/create`, form), {
@@ -28,7 +31,11 @@ const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
     const handleSubmit = e => {
         e.preventDefault();
         const target = e.target;
-        mutate(new FormData(target));
+        const formData = new FormData(target);
+        if (parent?.data) {
+            formData.set('parent', parent.data);
+        }
+        mutate(formData);
     }
 
     return ( 
@@ -49,8 +56,12 @@ const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
                         <Form.Control name='content' maxLength={100} className='mb-3' as="textarea" rows={3} placeholder="Content" required />
 
                         <Form.Control name='meta_title' maxLength={150} className='mb-3' as="textarea" rows={3} placeholder="Meta Title" required />
+
+                        <Stack className='mb-3'>
+                            <Autocompletion info={parent} name='Parent Category' httpClient={httpClient} setData={setParent} />
+                        </Stack>
                         
-                        <Button variant="primary" type="submit">
+                        <Button disabled={isLoading} variant="contained" color='primary' type="submit">
                             { isLoading ? "Loading" : "Submit" }
                         </Button>
                     </Form>

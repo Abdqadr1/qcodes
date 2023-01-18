@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import Button  from '@mui/material/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useMutation, useQueryClient } from 'react-query';
+import Autocompletion from '../article/Autocompletion';
+import Stack  from '@mui/material/Stack';
 
 const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
+    const data = edit.data;
+    const [parent, setParent] = useState({isError: false, data: data?.parent?.id, errorMessage: ""});
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
     const queryClient = useQueryClient();
 
@@ -26,12 +30,15 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
         }
     });
 
-    const data = edit.data;
 
     const handleSubmit = e => {
         e.preventDefault();
         const target = e.target;
-        mutate([data?.id, new FormData(target)]);
+        const formData = new FormData(target);
+        if (parent?.data) {
+            formData.set('parent', parent.data);
+        }
+        mutate([data?.id, formData]);
     }
 
 
@@ -53,9 +60,14 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
                         <Form.Control defaultValue={data.content} name='content' maxLength={100} className='mb-3' as="textarea" rows={3} placeholder="Content" required />
 
                         <Form.Control defaultValue={data.meta_title} name='meta_title' maxLength={150} className='mb-3' as="textarea" rows={3} placeholder="Meta Title" required />
+
+                        <Stack className='mb-3'>
+                            <Autocompletion defaultValue={data?.parent?.name}
+                                info={parent} name='Parent Category'
+                                httpClient={httpClient} setData={setParent} />
+                        </Stack>
                         
-                        
-                        <Button variant="primary" type="submit">
+                        <Button disabled={isLoading} variant="contained" color='primary' type="submit">
                             { isLoading ? "Loading" : "Submit" }
                         </Button>
                     </Form>

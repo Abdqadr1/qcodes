@@ -16,9 +16,14 @@ class TagController extends Controller
         $this->repo = $repo;
     }
 
-    public function getAllTags()
+    public function getAllTags(Request $request)
     {
-        return $this->repo->getAllTags();
+        return $this->repo->getAllTags($request);
+    }
+
+    public function getAllTagsPaginate(Request $request)
+    {
+        return $this->repo->getAllTagsPaginate($request);
     }
 
     public function createTag(Request $request)

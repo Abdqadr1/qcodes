@@ -20,7 +20,8 @@ class Article extends Model
         "slug", "summary",
         "author_id", "parent_id",
         "content", 'published_at',
-        'visit', 'is_published'
+        'visit', 'is_published',
+        'last_visited'
     ];
 
     public function author()

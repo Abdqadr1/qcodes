@@ -12,24 +12,34 @@ export default class Util {
         }
         return text;
     }
-
-    static findClass(tag) {
-        switch (tag) {
-            case 'h1':
-                return 'fs-1';
-            case 'h2':
-                return 'fs-2';
-            case 'h3':
-                return 'fs-3';
-            case 'h4':
-                return 'fs-4';
-            case 'h5':
-                return 'fs-5';
-            case 'h6':
-                return 'fs-6';
-        
-            default:
-                return '';
+    static listFormData(data, formData){
+        for (const key of Object.keys(data)) {
+            console.log(key, data[key]);
+            formData.set(key, data[key]);
         }
+    }
+
+    static useThrottle (cb, delay) {
+        let shouldWait = false;
+        let waitArgs = null;
+        let setTimeoutFunc = () => {
+            if (waitArgs == null) {
+                shouldWait = false;
+            }else {
+                cb(...waitArgs);
+                waitArgs = null;
+                setTimeout(setTimeoutFunc, delay);
+            }
+        };
+
+        return (...args) => {
+        if(shouldWait) {
+            waitArgs = args
+            return;
+        }
+        cb(...args)
+        shouldWait = true;
+        setTimeout(setTimeoutFunc, delay)
+        };
     }
 }

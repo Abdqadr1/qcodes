@@ -16,14 +16,14 @@ class CategoryController extends Controller
         $this->categoryRepo = $repo;
     }
 
-    public function getAllCategoriesPaginate()
+    public function getAllCategoriesPaginate(Request $request)
     {
-        return $this->categoryRepo->getAllCategoriesPaginate();
+        return $this->categoryRepo->getAllCategoriesPaginate($request);
     }
 
-    public function getAllCategories()
+    public function getAllCategories(Request $request)
     {
-        return $this->categoryRepo->getAllCategories();
+        return $this->categoryRepo->getAllCategories($request);
     }
 
     public function createCategory(Request $request)
@@ -32,7 +32,8 @@ class CategoryController extends Controller
             'name' => $request->input('name'),
             'meta_title' => $request->input('meta_title'),
             'content' => $request->input('content'),
-            'slug' => Str::random(50)
+            'parent_id' => $request->input('parent'),
+            'slug' => Str::random(50),
         ]);
     }
 
@@ -43,6 +44,7 @@ class CategoryController extends Controller
             'name' => $request->input('name'),
             'meta_title' => $request->input('meta_title'),
             'content' => $request->input('content'),
+            'parent_id' => $request->input('parent'),
             'slug' => Str::random(50)
         ]);
     }

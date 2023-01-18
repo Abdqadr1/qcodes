@@ -11,13 +11,42 @@ import Autocompletion from './Autocompletion';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
 
 const NewArticle = ({ httpClient }) => {
     const [categories, setCategories] = useState({isError: false, data:[], errorMessage: ""});
-    const [tags, setTags] = useState({isError: false, data:[], errorMessage: ""});
-    const blogRef = useRef();
+    const [tags, setTags] = useState({ isError: false, data: [], errorMessage: "" });
+    const [articleId, setArticleId] = useState(null);
+    const [toast, setToast] = useState({ show: false, message: "Draft Saved!", action: null });
+    const [form, setForm] = useState({});
 
-    const blog = new Blog(0);
+    const { isLoading, mutate, isError, data: response } =
+        useMutation((formData) => httpClient.post(`/api/article/create`, formData), {
+            onSuccess: (data) => {
+                console.log(data);
+            },
+            onError: error => {
+                const response = error?.response;
+                const message = response?.data?.message ?? "An error occurred";
+                console.info(message);
+            }
+        });
+
+
+    const handleInput = e => {
+        const target = e.target;
+        const name = target.name;
+        const value = target.value;
+        setForm(s => ({ ...s, [name]: value }));
+    }
+
+    const handleChange = content => {
+        const formData = new FormData();
+        Util.listFormData(form, formData);
+        formData.set('content', content);
+    }
+    
     const uploadBanner = e => {
         console.log(e.target.value);
     }
@@ -40,31 +69,54 @@ const NewArticle = ({ httpClient }) => {
 
     return ( 
         <Row className='mx-0'>
-            <Col sm={8} className='px-1 blog-side pt-5' ref={blogRef}>
+            <Col sm={8} className='px-1 blog-side pt-5'>
                 <div>
-                    <ArticleEditor httpClient={httpClient} />
+                    <ArticleEditor httpClient={httpClient} handleChange={handleChange} />
                 </div>
             </Col>
             <Col sm={4} className='border-start border-secondary p-1' id='right-side'>
-                <Form.Control name='title' className='mb-3 fs-4' as='textarea' defaultValue="Blog Title..." maxLength={100} required />
+                <TextField className='mb-3 fs-4' onInput={handleInput}
+                    name='title' value={form?.title ?? ''} 
+                    id="outlined-textarea"
+                    label="Title"
+                    placeholder="Blog Title..."
+                    rows={3}
+                    fullWidth 
+                    multiline
+                />
                 <div className='blog-banner mb-3'>
                     <IconButton color="primary" aria-label="upload picture" component="label">
                         <input hidden accept="image/*" type="file" onChange={uploadBanner} />
                         <PhotoCamera />
                     </IconButton>
                 </div>
-                <Form.Control name='meta_title' className='mb-3' as='textarea' maxLength={160} defaultValue="Meta Title..." required />
+                <TextField className='mb-3 fs-4' onInput={handleInput}
+                    name='meta_title' value={form?.meta_title ?? ''} 
+                    id="outlined-textarea"
+                    label="Meta Title"
+                    placeholder="Meta Title..."
+                    rows={3}
+                    fullWidth 
+                    multiline
+                />
 
                 <Stack spacing={3} className='mb-3'>
-
                     <Autocompletion info={categories} name='Categories' httpClient={httpClient} setData={setCategories} />
                     <Autocompletion info={tags} name='Tags' httpClient={httpClient} setData={setTags} />
-
                     
                 </Stack>
                 <Stack direction="row" spacing={2}>
-                    <Button variant="contained" color="success" onClick={handlePublish}>Publish</Button>
+                    <Button disabled={isLoading} variant="contained"
+                        color="success" onClick={handlePublish}
+                    >Publish</Button>
                 </Stack>
+                <Snackbar
+                    open={toast.show}
+                    autoHideDuration={2000}
+                    onClose={() => setOpen(s=> ({...s, show:false}) )}
+                    message={toast.message}
+                    action={toast?.action}
+                />
             </Col>
         </Row>
      );

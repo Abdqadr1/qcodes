@@ -23,7 +23,7 @@ return new class extends Migration
             $table->tinyText('summary')->nullable();
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();
-            $table->bigInteger('visit')->nullable();
+            $table->bigInteger('visit')->default(0);
             $table->timestamp('last_visited')->nullable();
             $table->text('content')->index()->nullable();
             $table->timestamps();

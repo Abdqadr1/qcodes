@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Pages from '../paginate';
-import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
 import React, { useState } from "react";
 import CategoryCreateModal from './CategoryCreate';
 import CategoryEditModal from './CategoryEdit';
@@ -65,7 +65,8 @@ const Categories = ({ httpClient }) => {
                     <div className="card mb-4">
                         <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Categories</h6>
-                            <Button onClick={showCreateModal} variant="primary" size="sm">New Category</Button>
+                            <Button onClick={showCreateModal} color='primary'
+                                variant="contained" size="small">New Category</Button>
                         </div>
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">
@@ -92,10 +93,13 @@ const Categories = ({ httpClient }) => {
                                                         <span className="">{category.content}</span>
                                                     </td>
                                                     <td className="align-middle">
-                                                        <Button size="sm" onClick={() => setEdit(s => ({ ...s, show: true, data: category }))}
-                                                            variant="secondary">Edit</Button>
+                                                        <Button size="small" color='primary'
+                                                            onClick={() => setEdit(s => ({ ...s, show: true, data: category }))}
+                                                            variant="outlined">Edit</Button>
                                                         {' '}
-                                                        <Button onClick={()=>handleDelete(category.id)} variant="danger" size="sm">Delete</Button>
+                                                        <Button color='error'
+                                                            onClick={() => handleDelete(category.id)}
+                                                            variant="outlined" size="small">Delete</Button>
                                                     </td>
                                                 </tr>
                                             )

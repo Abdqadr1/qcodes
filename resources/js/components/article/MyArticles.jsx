@@ -62,7 +62,7 @@ const MyArticles = ({ httpClient }) => {
                     <div className="card mb-4">
                         <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Articles table</h6>
-                            <Button href='/admin/article/new' color='secondary'
+                            <Button href='/admin/article/new' color='primary'
                                 variant="contained" size="small">New Article</Button>
                         </div>
                         <div className="card-body px-0 pt-0 pb-2">
