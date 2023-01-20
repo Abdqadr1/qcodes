@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('author_id');
             $table->bigInteger('parent_id')->nullable();
+            $table->string('banner')->default('');
             $table->string('title', 100)->nullable();
             $table->string('meta_title', 160)->nullable();
             $table->string('slug', 100)->nullable();

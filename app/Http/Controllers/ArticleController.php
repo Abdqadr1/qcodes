@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\ArticleRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -15,9 +16,14 @@ class ArticleController extends Controller
         $this->articleRepo = $articleRepo;
     }
 
+    public function getMyArticlesPaginate(Request $request)
+    {
+        return $this->articleRepo->getMyArticlesPaginate();
+    }
+
     public function getMyArticles(Request $request)
     {
-        return $this->articleRepo->getMyArticles();
+        return $this->articleRepo->getMyArticles($request);
     }
 
     public function deleteArticle(Request $request)
@@ -28,19 +34,32 @@ class ArticleController extends Controller
 
     public function createArticle(Request $request)
     {
-        $id = $request->input('id');
-        $array = [
-            'title' => $request->input('title'),
-            'meta_title' => $request->input('meta_title'),
-            'meta_title' => $request->input('meta_title'),
-            'content' => $request->input('content'),
-            'summary' => $request->input('summary'),
-            'slug' => Str::random(50),
-            'parent_id' => $request->input('parent_id'),
-        ];
-        if ($id) {
-            return $this->articleRepo->updateArticle($id, $array);
-        }
-        return $this->articleRepo->createArticle($array);
+        return DB::transaction(function () use ($request) {
+            $id = $request->input('id');
+            $tags = $request->tags;
+            $categories = $request->categories;
+
+            $array = [
+                'content' => $request->input('content'),
+                'title' => $request->input('title') ?? "",
+                'meta_title' => $request->input('meta_title') ?? "",
+                'meta_title' => $request->input('meta_title') ?? "",
+                'summary' => $request->input('summary') ?? "",
+                'slug' => Str::random(50),
+                'parent_id' => rand(1, 10) ?? $request->input('parent_id') ?? "",
+                'author_id' => rand(1, 15),
+            ];
+
+            if ($id) {
+                $this->articleRepo->updateArticle($id, $array);
+            } else {
+                $id = $this->articleRepo->createArticle($array);
+            }
+
+            if ($tags) $this->articleRepo->syncTags($id, $tags);
+            if ($categories) $this->articleRepo->syncCategories($id, $categories);
+
+            return $id;
+        });
     }
 }

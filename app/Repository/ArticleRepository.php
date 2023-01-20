@@ -4,13 +4,25 @@ namespace App\Repository;
 
 use App\Interfaces\ArticleRepositoryInterface;
 use App\Models\Article;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ArticleRepository implements ArticleRepositoryInterface
 {
-    public function getMyArticles()
+    public function getMyArticlesPaginate()
     {
         return Article::select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
             ->paginate(5);
+    }
+    public function getMyArticles(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        if ($keyword) {
+            return Article::select(['id', 'title'])
+                ->where('title', 'like', '%' . $keyword . '%')
+                ->get();
+        }
+        return Article::select(['id', 'title'])->get();
     }
     public function getAllArticles()
     {
@@ -30,6 +42,21 @@ class ArticleRepository implements ArticleRepositoryInterface
     }
     public function deleteArticle($id)
     {
-        return Article::destroy($id);
+        return DB::transaction(function () use ($id) {
+            $article = Article::findOrFail($id);
+            $article->categories()->detach();
+            $article->tags()->detach();
+            return $article->delete();
+        });
+    }
+
+    public function syncCategories($id, array $categories)
+    {
+        Article::find($id)->categories()->syncWithPivotValues($categories, ['created_at' => now()]);
+    }
+
+    public function syncTags($id, array $tags)
+    {
+        Article::find($id)->tags()->syncWithPivotValues($tags, ['created_at' => now()]);
     }
 }

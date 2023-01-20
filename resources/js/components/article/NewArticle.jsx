@@ -17,6 +17,7 @@ import TextField from '@mui/material/TextField';
 const NewArticle = ({ httpClient }) => {
     const [categories, setCategories] = useState({isError: false, data:[], errorMessage: ""});
     const [tags, setTags] = useState({ isError: false, data: [], errorMessage: "" });
+    const [parent, setParent] = useState({ isError: false, data: [], errorMessage: "" });
     const [articleId, setArticleId] = useState(null);
     const [toast, setToast] = useState({ show: false, message: "Draft Saved!", action: null });
     const [form, setForm] = useState({});
@@ -24,7 +25,7 @@ const NewArticle = ({ httpClient }) => {
     const { isLoading, mutate, isError, data: response } =
         useMutation((formData) => httpClient.post(`/api/article/create`, formData), {
             onSuccess: (data) => {
-                console.log(data);
+                console.log(data?.data);
             },
             onError: error => {
                 const response = error?.response;
@@ -43,8 +44,19 @@ const NewArticle = ({ httpClient }) => {
 
     const handleChange = content => {
         const formData = new FormData();
-        Util.listFormData(form, formData);
         formData.set('content', content);
+
+        if (response?.data) formData.set('id', response.data);
+
+        if (tags.data.length > 0) {
+            tags.data.forEach(data => formData.append('tags[]', data.id));
+        }
+
+        if (categories.data.length > 0) {
+            categories.data.forEach(data => formData.append('categories[]', data.id));
+        }
+        Util.listFormData(form, formData);
+        mutate(formData);
     }
     
     const uploadBanner = e => {
@@ -52,11 +64,11 @@ const NewArticle = ({ httpClient }) => {
     }
 
     const handlePublish = e => {
-        if (categories.data.length === 0) {
+        if (categories?.data.length === 0) {
             setCategories(s => ({ ...s, isError: true, errorMessage: 'Choose categories' }));
             return;
         }
-        if (tags.data.length === 0) {
+        if (tags?.data.length === 0) {
             setTags(s => ({ ...s, isError: true, errorMessage: 'Choose tags' }));
             return;
         }
@@ -71,7 +83,7 @@ const NewArticle = ({ httpClient }) => {
         <Row className='mx-0'>
             <Col sm={8} className='px-1 blog-side pt-5'>
                 <div>
-                    <ArticleEditor httpClient={httpClient} handleChange={handleChange} />
+                    <ArticleEditor handleChange={handleChange} />
                 </div>
             </Col>
             <Col sm={4} className='border-start border-secondary p-1' id='right-side'>
@@ -103,6 +115,7 @@ const NewArticle = ({ httpClient }) => {
                 <Stack spacing={3} className='mb-3'>
                     <Autocompletion info={categories} name='Categories' httpClient={httpClient} setData={setCategories} />
                     <Autocompletion info={tags} name='Tags' httpClient={httpClient} setData={setTags} />
+                    <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
                     
                 </Stack>
                 <Stack direction="row" spacing={2}>

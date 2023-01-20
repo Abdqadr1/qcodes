@@ -5,10 +5,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 export default function Autocompletion({ name, httpClient, setData, info, defaultValue }) {
-  const isMultiple = name !== 'Parent Category';
+  const isMultiple = !name.includes('Parent');
   const [isLimitReached, setLimitReached] = React.useState(false);
   const [defValue, setDefValue] = React.useState((() => {
-    return isMultiple ? [] : {name: defaultValue ?? "", id: null }
+    return isMultiple ? [] : { name: defaultValue ?? "", id: null }
   }));
   const queryClient = useQueryClient();
 
@@ -16,6 +16,7 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
     categories: '/api/c/category/all',
     'parent category': '/api/c/category/all',
     tags: '/api/c/tag/all',
+    'parent': '/api/c/article/all',
   }
   const dataName = `${name}Data`;
   const url = links[name.toLowerCase()];
@@ -40,7 +41,8 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
         setLimitReached(true);
         return;
       }
-      setData(s => ({...s, data: [...val]}));
+      setData(s => ({ ...s, data: [...val] }));
+      return;
     }
     setData(s => ({...s, data: val?.id ?? null}));
   }
@@ -65,7 +67,7 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
           console.log('closed');
         }}
         onChange={handleChange}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => option.name ?? option.title}
         defaultValue={defValue}
         isOptionEqualToValue={(option, value) => option.name === value.name}
         freeSolo={true}

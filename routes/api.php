@@ -23,7 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/admin/all', [AdminController::class, 'getAllAdmin']);
-Route::get('/article/all', [ArticleController::class, 'getMyArticles']);
+Route::get('/article/all', [ArticleController::class, 'getMyArticlesPaginate']);
+Route::get('/c/article/all', [ArticleController::class, 'getMyArticles']);
 Route::get('/category/all', [CategoryController::class, 'getAllCategoriesPaginate']);
 Route::get('/c/category/all', [CategoryController::class, 'getAllCategories']);
 Route::get('/tag/all', [TagController::class, 'getAllTagsPaginate']);
