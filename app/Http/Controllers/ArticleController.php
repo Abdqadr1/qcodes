@@ -16,6 +16,11 @@ class ArticleController extends Controller
         $this->articleRepo = $articleRepo;
     }
 
+    public function getArticleById(Request $request)
+    {
+        return $this->articleRepo->getArticleById($request->route('id'));
+    }
+
     public function getMyArticlesPaginate(Request $request)
     {
         return $this->articleRepo->getMyArticlesPaginate();
@@ -32,12 +37,13 @@ class ArticleController extends Controller
         return $this->articleRepo->deleteArticle($id);
     }
 
-    public function createArticle(Request $request)
+    public function saveArticle(Request $request, $publish = false)
     {
-        return DB::transaction(function () use ($request) {
+        return DB::transaction(function () use ($request, $publish) {
             $id = $request->input('id');
             $tags = $request->tags;
             $categories = $request->categories;
+            $parent = $request->has('parent_id') ? $request->input('parent_id') : null;
 
             $array = [
                 'content' => $request->input('content'),
@@ -46,9 +52,11 @@ class ArticleController extends Controller
                 'meta_title' => $request->input('meta_title') ?? "",
                 'summary' => $request->input('summary') ?? "",
                 'slug' => Str::random(50),
-                'parent_id' => rand(1, 10) ?? $request->input('parent_id') ?? "",
+                'parent_id' => $parent,
                 'author_id' => rand(1, 15),
             ];
+
+            if ($publish) $array['is_published'] = true;
 
             if ($id) {
                 $this->articleRepo->updateArticle($id, $array);
@@ -61,5 +69,15 @@ class ArticleController extends Controller
 
             return $id;
         });
+    }
+
+    public function createArticle(Request $request)
+    {
+        return $this->saveArticle($request);
+    }
+
+    public function publishArticle(Request $request)
+    {
+        return $this->saveArticle($request, true);
     }
 }

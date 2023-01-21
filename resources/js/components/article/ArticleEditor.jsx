@@ -2,20 +2,10 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import Editor from 'ckeditor5-custom-build';
 
 
-const ArticleEditor = ({ handleChange }) => {
-    let isChanged = false;
+const ArticleEditor = ({ handleChange, content }) => {
 
-    const change = () => {
-        isChanged = true;
-    }
-
-    const handleBlur = (e) => {
-        if (isChanged) {
-            isChanged = false;
-            handleChange(e.getData());
-        } else {
-            console.log('hasnt changed since...')
-        }
+    const change = (e) => {
+        handleChange(e.getData());
     }
 
 
@@ -23,26 +13,26 @@ const ArticleEditor = ({ handleChange }) => {
         <>
             <CKEditor
                 config={{
+                    placeholder: "Start typing...",
                     removePlugins: []
                 } }
                 editor={Editor}
-                data="<p>Start typing...</p>"
+                data={content ?? ""}
                 onReady={ editor => {
                     // You can store the "editor" and use when it is needed.
-                    console.log('Editor is ready to use!');
                      editor.editing.view.change((writer) => {
                         writer.setStyle(
                             "height",
-                            "80vh",
+                            "85vh",
                             editor.editing.view.document.getRoot()
                         );
                     });
                 } }
                 onChange={ ( event, editor ) => {
-                    change();
+                    change(editor);
                 } }
                 onBlur={ ( event, editor ) => {
-                    handleBlur(editor);
+                    // handleBlur(editor);
                 } }
                 onFocus={ ( event, editor ) => {
                     // console.log( 'Focus.', editor );

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import MyArticles from './article/MyArticles';
 import NewArticle from './article/NewArticle';
+import EditArticle from './article/EditArticle';
 import Categories from './category/Categories';
 import Tags from './tag/Tags';
 
@@ -38,7 +39,7 @@ function App() {
                         <Route path='/admin/tags' element={<Tags httpClient={http} />} />
                         <Route path='/admin/articles' element={<MyArticles httpClient={http} />} />
                         <Route path='/admin/article/new' element={<NewArticle httpClient={http} />} />
-                        <Route path='/admin/article/edit' element={<MyArticles httpClient={http} />} />
+                        <Route path='/admin/article/edit/:id' element={<EditArticle httpClient={http} />} />
                         <Route path='*' element={<h4>404: Not Found</h4>} />
                     </Routes>
                 </QueryClientProvider>

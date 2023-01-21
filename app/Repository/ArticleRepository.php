@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class ArticleRepository implements ArticleRepositoryInterface
 {
+    public function getArticleById($id)
+    {
+        return Article::with(['tags:id,name', 'categories:id,name', 'parent:id,title'])
+            ->find($id);
+    }
     public function getMyArticlesPaginate()
     {
         return Article::select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
@@ -35,10 +40,6 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function updateArticle($id, array $details)
     {
         return Article::whereId($id)->update($details);
-    }
-    public function getArticleById($id)
-    {
-        return Article::findOrFail($id);
     }
     public function deleteArticle($id)
     {

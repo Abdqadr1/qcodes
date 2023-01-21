@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from '@mui/material/Button';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import React, { useRef, useState } from "react";
+import { useParams } from 'react-router-dom';
 import Blog from '../Blog';
 import Util from '../utility';
 import ArticleEditor from './ArticleEditor';
@@ -22,18 +23,42 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const NewArticle = ({ httpClient }) => {
+const EditArticle = ({ httpClient }) => {
+    const { id } = useParams();
+    const [isFirstFetch, setFirstFetch] = useState(true);
+
     const [categories, setCategories] = useState({isError: false, data:[], errorMessage: ""});
     const [tags, setTags] = useState({ isError: false, data: [], errorMessage: "" });
     const [parent, setParent] = useState({ isError: false, data: null, errorMessage: "" });
-    const [toast, setToast] = useState({ show: false, message: "Draft Saved!", action: null, severity: 'success' });
+    const [toast, setToast] = useState({ show: false, message: "", action: null, severity: 'success' });
     const [form, setForm] = useState({});
     const [content, setContent] = useState("");
     const [timeoutId, setTimeoutId] = useState(null);
     const [backdropOpen, setBackdropOpen] = useState(false);
-    
 
-    const { isLoading, mutate, data: response } =
+    const { isLoading } = useQuery('articleData', () =>
+        httpClient.post(`/api/article/edit/${id}`),
+        {
+            refetchOnWindowFocus: false ,
+            onSuccess: (data) => {
+                const { categories, tags, parent, title, meta_title, content, summary } = data.data;    
+                setContent(content);  
+                setCategories(s => ({ ...s, data: categories }));         
+                setTags(s => ({ ...s, data: tags }));         
+                setParent(s => ({ ...s, data: parent ?? parent?.id }));         
+                setForm(s => ({ ...s, title, meta_title, summary }));   
+                setFirstFetch(false);         
+            },
+            onError: error => {
+                console.error(error);
+                const response = error?.response;
+                const message = response?.data?.message ?? "An error occurred";
+                setToast(s => ({ ...s, show: true, message, severity: 'error' }));
+            }
+        }
+    );
+    
+    const { mutate } =
         useMutation((formData) => httpClient.post(`/api/article/create`, formData), {
             onSuccess: (data) => {
                 setToast(s => ({ ...s, show: true, message: "Draft Saved!", severity: 'success' }));
@@ -46,7 +71,7 @@ const NewArticle = ({ httpClient }) => {
             }
         });
 
-    const { isLoading:publishLoading, mutate: publishMutate, data: publishData } =
+    const { isLoading:publishLoading, mutate: publishMutate } =
         useMutation((formData) => httpClient.post(`/api/article/publish`, formData), {
             onSuccess: () => {
                 setToast(s => ({ ...s, show: true, message: "Published!", severity: 'success' }));
@@ -73,7 +98,7 @@ const NewArticle = ({ httpClient }) => {
         const formData = new FormData();
         formData.set('content', content);
 
-        if (response?.data) formData.set('id', response.data);
+        formData.set('id', id);
 
         if (tags.data.length > 0) {
             tags.data.forEach(data => formData.append('tags[]', data.id));
@@ -91,13 +116,14 @@ const NewArticle = ({ httpClient }) => {
         return formData;
     }
 
-    const handleChange = content => {
-        setContent(content);
+    const handleChange = c => {
+        if (isFirstFetch) return;
+        setContent(c);
         clearTimeout(timeoutId);
         setTimeoutId(
             setTimeout(
                 () => {
-                    mutate(initFormData(content))
+                    mutate(initFormData(c))
                 },
                 3000
             )
@@ -109,7 +135,7 @@ const NewArticle = ({ httpClient }) => {
     }
 
     const handlePublish = e => {
-        if (!(form?.title && form?.meta_title)) {
+        if (!(form?.title && form?.meta_title && form?.summary)) {
             setToast(s => ({ ...s, show: true, message: 'Title and Meta title is required', severity: 'error' }));
             return;
         }
@@ -122,14 +148,14 @@ const NewArticle = ({ httpClient }) => {
             return;
         }
         setBackdropOpen(true);
-        publishMutate.mutate(formData);
+        publishMutate(initFormData());
     }
 
     return ( 
         <Row className='mx-0'>
             <Col sm={8} className='px-1 blog-side pt-5'>
                 <div>
-                    <ArticleEditor handleChange={handleChange} />
+                    <ArticleEditor handleChange={handleChange} content={content} />
                 </div>
             </Col>
             <Col sm={4} className='border-start border-secondary p-1' id='right-side'>
@@ -196,15 +222,15 @@ const NewArticle = ({ httpClient }) => {
                         {toast.message}
                     </Alert>
                 </Snackbar>
-                    <Backdrop
-                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                        open={backdropOpen}
-                    >
-                        <CircularProgress color="inherit" />
-                    </Backdrop>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={backdropOpen || isLoading}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
             </Col>
         </Row>
      );
 }
  
-export default NewArticle;
+export default EditArticle;

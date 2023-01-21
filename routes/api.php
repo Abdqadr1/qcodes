@@ -37,12 +37,15 @@ Route::get('/admin/roles', [AdminController::class, 'getAllRoles']);
 Route::post('/admin/edit/{id}', [AdminController::class, 'editAdmin']);
 Route::post('/category/edit/{id}', [CategoryController::class, 'editCategory']);
 Route::post('/tag/edit/{id}', [TagController::class, 'editTag']);
+Route::post('/article/edit/{id}', [ArticleController::class, 'getArticleById']);
 
 
 Route::post('/admin/create', [AdminController::class, 'createAdmin']);
 Route::post('/article/create', [ArticleController::class, 'createArticle']);
+Route::post('/article/publish', [ArticleController::class, 'publishArticle']);
 Route::post('/category/create', [CategoryController::class, 'createCategory']);
 Route::post('/tag/create', [TagController::class, 'createTag']);
+
 
 Route::delete('/admin/delete/{id}', [AdminController::class, 'deleteAdmin']);
 Route::delete('/article/delete/{id}', [ArticleController::class, 'deleteArticle']);

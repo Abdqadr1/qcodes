@@ -38,4 +38,14 @@ class Article extends Model
     {
         return $this->belongsToMany(Category::class, 'article_category', 'article_id', 'category_id');
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(Article::class, 'parent_id', 'id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Article::class, 'parent_id', 'id');
+    }
 }
