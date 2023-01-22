@@ -5,20 +5,39 @@ import React, { useState } from "react";
 import TagEditModal from './TagEdit';
 import TagCreateModal from './TagCreate';
 import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
+const theme = createTheme();
+
+theme.typography.h3 = {
+  fontSize: '1.2rem',
+  '@media (min-width:600px)': {
+    fontSize: '1.5rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '1.5rem',
+  },
+};
 
 const Tags = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
     const [create, setCreate] = useState(false);
+    const [keyword, setKeyword] = useState('');
     const queryClient = useQueryClient();
 
-    const { isLoading, error, data } = useQuery('tagData', () =>
-        httpClient.get('/api/tag/all'),{ 
+    const { isFetching, error, data, refetch } = useQuery('tagData', () =>
+        httpClient.get(`/api/tag/all?keyword=${keyword}`),{ 
             refetchOnWindowFocus: false 
         }
     );
-    const pageMutation = useMutation(url => httpClient.get(url), {
+    const pageMutation = useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
         onSuccess: data => {
             queryClient.setQueryData('tagData', data);
         },
@@ -51,14 +70,18 @@ const Tags = ({ httpClient }) => {
         }
     }
 
+     const handleSearch = e => {
+        refetch({ throwOnError: true, cancelRefetch: true });
+    }
+
     const showCreateModal = () => {
         setCreate(true);
     }
     
-    if (isLoading || pageMutation.isLoading) return (
+    if (isFetching || pageMutation.isLoading) return (
         <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={isLoading || pageMutation.isLoading}
+                open={true}
             >
                 <CircularProgress color="inherit" />
         </Backdrop>
@@ -70,6 +93,32 @@ const Tags = ({ httpClient }) => {
         <div className='p-4'>
             <div className="row">
                 <div className="col-12">
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        justifyContent="center"
+                        alignItems="center"
+                        sx={{ width: '100%' }}
+                        mt={3} mb={5}
+                    >
+                        <ThemeProvider theme={theme}>
+                            <Typography variant="h3">Search Tags: </Typography>
+                        </ThemeProvider>
+                        <TextField
+                            id="outlined-name"
+                            label="Keyword"
+                            value={keyword}
+                            onChange={e => setKeyword(e.target.value)}
+                            size="small"
+                        />
+                        <Button variant="outlined" color='primary' 
+                            endIcon={<SearchIcon />} onClick={handleSearch}
+                            >Search</Button>
+                        <Button variant="outlined" color="error" 
+                            endIcon={<ClearIcon />} onClick={e=>setKeyword('')}
+                            >Clear</Button>
+
+                    </Stack>
                     <div className="card mb-4">
                         <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Tags</h6>

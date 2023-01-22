@@ -23,7 +23,7 @@ class ArticleController extends Controller
 
     public function getMyArticlesPaginate(Request $request)
     {
-        return $this->articleRepo->getMyArticlesPaginate();
+        return $this->articleRepo->getMyArticlesPaginate($request);
     }
 
     public function getMyArticles(Request $request)

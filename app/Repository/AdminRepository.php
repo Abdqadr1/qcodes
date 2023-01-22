@@ -9,9 +9,16 @@ use App\Models\Role;
 class AdminRepository implements AdminRepositoryInterface
 {
 
-    public function getAllAdmins()
+    public function getAllAdmins($keyword = "")
     {
-        return Admin::orderBy('created_at', 'DESC')->paginate(8);
+        if (empty($keyword)) return Admin::orderBy('created_at', 'DESC')->paginate(8);
+        return Admin::orderBy('created_at', 'DESC')
+            ->where(function ($query) use ($keyword) {
+                $query->where('first_name', 'like', '%' . $keyword . '%');
+                $query->orWhere('last_name', 'like', '%' . $keyword . '%');
+                $query->orWhere('email', 'like', '%' . $keyword . '%');
+            })
+            ->paginate(8);
     }
 
     public function createAdmin(array $details)

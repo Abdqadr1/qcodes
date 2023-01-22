@@ -15,8 +15,20 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->with(['tags:id,name', 'categories:id,name', 'parent:id,title'])
             ->find($id);
     }
-    public function getMyArticlesPaginate()
+    public function getMyArticlesPaginate(Request $request)
     {
+        $keyword = $request->input('keyword');
+        if ($keyword) {
+            return Article::orderBy('created_at', 'DESC')
+                ->where(function ($query) use ($keyword) {
+                    $query->where('title', 'like', '%' . $keyword . '%');
+                    $query->orWhere('summary', 'like', '%' . $keyword . '%');
+                    $query->orWhere('content', 'like', '%' . $keyword . '%');
+                    $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
+                })
+                ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+                ->paginate(5);
+        }
         return Article::orderBy('created_at', 'DESC')
             ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
             ->paginate(5);

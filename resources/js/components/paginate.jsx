@@ -3,7 +3,7 @@ import Pagination from 'react-bootstrap/Pagination';
 const Pages = ({
     links, from, perPage, total, lastPage, to,
     firstPageUrl, lastPageUrl, prevPageUrl, nextPageUrl, currentPage,
-    mutation
+    mutation, keyword
 }) => { 
 
     const isFirst = currentPage === 1;

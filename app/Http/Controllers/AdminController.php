@@ -19,7 +19,7 @@ class AdminController extends Controller
 
     public function getAllAdmin(Request $request)
     {
-        return $this->adminRepo->getAllAdmins();
+        return $this->adminRepo->getAllAdmins($request->input('keyword'));
     }
 
     public function editAdmin(Request $request)

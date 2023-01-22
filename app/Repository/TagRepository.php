@@ -11,6 +11,16 @@ class TagRepository implements TagRepositoryInterface
 
     public function getAllTagsPaginate(Request $request)
     {
+        $keyword = $request->input('keyword');
+
+        if ($keyword) {
+            return Tag::orderBy('created_at', 'DESC')
+                ->where(function ($query) use ($keyword) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                    $query->orWhere('content', 'like', '%' . $keyword . '%');
+                    $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
+                })->paginate(8);
+        }
         return Tag::orderBy('created_at', 'DESC')->paginate(8);
     }
 
