@@ -10,7 +10,7 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
   const [list, setList] = React.useState([]);
   const [inputValue, setInputValue] = React.useState('');
   const [timeoutId, setTimeoutId] = React.useState(null);
-  const [defValue, setDefValue] = React.useState(isMultiple ? [] : { name: defaultValue ?? "", id: null });
+  const [defValue, setDefValue] = React.useState(isMultiple ? [] : { name: "", id: null });
   const links = {
     categories: '/api/c/category/all',
     'parent category': '/api/c/category/all',
@@ -21,15 +21,14 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
   const url = links[name.toLowerCase()];
 
   React.useEffect(() => {
-    setDefValue(info?.data)
+    setDefValue(defaultValue ? defaultValue : info?.data)
   }, [info]);
 
   const { isLoading, data: response, mutate } =
     useMutation(({ url, keyword }) => httpClient.get(`${url}?keyword=${keyword}`), {
           refetchOnWindowFocus: false ,
         onSuccess: (data) => {
-          //TODO: filter def value from result;
-          setList(data.data.forEach());
+          setList([...data.data]);
         },
         onError: error => {
             const response = error?.response;
@@ -46,7 +45,6 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
         setLimitReached(true);
         return;
       }
-      console.log(val);
       setData(s => ({ ...s, data: [...val] }));
       return;
     }
@@ -55,15 +53,17 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
 
   const handleInput = (e, input) => {
     setInputValue(input);
-    clearTimeout(timeoutId);
-    setTimeoutId(
-      setTimeout(
-        () => {
-          mutate({ url, keyword: input })
-        },
-        1000
-      )
-    );
+    if (input) {
+      clearTimeout(timeoutId);
+      setTimeoutId(
+        setTimeout(
+          () => {
+            mutate({ url, keyword: input })
+          },
+          1000
+        )
+      );
+    }
   }
 
     

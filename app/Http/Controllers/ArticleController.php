@@ -80,4 +80,15 @@ class ArticleController extends Controller
     {
         return $this->saveArticle($request, true);
     }
+
+    public function unpublishArticle(Request $request)
+    {
+        $id = $request->route('id');
+
+        $array = [
+            'is_published' => false,
+        ];
+
+        return $this->articleRepo->updateArticle($id, $array);
+    }
 }

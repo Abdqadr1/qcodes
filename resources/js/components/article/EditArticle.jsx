@@ -35,19 +35,21 @@ const EditArticle = ({ httpClient }) => {
     const [content, setContent] = useState("");
     const [timeoutId, setTimeoutId] = useState(null);
     const [backdropOpen, setBackdropOpen] = useState(false);
+    const [isPublished, setPublished] = useState(false);
 
     const { isLoading } = useQuery('articleData', () =>
         httpClient.post(`/api/article/edit/${id}`),
         {
             refetchOnWindowFocus: false ,
             onSuccess: (data) => {
-                const { categories, tags, parent, title, meta_title, content, summary } = data.data;    
+                const { categories, tags, parent, title, meta_title, content, summary, is_published } = data.data;    
                 setContent(content);  
                 setCategories(s => ({ ...s, data: categories }));         
                 setTags(s => ({ ...s, data: tags }));         
                 setParent(s => ({ ...s, data: parent ?? parent?.id }));         
                 setForm(s => ({ ...s, title, meta_title, summary }));   
                 setFirstFetch(false);         
+                setPublished(is_published);
             },
             onError: error => {
                 console.error(error);
@@ -60,22 +62,31 @@ const EditArticle = ({ httpClient }) => {
     
     const { mutate } =
         useMutation((formData) => httpClient.post(`/api/article/create`, formData), {
+            retry: false,
             onSuccess: (data) => {
-                setToast(s => ({ ...s, show: true, message: "Draft Saved!", severity: 'success' }));
-                window.history.replaceState({articleId: data.data}, '', `/admin/article/edit/${data.data}`);           
+                setToast(s => ({ ...s, show: true, message: "Saved!", severity: 'success' }));
+                setBackdropOpen(false);          
             },
             onError: error => {
                 const response = error?.response;
                 const message = response?.data?.message ?? "An error occurred";
                 setToast(s => ({ ...s, show: true, message, severity: 'error' }));
+                setBackdropOpen(false);
             }
         });
 
     const { isLoading:publishLoading, mutate: publishMutate } =
-        useMutation((formData) => httpClient.post(`/api/article/publish`, formData), {
+        useMutation((formData) => {
+            let url;
+            if (isPublished) url = `/api/article/unpublish/${id}`;
+            else url = `/api/article/publish`;
+            return httpClient.post(url, formData)
+        }, {
             onSuccess: () => {
-                setToast(s => ({ ...s, show: true, message: "Published!", severity: 'success' }));
+                const message = isPublished ? "Unpublished!" : "Published!";
+                setToast(s => ({ ...s, show: true, message, severity: 'success' }));
                 setBackdropOpen(false);
+                setPublished(!isPublished);
             },
             onError: error => {
                 const response = error?.response;
@@ -129,6 +140,12 @@ const EditArticle = ({ httpClient }) => {
             )
         );
     }
+
+    const saveChanges = () => {
+        clearTimeout(timeoutId);
+        setBackdropOpen(true);
+        mutate(initFormData());
+    }
     
     const uploadBanner = e => {
         console.log(e.target.value);
@@ -148,6 +165,8 @@ const EditArticle = ({ httpClient }) => {
             return;
         }
         setBackdropOpen(true);
+
+        clearTimeout(timeoutId);
         publishMutate(initFormData());
     }
 
@@ -200,14 +219,19 @@ const EditArticle = ({ httpClient }) => {
                     <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
                     
                 </Stack>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={2} 
+                    justifyContent="center"
+                    alignItems="center" my={3}>
                     <Button disabled={isLoading || publishLoading} variant="contained"
-                        color="success" onClick={handlePublish}
-                    >Publish</Button>
+                        color="info" onClick={saveChanges}
+                    >Save Changes</Button>
+                    <Button disabled={isLoading || publishLoading} variant="contained"
+                        color={isPublished ? "warning" : 'success'} onClick={handlePublish}
+                    >{ isPublished ? "Unpublish" : "Publish"}</Button>
                 </Stack>
                 <Snackbar
                     open={toast.show}
-                    autoHideDuration={2000}
+                    autoHideDuration={3000}
                     onClose={() => setToast(s=> ({...s, show:false}) )}
                     anchorOrigin={
                         {

@@ -3,8 +3,9 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Pages from '../paginate';
 import React, { useState } from "react";
 import AdminEditModal from '../admin/AdminEdit';
-import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
 import AdminCreateModal from '../admin/AdminCreate';
+import AddIcon from '@mui/icons-material/Add';
 
 
 const Admin = ({ httpClient }) => {
@@ -74,7 +75,10 @@ const Admin = ({ httpClient }) => {
                     <div className="card mb-4">
                         <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Admins table</h6>
-                            <Button onClick={showCreateModal} variant="primary" size="sm">Add Admin</Button>
+                            <Button
+                                onClick={showCreateModal} color="primary" size="small"
+                                variant='contained' endIcon={<AddIcon />}
+                                >Add Admin</Button>
                         </div>
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">
@@ -89,39 +93,40 @@ const Admin = ({ httpClient }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        {
-                                            data.data.data.map(
-                                                admin => <tr key={admin.id}>
-                                                    <td>
-                                                        <div className="d-flex px-2 py-1">
-                                                        <div>
-                                                            <img src="../assets/img/team-2.jpg" className="avatar avatar-sm me-3" alt="user1"/>
-                                                        </div>
-                                                        <div className="d-flex flex-column justify-content-center">
-                                                            <h6 className="mb-0 text-sm">{`${admin.first_name} ${admin.last_name}`}</h6>
-                                                            <p className="text-xs text-secondary mb-0">{admin.email}</p>
-                                                        </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <p className="text-xs font-weight-bold mb-0">Manager</p>
-                                                        <p className="text-xs text-secondary mb-0">Organization</p>
-                                                    </td>
-                                                    <td className="align-middle text-center text-sm">
-                                                        <span className="">{admin.enabled ? "Enabled" : "Disabled"}</span>
-                                                    </td>
-                                                     <td className="align-middle text-center">
-                                                        <span className="text-secondary text-xs font-weight-bold">{admin.last_login_at}</span>
-                                                    </td>
-                                                    <td className="align-middle">
-                                                        <Button size="sm" onClick={() => setEdit(s => ({ ...s, show: true, data: admin }))}
-                                                            variant="secondary">Edit</Button>
-                                                        {' '}
-                                                        <Button onClick={()=>handleDelete(admin.id)} variant="danger" size="sm">Delete</Button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        }
+                                    {
+                                        data.data.data.map(
+                                            admin => <tr key={admin.id}>
+                                                <td>
+                                                    <div className="d-flex px-2 py-1">
+                                                    <div>
+                                                        <img src="../assets/img/team-2.jpg" className="avatar avatar-sm me-3" alt="user1"/>
+                                                    </div>
+                                                    <div className="d-flex flex-column justify-content-center">
+                                                        <h6 className="mb-0 text-sm">{`${admin.first_name} ${admin.last_name}`}</h6>
+                                                        <p className="text-xs text-secondary mb-0">{admin.email}</p>
+                                                    </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <p className="text-xs font-weight-bold mb-0">Manager</p>
+                                                    <p className="text-xs text-secondary mb-0">Organization</p>
+                                                </td>
+                                                <td className="align-middle text-center text-sm">
+                                                    <span className="">{admin.enabled ? "Enabled" : "Disabled"}</span>
+                                                </td>
+                                                    <td className="align-middle text-center">
+                                                    <span className="text-secondary text-xs font-weight-bold">{admin.last_login_at}</span>
+                                                </td>
+                                                <td className="align-middle">
+                                                    <Button size="small" onClick={() => setEdit(s => ({ ...s, show: true, data: admin }))}
+                                                        variant="outlined" color='primary'>Edit</Button>
+                                                    {' '}
+                                                    <Button onClick={() => handleDelete(admin.id)} variant="outlined"  color='error'
+                                                        size="small">Delete</Button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                                    </tbody>
                                 </table>
                             </div>

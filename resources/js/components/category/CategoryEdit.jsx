@@ -62,7 +62,7 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
                         <Form.Control defaultValue={data.meta_title} name='meta_title' maxLength={150} className='mb-3' as="textarea" rows={3} placeholder="Meta Title" required />
 
                         <Stack className='mb-3'>
-                            <Autocompletion defaultValue={data?.parent?.name}
+                            <Autocompletion defaultValue={data?.parent}
                                 info={parent} name='Parent Category'
                                 httpClient={httpClient} setData={setParent} />
                         </Stack>

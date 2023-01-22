@@ -11,12 +11,14 @@ class ArticleRepository implements ArticleRepositoryInterface
 {
     public function getArticleById($id)
     {
-        return Article::with(['tags:id,name', 'categories:id,name', 'parent:id,title'])
+        return Article::orderBy('created_at', 'DESC')
+            ->with(['tags:id,name', 'categories:id,name', 'parent:id,title'])
             ->find($id);
     }
     public function getMyArticlesPaginate()
     {
-        return Article::select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+        return Article::orderBy('created_at', 'DESC')
+            ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
             ->paginate(5);
     }
     public function getMyArticles(Request $request)

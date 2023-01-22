@@ -1,10 +1,11 @@
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Pages from '../paginate';
 import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import Util from '../utility';
+import AddIcon from '@mui/icons-material/Add';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const MyArticles = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
@@ -51,7 +52,14 @@ const MyArticles = ({ httpClient }) => {
     }
 
      
-    if (isLoading || pageMutation.isLoading) return <b>Loading...</b>;
+    if (isLoading || pageMutation.isLoading) return (
+        <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading || pageMutation.isLoading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        );
 
     if (error) return 'An error has occurred: ' + error.message
 
@@ -62,8 +70,11 @@ const MyArticles = ({ httpClient }) => {
                     <div className="card mb-4">
                         <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Articles table</h6>
-                            <Button href='/admin/article/new' color='primary'
-                                variant="contained" size="small">New Article</Button>
+                            <Button
+                                href='/admin/article/new' color='primary'
+                                variant="outlined" size="small"
+                                endIcon={<AddIcon />}
+                            >New Article</Button>
                         </div>
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">
@@ -79,37 +90,37 @@ const MyArticles = ({ httpClient }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        {
-                                            data.data.data.map(
-                                                article => <tr key={article.id}>
-                                                    <td style={{ maxWidth: '150px'}}>
-                                                        <p className=''>{Util.ellipsis(article.title)}</p>
-                                                    </td>
-                                                     <td className="align-middle text-start" style={{ maxWidth: '150px'}}>
-                                                        <span className="text-secondary text-xs font-weight-bold">{Util.ellipsis(article.summary)}</span>
-                                                    </td>
-                                                    <td className="align-middle text-center text-sm">
-                                                        <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
-                                                    </td>
-                                                    <td className='align-middle text-start' style={{ maxWidth: '150px'}}>
-                                                        <p className="text-xs font-weight-bold mb-0">{Util.ellipsis(article.slug)}</p>
-                                                    </td>
-                                                    <td className='align-middle text-start' style={{ maxWidth: '150px' }}>
-                                                        <p className="text-xs font-weight-bold mb-0">{article.visit}</p>
-                                                    </td>
-                                                    <td className="align-middle">
-                                                        <Button size='small' variant="outlined"
-                                                            onClick={() => setEdit(s => ({ ...s, show: true, data: article }))}
-                                                            >Edit</Button>
-                                                        {' '}
-                                                        <Button variant="outlined" size='small' color='error'
-                                                            onClick={() => handleDelete(article.id)} 
-                                                        >Delete</Button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        }
-                                   </tbody>
+                                    {
+                                        data.data.data.map(
+                                            article => <tr key={article.id}>
+                                                <td style={{ maxWidth: '150px'}}>
+                                                    <p className=''>{Util.ellipsis(article.title)}</p>
+                                                </td>
+                                                    <td className="align-middle text-start" style={{ maxWidth: '150px'}}>
+                                                    <span className="text-secondary text-xs font-weight-bold">{Util.ellipsis(article.summary)}</span>
+                                                </td>
+                                                <td className="align-middle text-center text-sm">
+                                                    <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
+                                                </td>
+                                                <td className='align-middle text-start' style={{ maxWidth: '150px'}}>
+                                                    <p className="text-xs font-weight-bold mb-0">{Util.ellipsis(article.slug)}</p>
+                                                </td>
+                                                <td className='align-middle text-start' style={{ maxWidth: '150px' }}>
+                                                    <p className="text-xs font-weight-bold mb-0">{article.visit}</p>
+                                                </td>
+                                                <td className="align-middle">
+                                                    <Button size='small' variant="outlined"
+                                                        href={`/admin/article/edit/${article.id}`}
+                                                        >Edit</Button>
+                                                    {' '}
+                                                    <Button variant="outlined" size='small' color='error'
+                                                        onClick={() => handleDelete(article.id)} 
+                                                    >Delete</Button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
+                                </tbody>
                                 </table>
                             </div>
                             {/* pagination */}

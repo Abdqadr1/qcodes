@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import MuiAlert from '@mui/material/Alert';
+import { useNavigate } from 'react-router';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -31,18 +32,23 @@ const NewArticle = ({ httpClient }) => {
     const [content, setContent] = useState("");
     const [timeoutId, setTimeoutId] = useState(null);
     const [backdropOpen, setBackdropOpen] = useState(false);
+
+    const navigate = useNavigate();
     
 
     const { isLoading, mutate, data: response } =
         useMutation((formData) => httpClient.post(`/api/article/create`, formData), {
+            retry: false,
             onSuccess: (data) => {
-                setToast(s => ({ ...s, show: true, message: "Draft Saved!", severity: 'success' }));
-                window.history.replaceState({articleId: data.data}, '', `/admin/article/edit/${data.data}`);           
+                setToast(s => ({ ...s, show: true, message: "Saved!", severity: 'success' }));
+                window.history.replaceState({ articleId: data.data }, '', `/admin/article/edit/${data.data}`); 
+                setBackdropOpen(false);          
             },
             onError: error => {
                 const response = error?.response;
                 const message = response?.data?.message ?? "An error occurred";
                 setToast(s => ({ ...s, show: true, message, severity: 'error' }));
+                setBackdropOpen(false);          
             }
         });
 
@@ -51,6 +57,7 @@ const NewArticle = ({ httpClient }) => {
             onSuccess: () => {
                 setToast(s => ({ ...s, show: true, message: "Published!", severity: 'success' }));
                 setBackdropOpen(false);
+                navigate('/admin/articles');
             },
             onError: error => {
                 const response = error?.response;
@@ -103,6 +110,12 @@ const NewArticle = ({ httpClient }) => {
             )
         );
     }
+
+     const saveChanges = () => {
+        clearTimeout(timeoutId);
+        setBackdropOpen(true);
+        mutate(initFormData());
+    }
     
     const uploadBanner = e => {
         console.log(e.target.value);
@@ -121,8 +134,10 @@ const NewArticle = ({ httpClient }) => {
             setTags(s => ({ ...s, isError: true, errorMessage: 'Choose tags' }));
             return;
         }
+        
+        clearTimeout(timeoutId);
         setBackdropOpen(true);
-        publishMutate.mutate(formData);
+        publishMutate(initFormData());
     }
 
     return ( 
@@ -174,7 +189,12 @@ const NewArticle = ({ httpClient }) => {
                     <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
                     
                 </Stack>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={2}
+                    justifyContent="center"
+                    alignItems="center" my={3}>
+                    <Button disabled={isLoading || publishLoading} variant="contained"
+                        color="info" onClick={saveChanges}
+                    >Save Changes</Button>
                     <Button disabled={isLoading || publishLoading} variant="contained"
                         color="success" onClick={handlePublish}
                     >Publish</Button>
@@ -196,12 +216,12 @@ const NewArticle = ({ httpClient }) => {
                         {toast.message}
                     </Alert>
                 </Snackbar>
-                    <Backdrop
-                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                        open={backdropOpen}
-                    >
-                        <CircularProgress color="inherit" />
-                    </Backdrop>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={backdropOpen}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
             </Col>
         </Row>
      );

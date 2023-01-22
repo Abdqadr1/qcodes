@@ -38,6 +38,7 @@ Route::post('/admin/edit/{id}', [AdminController::class, 'editAdmin']);
 Route::post('/category/edit/{id}', [CategoryController::class, 'editCategory']);
 Route::post('/tag/edit/{id}', [TagController::class, 'editTag']);
 Route::post('/article/edit/{id}', [ArticleController::class, 'getArticleById']);
+Route::post('/article/unpublish/{id}', [ArticleController::class, 'unpublishArticle']);
 
 
 Route::post('/admin/create', [AdminController::class, 'createAdmin']);

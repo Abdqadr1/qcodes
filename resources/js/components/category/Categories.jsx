@@ -4,6 +4,9 @@ import Button from '@mui/material/Button';
 import React, { useState } from "react";
 import CategoryCreateModal from './CategoryCreate';
 import CategoryEditModal from './CategoryEdit';
+import AddIcon from '@mui/icons-material/Add';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Categories = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
@@ -54,7 +57,14 @@ const Categories = ({ httpClient }) => {
         setCreate(true);
     }
     
-    if (isLoading || pageMutation.isLoading) return <b>Loading...</b>;
+    if (isLoading || pageMutation.isLoading) return (
+        <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading || pageMutation.isLoading}
+            >
+                <CircularProgress color="inherit" />
+        </Backdrop>
+    );
 
     if (error) return 'An error has occurred: ' + error.message
 
@@ -66,7 +76,9 @@ const Categories = ({ httpClient }) => {
                         <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Categories</h6>
                             <Button onClick={showCreateModal} color='primary'
-                                variant="contained" size="small">New Category</Button>
+                                variant="contained" size="small"
+                                endIcon={<AddIcon />}
+                            >New Category</Button>
                         </div>
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">

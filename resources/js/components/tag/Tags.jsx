@@ -1,9 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Pages from '../paginate';
-import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
 import React, { useState } from "react";
 import TagEditModal from './TagEdit';
-import TagCreateModal from './TagCreate'
+import TagCreateModal from './TagCreate';
+import AddIcon from '@mui/icons-material/Add';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Tags = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
@@ -52,7 +55,14 @@ const Tags = ({ httpClient }) => {
         setCreate(true);
     }
     
-    if (isLoading || pageMutation.isLoading) return <b>Loading...</b>;
+    if (isLoading || pageMutation.isLoading) return (
+        <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading || pageMutation.isLoading}
+            >
+                <CircularProgress color="inherit" />
+        </Backdrop>
+    );
 
     if (error) return 'An error has occurred: ' + error.message
 
@@ -63,7 +73,10 @@ const Tags = ({ httpClient }) => {
                     <div className="card mb-4">
                         <div className="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6>Tags</h6>
-                            <Button onClick={showCreateModal} variant="primary" size="sm">New Tag</Button>
+                            <Button
+                                onClick={showCreateModal} color="primary" size="small"
+                                endIcon={<AddIcon />} variant="contained"
+                            >New Tag</Button>
                         </div>
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">
@@ -90,10 +103,14 @@ const Tags = ({ httpClient }) => {
                                                         <span className="">{tag.content}</span>
                                                     </td>
                                                     <td className="align-middle">
-                                                        <Button size="sm" onClick={() => setEdit(s => ({ ...s, show: true, data: tag }))}
-                                                            variant="secondary">Edit</Button>
+                                                        <Button
+                                                            color='primary' size="small"
+                                                            onClick={() => setEdit(s => ({ ...s, show: true, data: tag }))}
+                                                            variant="outlined">Edit</Button>
                                                         {' '}
-                                                        <Button onClick={()=>handleDelete(tag.id)} variant="danger" size="sm">Delete</Button>
+                                                        <Button
+                                                            color='error' onClick={() => handleDelete(tag.id)}
+                                                            variant="outlined" size="small">Delete</Button>
                                                     </td>
                                                 </tr>
                                             )
