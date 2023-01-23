@@ -12,6 +12,18 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Grid from '@mui/material/Grid';
 
 const theme = createTheme();
 
@@ -25,6 +37,10 @@ theme.typography.h3 = {
   },
 };
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const MyArticles = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
     const [keyword, setKeyword] = useState('');
@@ -37,7 +53,8 @@ const MyArticles = ({ httpClient }) => {
         }
     );
 
-    const pageMutation = useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
+    const { isLoading: pageFetching, error: pageError, mutate: pageMutate } =
+        useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
         onSuccess: data => {
             queryClient.setQueryData('articleData', data);
         },
@@ -48,7 +65,8 @@ const MyArticles = ({ httpClient }) => {
         }
     });
 
-     const deleteMutation = useMutation(id => httpClient.delete(`/api/article/delete/${id}`), {
+    const { isLoading: deleteFetching, error: deleteError, mutate: deleteMutate } =
+        useMutation(id => httpClient.delete(`/api/article/delete/${id}`), {
         onSuccess: (data, id) => {
             queryClient.setQueryData('articleData', oldData => {
                 const list = oldData.data.data;
@@ -66,7 +84,7 @@ const MyArticles = ({ httpClient }) => {
 
       const handleDelete = id => {
         if (confirm("Are you sure?")) {
-            deleteMutation.mutate(id);
+            deleteMutate(id);
         }
     }
 
@@ -75,7 +93,7 @@ const MyArticles = ({ httpClient }) => {
     }
 
      
-    if (isFetching || pageMutation.isLoading) return (
+    if (isFetching || pageFetching || deleteFetching) return (
         <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={true}
@@ -84,12 +102,31 @@ const MyArticles = ({ httpClient }) => {
             </Backdrop>
         );
 
-    if (error) return 'An error has occurred: ' + error.message
+     if (error || deleteError || pageError) {
+        const err = error ?? deleteError ?? pageError;
+        return (
+            <Snackbar
+                open={true}
+                autoHideDuration={2000}
+                anchorOrigin={
+                    {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                >
+                <Alert
+                    severity={'error'} sx={{ width: '100%' }}
+                >
+                    {err?.response?.data?.message ?? "An error occurred. Try again"}
+                </Alert>
+            </Snackbar>
+        )
+    }
 
     return ( 
          <div className='p-4'>
-            <div className="row">
-                <div className="col-12">
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
                     <Stack
                         direction="row"
                         spacing={2}
@@ -116,48 +153,51 @@ const MyArticles = ({ httpClient }) => {
                             >Clear</Button>
 
                     </Stack>
-                    <div className="card mb-4">
-                        <div className="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6>Articles table</h6>
-                            <Button
+                    <Card className="mb-4">
+                        <CardHeader className="px-4"
+                            action={
+                                <Button
                                 href='/admin/article/new' color='primary'
                                 variant="outlined" size="small"
                                 endIcon={<AddIcon />}
-                            >New Article</Button>
-                        </div>
-                        <div className="card-body px-0 pt-0 pb-2">
-                            <div className="table-responsive p-0">
-                                <table className="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Summary</th>
-                                        <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Published</th>
-                                        <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Slug</th>
-                                        <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Visit</th>
-                                        <th className="text-secondary opacity-7">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                >New Article</Button>
+                                }
+                            title="Articles table"
+                            subheader=""
+                        />
+                        <CardContent className="pb-2">
+                            <TableContainer>
+                                <Table aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Title</TableCell>
+                                        <TableCell>Summary</TableCell>
+                                        <TableCell>Published</TableCell>
+                                        <TableCell>Slug</TableCell>
+                                        <TableCell>Visit</TableCell>
+                                        <TableCell>Actions</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
                                     {
                                         data.data.data.map(
-                                            article => <tr key={article.id}>
-                                                <td style={{ maxWidth: '150px'}}>
+                                            article => <TableRow key={article.id}>
+                                                <TableCell style={{ maxWidth: '150px'}}>
                                                     <p className=''>{Util.ellipsis(article.title)}</p>
-                                                </td>
-                                                    <td className="align-middle text-start" style={{ maxWidth: '150px'}}>
+                                                </TableCell>
+                                                    <TableCell className="align-middle text-start" style={{ maxWidth: '150px'}}>
                                                     <span className="text-secondary text-xs font-weight-bold">{Util.ellipsis(article.summary)}</span>
-                                                </td>
-                                                <td className="align-middle text-center text-sm">
+                                                </TableCell>
+                                                <TableCell>
                                                     <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
-                                                </td>
-                                                <td className='align-middle text-start' style={{ maxWidth: '150px'}}>
-                                                    <p className="text-xs font-weight-bold mb-0">{Util.ellipsis(article.slug)}</p>
-                                                </td>
-                                                <td className='align-middle text-start' style={{ maxWidth: '150px' }}>
+                                                </TableCell>
+                                                <TableCell style={{ maxWidth: '150px'}}>
+                                                    <span>{Util.ellipsis(article.slug)}</span>
+                                                </TableCell>
+                                                <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
                                                     <p className="text-xs font-weight-bold mb-0">{article.visit}</p>
-                                                </td>
-                                                <td className="align-middle">
+                                                </TableCell>
+                                                <TableCell className="align-middle">
                                                     <Button size='small' variant="outlined"
                                                         href={`/admin/article/edit/${article.id}`}
                                                         >Edit</Button>
@@ -165,26 +205,23 @@ const MyArticles = ({ httpClient }) => {
                                                     <Button variant="outlined" size='small' color='error'
                                                         onClick={() => handleDelete(article.id)} 
                                                     >Delete</Button>
-                                                </td>
-                                            </tr>
+                                                </TableCell>
+                                            </TableRow>
                                         )
                                     }
-                                </tbody>
-                                </table>
-                            </div>
+                                </TableBody>
+                                </Table>
+                            </TableContainer>
                             {/* pagination */}
                             <Pages
-                                links={data.data.links} mutation={pageMutation}
-                                from={data.data.from} perPage={data.data.per_page}
-                                total={data.data.total} lastPage={data.data.last_page}
-                                firstPageUrl={data.data.first_page_url} lastPageUrl={data.data.last_page_url}
-                                prevPageUrl={data.data.prev_page_url} nextPageUrl={data.data.next_page_url}
+                                mutate={pageMutate} path={data.data.path}
+                                from={data.data.from} total={data.data.total} lastPage={data.data.last_page}
                                 to={data.data.to} currentPage={data.data.current_page}
                             />
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
         </div>
      );
 }

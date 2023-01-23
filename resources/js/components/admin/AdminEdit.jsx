@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import Alert from '@mui/material/Alert';
 import { useMutation, useQueryClient } from 'react-query';
 
 const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
+    const [alert, setAlert] = useState({message: "", show:false})
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
     const queryClient = useQueryClient();
 
@@ -20,9 +22,8 @@ const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
             handleClose();
         },
         onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
+            const message = error?.response?.data?.message ?? "An error occurred. Try again";
+            setAlert(s => ({ ...s, show: true, message }));
         }
     });
 
@@ -52,6 +53,11 @@ const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
+                        {
+                            (alert.show)
+                            ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
+                            : ''
+                        }
                         <Form.Control defaultValue={data?.first_name} name="first_name" className='mb-3' type="text" placeholder="First Name" required />
                         <Form.Control defaultValue={data?.last_name} name="last_name" className='mb-3' type="text" placeholder="Last Name" required />
                         <Form.Control defaultValue={data?.email} name="email" className='mb-3' type="email" placeholder="Enter email" required />

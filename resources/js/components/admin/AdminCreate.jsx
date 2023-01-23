@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import Alert from '@mui/material/Alert';
+
 import { useMutation, useQueryClient } from 'react-query';
 const AdminCreateModal = ({ httpClient, show, setCreate, roles }) => {
+    const [alert, setAlert] = useState({message: "", show:false})
     const handleClose = e => setCreate(false);
     const queryClient = useQueryClient();
+
     const { mutate, isLoading, } = useMutation(
         (form) => httpClient.post(`/api/admin/create`, form), {
         onSuccess: data => {
@@ -17,9 +21,8 @@ const AdminCreateModal = ({ httpClient, show, setCreate, roles }) => {
             handleClose();
         },
         onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
+            const message = error?.response?.data?.message ?? "An error occurred. Try again";
+            setAlert(s => ({ ...s, show: true, message }));
         }
     });
 
@@ -42,6 +45,12 @@ const AdminCreateModal = ({ httpClient, show, setCreate, roles }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
+                        {
+                            (alert.show)
+                            ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
+                            : ''
+                        }
+                        
                         <Form.Control name="first_name" className='mb-3' type="text" placeholder="First Name" required />
                         <Form.Control name="last_name" className='mb-3' type="text" placeholder="Last Name" required />
                         <Form.Control name="email" className='mb-3' type="email" placeholder="Enter email" required />

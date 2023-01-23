@@ -3,9 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useMutation, useQueryClient } from 'react-query';
+import Alert from '@mui/material/Alert';
 
 const TagEditModal = ({ edit, setEdit, httpClient }) => {
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
+    const [alert, setAlert] = useState({message: "", show:false})
     const queryClient = useQueryClient();
 
     const { mutate, isLoading, } = useMutation(
@@ -20,9 +22,8 @@ const TagEditModal = ({ edit, setEdit, httpClient }) => {
             handleClose();
         },
         onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
+            const message = error?.response?.data?.message ?? "An error occurred. Try again";
+            setAlert(s => ({ ...s, show: true, message }));
         }
     });
 
@@ -48,6 +49,11 @@ const TagEditModal = ({ edit, setEdit, httpClient }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
+                        {
+                            (alert.show)
+                            ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
+                            : ''
+                        }
                         <Form.Control defaultValue={data.name} name="name" className='mb-3' type="text" placeholder="Tag Name" required />
 
                         <Form.Control defaultValue={data.content} name='content' maxLength={100} className='mb-3' as="textarea" rows={3} placeholder="Content" required />

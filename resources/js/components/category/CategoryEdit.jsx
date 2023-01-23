@@ -5,10 +5,12 @@ import Form from 'react-bootstrap/Form';
 import { useMutation, useQueryClient } from 'react-query';
 import Autocompletion from '../article/Autocompletion';
 import Stack  from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 
 const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
     const data = edit.data;
     const [parent, setParent] = useState({isError: false, data: data?.parent?.id, errorMessage: ""});
+    const [alert, setAlert] = useState({message: "", show:false})
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
     const queryClient = useQueryClient();
 
@@ -24,9 +26,8 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
             handleClose();
         },
         onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
+            const message = error?.response?.data?.message ?? "An error occurred. Try again";
+            setAlert(s => ({ ...s, show: true, message }));
         }
     });
 
@@ -55,6 +56,11 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
+                        {
+                            (alert.show)
+                            ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
+                            : ''
+                        }
                         <Form.Control defaultValue={data.name} name="name" className='mb-3' type="text" placeholder="Category Name" required />
 
                         <Form.Control defaultValue={data.content} name='content' maxLength={100} className='mb-3' as="textarea" rows={3} placeholder="Content" required />

@@ -10,6 +10,7 @@ import NewArticle from './article/NewArticle';
 import EditArticle from './article/EditArticle';
 import Categories from './category/Categories';
 import Tags from './tag/Tags';
+import AdminLogin from './auth/Login';
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
                     <NavBar />
                     <Routes>
                         <Route path='/admin' element={<Admin httpClient={http} />} />
+                        <Route path='/admin/login' element={<AdminLogin httpClient={http} />} />
                         <Route path='/admin/categories' element={<Categories httpClient={http} />} />
                         <Route path='/admin/tags' element={<Tags httpClient={http} />} />
                         <Route path='/admin/articles' element={<MyArticles httpClient={http} />} />

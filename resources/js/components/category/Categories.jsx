@@ -13,6 +13,18 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Grid from '@mui/material/Grid';
 
 const theme = createTheme();
 
@@ -26,6 +38,10 @@ theme.typography.h3 = {
   },
 };
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Categories = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
     const [create, setCreate] = useState(false);
@@ -38,36 +54,28 @@ const Categories = ({ httpClient }) => {
         }
     );
 
-    const pageMutation = useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
-        onSuccess: data => {
-            queryClient.setQueryData('categoryData', data);
-        },
-        onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
-        }
-    });
+    const { isLoading: pageFetching, error: pageError, mutate:pageMutate } =
+        useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
+            onSuccess: data => {
+                queryClient.setQueryData('categoryData', data);
+            }
+        });
 
-    const deleteMutation = useMutation(id => httpClient.delete(`/api/category/delete/${id}`), {
-        onSuccess: (data, id) => {
-            queryClient.setQueryData('categoryData', oldData => {
-                const list = oldData.data.data;
-                const index = list.findIndex(l => l.id === id);
-                list.splice(index, 1);
-                return oldData;
-            });
-        },
-        onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
-        }
-    });
+    const { isLoading: deleteFetching, error: deleteError, mutate: deleteMutate } =
+        useMutation(id => httpClient.delete(`/api/category/delete/${id}`), {
+            onSuccess: (data, id) => {
+                queryClient.setQueryData('categoryData', oldData => {
+                    const list = oldData.data.data;
+                    const index = list.findIndex(l => l.id === id);
+                    list.splice(index, 1);
+                    return oldData;
+                });
+            }
+        });
 
     const handleDelete = id => {
         if (confirm("Are you sure?")) {
-            deleteMutation.mutate(id);
+            deleteMutate(id);
         }
     }
      const handleSearch = e => {
@@ -78,7 +86,7 @@ const Categories = ({ httpClient }) => {
         setCreate(true);
     }
     
-    if (isFetching || pageMutation.isLoading) return (
+    if (isFetching || pageFetching || deleteFetching ) return (
         <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={true}
@@ -87,12 +95,31 @@ const Categories = ({ httpClient }) => {
         </Backdrop>
     );
 
-    if (error) return 'An error has occurred: ' + error.message
+    if (error || deleteError || pageError) {
+        const err = error ?? deleteError ?? pageError;
+        return (
+            <Snackbar
+                open={true}
+                autoHideDuration={2000}
+                anchorOrigin={
+                    {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                >
+                <Alert
+                    severity={'error'} sx={{ width: '100%' }}
+                >
+                    {err?.response?.data?.message ?? "An error occurred. Try again"}
+                </Alert>
+            </Snackbar>
+        )
+    }
 
     return ( 
         <div className='p-4'>
-            <div className="row">
-                <div className="col-12">
+            <Grid container spacing={2}>
+                <Grid item xs={12} >
                     <Stack
                         direction="row"
                         spacing={2}
@@ -119,39 +146,42 @@ const Categories = ({ httpClient }) => {
                             >Clear</Button>
 
                     </Stack>
-                    <div className="card mb-4">
-                        <div className="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6>Categories</h6>
-                            <Button onClick={showCreateModal} color='primary'
-                                variant="contained" size="small"
-                                endIcon={<AddIcon />}
-                            >New Category</Button>
-                        </div>
-                        <div className="card-body px-0 pt-0 pb-2">
-                            <div className="table-responsive p-0">
-                                <table className="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Meta Title</th>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Content</th>
-                                        <th className="text-secondary opacity-7">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <Card className="mb-4">
+                        <CardHeader className="px-4"
+                            action={
+                                <Button onClick={showCreateModal} color='primary'
+                                    variant="contained" size="small"
+                                    endIcon={<AddIcon />}
+                                >New Category</Button>
+                                }
+                            title="Categories"
+                            subheader=""
+                        />
+                        <CardContent className="pb-2">
+                            <TableContainer>
+                                <Table aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Name</TableCell>
+                                        <TableCell>Meta Title</TableCell>
+                                        <TableCell>Content</TableCell>
+                                        <TableCell>Actions</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
                                         {
                                             data.data.data.map(
-                                                category => <tr key={category.id}>
-                                                    <td>
+                                                category => <TableRow key={category.id}>
+                                                    <TableCell>
                                                         <p>{ category.name }</p>
-                                                    </td>
-                                                    <td style={{ maxWidth: '150px'}}>
+                                                    </TableCell>
+                                                    <TableCell style={{ maxWidth: '150px'}}>
                                                         <p className="text-xs font-weight-bold mb-0">{category.meta_title}</p>
-                                                    </td>
-                                                    <td className="" style={{ maxWidth: '150px'}}>
+                                                    </TableCell>
+                                                    <TableCell className="" style={{ maxWidth: '150px'}}>
                                                         <span className="">{category.content}</span>
-                                                    </td>
-                                                    <td className="align-middle">
+                                                    </TableCell>
+                                                    <TableCell className="align-middle">
                                                         <Button size="small" color='primary'
                                                             onClick={() => setEdit(s => ({ ...s, show: true, data: category }))}
                                                             variant="outlined">Edit</Button>
@@ -159,26 +189,23 @@ const Categories = ({ httpClient }) => {
                                                         <Button color='error'
                                                             onClick={() => handleDelete(category.id)}
                                                             variant="outlined" size="small">Delete</Button>
-                                                    </td>
-                                                </tr>
+                                                    </TableCell>
+                                                </TableRow>
                                             )
                                         }
-                                   </tbody>
-                                </table>
-                            </div>
+                                   </TableBody>
+                                </Table>
+                            </TableContainer>
                             {/* pagination */}
                             <Pages
-                                links={data.data.links} mutation={pageMutation}
-                                from={data.data.from} perPage={data.data.per_page}
-                                total={data.data.total} lastPage={data.data.last_page}
-                                firstPageUrl={data.data.first_page_url} lastPageUrl={data.data.last_page_url}
-                                prevPageUrl={data.data.prev_page_url} nextPageUrl={data.data.next_page_url}
+                                mutate={pageMutate} path={data.data.path}
+                                from={data.data.from} total={data.data.total} lastPage={data.data.last_page}
                                 to={data.data.to} currentPage={data.data.current_page}
                             />
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
             <CategoryEditModal edit={edit} setEdit={setEdit} httpClient={httpClient} />
             <CategoryCreateModal show={create} setCreate={setCreate} httpClient={httpClient} />
         </div>
