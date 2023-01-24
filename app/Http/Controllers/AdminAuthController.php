@@ -48,6 +48,7 @@ class AdminAuthController extends Controller
             'enabled' => 1,
             fn ($query) => $query->whereNull('email_verified_at')
         ])) {
+            $request->session()->regenerate();
             return new JsonResponse($request->user('admin'), 200);
         }
 
