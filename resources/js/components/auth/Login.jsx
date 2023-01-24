@@ -19,16 +19,48 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import React, {useState} from 'react';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import Typography from '@mui/material/Typography';
 
 const AdminLogin = ({ httpClient }) => {
   const [showPassword, setShowPassword] = useState(false);
-    const [alert, setAlert] = useState({message: "", show:false})
+    const [alert, setAlert] = useState({ message: "", show: false });
+    const [errors, setErrors] = useState({});
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const queryClient = useQueryClient();
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+     event.preventDefault();
+    };
+
+    const { isLoading, mutate } =
+        useMutation(formData => httpClient.post('/api/admin/login', formData), {
+        onSuccess: data => {
+            queryClient.setQueryData('userData', data.data);
+        },
+        onError: error => {
+            const response = error?.response;
+            const message = response?.data?.message ?? "An error occurred";
+            const errors = response?.data?.errors;
+
+            if (errors)  setErrors({ ...errors });
+            else setAlert(s => ({ ...s, show: true, message }));
+        }
+    });
+
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        setErrors({});
+        setAlert(s => ({ ...s, show: false }));
+        const formData = new FormData(e.target);
+        console.log(formData);
+        mutate(formData);
+    }
+
+    
     return ( 
         <Container maxWidth="lg">
             <Grid container spacing={2}
@@ -37,6 +69,7 @@ const AdminLogin = ({ httpClient }) => {
                 >
                 <Grid item xs={12} md={6} >
                     <Box
+                        component={'form'}
                          sx={{
                             display: 'flex',
                             flexWrap: 'wrap',
@@ -46,6 +79,7 @@ const AdminLogin = ({ httpClient }) => {
                                 height: 'auto',
                             },
                         }}
+                        onSubmit={handleSubmit}
                     >
                         <Paper elevation={2} sx={{ padding: '4em 2em', textAlign: 'center', }}>
                             <h4 className='mb-3'>Admin Login</h4>
@@ -57,6 +91,7 @@ const AdminLogin = ({ httpClient }) => {
                             <FormControl sx={{ my: 1, width: '100%' }}  variant="outlined">
                                 <InputLabel htmlFor="input-with-icon-adornment">Email</InputLabel>
                                 <OutlinedInput
+                                    required name='email'
                                     id="input-with-icon-adornment"
                                     startAdornment={
                                         <InputAdornment position="start">
@@ -65,10 +100,12 @@ const AdminLogin = ({ httpClient }) => {
                                     }
                                     label="Email"
                                 />
+                                {(errors?.email) ? <FormHelperText error>errors.email[0]</FormHelperText> : ''}
                             </FormControl>
                             <FormControl sx={{ my: 1, width: '100%' }} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput
+                                    required name='password'
                                     id="outlined-adornment-password"
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
@@ -91,6 +128,7 @@ const AdminLogin = ({ httpClient }) => {
                                 alignItems="center"
                             >
                                 <Button
+                                    disabled={isLoading}
                                     type='submit' variant="contained" color='success'
                                     sx={{width: 150}}
                                 >LogIn</Button>
@@ -98,6 +136,9 @@ const AdminLogin = ({ httpClient }) => {
                                     Forgot Password?
                                 </Link>
                             </Stack>
+                            <Typography className='text-center mt-5 fs-6'>
+                                Don't have an account. <Link color={'warning'} href="/admin/signup" underline="none">Sign Up</Link>
+                            </Typography>
                         </Paper>  
                     </Box>
                 </Grid>

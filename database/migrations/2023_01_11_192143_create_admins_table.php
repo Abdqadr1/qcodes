@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('mobile');
-            $table->tinyText('bio');
+            $table->tinyText('bio')->default('');
+            $table->string('street_address', 150);
+            $table->string('state', 100);
+            $table->string('country', 100);
             $table->boolean('enabled')->default(true);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

@@ -11,6 +11,7 @@ import EditArticle from './article/EditArticle';
 import Categories from './category/Categories';
 import Tags from './tag/Tags';
 import AdminLogin from './auth/Login';
+import AdminRegistration from './auth/Registration';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
                     <Routes>
                         <Route path='/admin' element={<Admin httpClient={http} />} />
                         <Route path='/admin/login' element={<AdminLogin httpClient={http} />} />
+                        <Route path='/admin/signup' element={<AdminRegistration httpClient={http} />} />
                         <Route path='/admin/categories' element={<Categories httpClient={http} />} />
                         <Route path='/admin/tags' element={<Tags httpClient={http} />} />
                         <Route path='/admin/articles' element={<MyArticles httpClient={http} />} />

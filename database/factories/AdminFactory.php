@@ -24,6 +24,9 @@ class AdminFactory extends Factory
             'email' => fake()->email(),
             'enabled' => fake()->boolean(),
             'last_login_at' => fake()->date(),
+            'street_address' => fake()->text(100),
+            'state' => fake()->text(100),
+            'country' => fake()->text(100),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ];
     }

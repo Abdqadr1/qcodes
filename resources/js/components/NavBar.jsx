@@ -24,6 +24,8 @@ const NavBar = () => {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <Nav.Link href="/admin/login">Login</Nav.Link>
+                  <Nav.Link href="/admin/signup">Sign Up</Nav.Link>
                   <Nav.Link href="/admin">Admins</Nav.Link>
                   <Nav.Link href="/admin/categories">Categories</Nav.Link>
                   <Nav.Link href="/admin/tags">Tags</Nav.Link>
