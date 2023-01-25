@@ -4,11 +4,14 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Alert from '@mui/material/Alert';
 import { useMutation, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router';
+import Util from '../utility';
 
 const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
     const [alert, setAlert] = useState({message: "", show:false})
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const { mutate, isLoading, } = useMutation(
         (inputs) => httpClient.post(`/api/admin/edit/${inputs[0]}`, inputs[1]), {
@@ -22,7 +25,9 @@ const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
             handleClose();
         },
         onError: error => {
-            const message = error?.response?.data?.message ?? "An error occurred. Try again";
+            const response = error?.response;
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
             setAlert(s => ({ ...s, show: true, message }));
         }
     });

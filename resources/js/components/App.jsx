@@ -12,6 +12,7 @@ import Categories from './category/Categories';
 import Tags from './tag/Tags';
 import AdminLogin from './auth/Login';
 import AdminRegistration from './auth/Registration';
+import Profile from './auth/Profile';
 
 function App() {
 
@@ -34,11 +35,12 @@ function App() {
         <BrowserRouter>
             <div>
                 <QueryClientProvider client={queryClient}>
-                    <NavBar />
+                    <NavBar httpClient={http} />
                     <Routes>
                         <Route path='/admin' element={<Admin httpClient={http} />} />
                         <Route path='/admin/login' element={<AdminLogin httpClient={http} />} />
                         <Route path='/admin/signup' element={<AdminRegistration httpClient={http} />} />
+                        <Route path='/admin/profile' element={<Profile httpClient={http} />} />
                         <Route path='/admin/categories' element={<Categories httpClient={http} />} />
                         <Route path='/admin/tags' element={<Tags httpClient={http} />} />
                         <Route path='/admin/articles' element={<MyArticles httpClient={http} />} />

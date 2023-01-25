@@ -26,6 +26,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router';
+import Util from '../utility';
 
 const theme = createTheme();
 
@@ -50,29 +52,34 @@ const Admin = ({ httpClient }) => {
     const [create, setCreate] = useState(false);
 
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const { error, data, refetch, isFetching } = useQuery('adminData', () =>
         httpClient.get(`/api/admin/all?keyword=${keyword}`),{ 
-            refetchOnWindowFocus: false 
+            refetchOnWindowFocus: false,
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+            }  
         }
     );
 
     const { isLoading:roleLoading, error:roleError, data:roleData } = useQuery('roleData', () =>
         httpClient.get('/api/admin/roles'),{ 
-            refetchOnWindowFocus: false 
+            refetchOnWindowFocus: false,
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+            } 
         }
     );
 
     const { isLoading: pageFetching, error: pageError, mutate:pageMutate } =
-        useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
+        useMutation(url => httpClient.get(`${url}g&keyword=${keyword}`), {
         onSuccess: data => {
             queryClient.setQueryData('adminData', data);
         },
         onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
-        }
+            Util.checkAuthError(error?.response?.status, navigate);
+        } 
     });
 
     const { isLoading: deleteFetching, error: deleteError, mutate: deleteMutate } =
@@ -86,10 +93,8 @@ const Admin = ({ httpClient }) => {
             });
         },
         onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
-        }
+            Util.checkAuthError(error?.response?.status, navigate);
+        } 
     });
 
     const handleSearch = e => {

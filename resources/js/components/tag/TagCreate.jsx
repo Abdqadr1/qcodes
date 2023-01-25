@@ -4,12 +4,16 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useMutation, useQueryClient } from 'react-query';
 import Alert from '@mui/material/Alert';
+import Util from '../utility';
+import { useNavigate } from 'react-router';
 
 
 const TagCreateModal = ({ httpClient, show, setCreate }) => {
     const [alert, setAlert] = useState({message: "", show:false})
     const handleClose = e => setCreate(false);
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
+
     const { mutate, isLoading, } = useMutation(
         (form) => httpClient.post(`/api/tag/create`, form), {
         onSuccess: data => {
@@ -21,7 +25,9 @@ const TagCreateModal = ({ httpClient, show, setCreate }) => {
             handleClose();
         },
         onError: error => {
-            const message = error?.response?.data?.message ?? "An error occurred. Try again";
+            const response = error?.response;
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
             setAlert(s => ({ ...s, show: true, message }));
         }
     });

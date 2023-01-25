@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import Autocompletion from '../article/Autocompletion';
 import Stack  from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
+import Util from '../utility';
+import { useNavigate } from 'react-router';
 
 const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
     const data = edit.data;
@@ -13,6 +15,7 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
     const [alert, setAlert] = useState({message: "", show:false})
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const { mutate, isLoading, } = useMutation(
         (inputs) => httpClient.post(`/api/category/edit/${inputs[0]}`, inputs[1]), {
@@ -26,7 +29,9 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
             handleClose();
         },
         onError: error => {
-            const message = error?.response?.data?.message ?? "An error occurred. Try again";
+            const response = error?.response;
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
             setAlert(s => ({ ...s, show: true, message }));
         }
     });

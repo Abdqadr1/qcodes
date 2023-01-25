@@ -25,6 +25,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router';
+import Util from '../utility';
 
 const theme = createTheme();
 
@@ -47,17 +49,24 @@ const Tags = ({ httpClient }) => {
     const [create, setCreate] = useState(false);
     const [keyword, setKeyword] = useState('');
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const { isFetching, error, data, refetch } = useQuery('tagData', () =>
         httpClient.get(`/api/tag/all?keyword=${keyword}`),{ 
-            refetchOnWindowFocus: false 
+            refetchOnWindowFocus: false,
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+            } 
         }
     );
     const { isLoading: pageFetching, error: pageError, mutate:pageMutate } =
         useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
             onSuccess: data => {
                 queryClient.setQueryData('tagData', data);
-            }
+            },
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+            } 
         });
 
     const { isLoading: deleteFetching, error: deleteError, mutate: deleteMutate } =
@@ -69,7 +78,10 @@ const Tags = ({ httpClient }) => {
                     list.splice(index, 1);
                     return oldData;
                 });
-            }
+            },
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+            } 
         });
 
     const handleDelete = id => {

@@ -3,6 +3,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useQuery, useMutation } from 'react-query';
+import { useNavigate } from 'react-router';
+import Util from '../utility';
 
 export default function Autocompletion({ name, httpClient, setData, info, defaultValue }) {
   const isMultiple = !name.includes('Parent');
@@ -11,6 +13,7 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
   const [inputValue, setInputValue] = React.useState('');
   const [timeoutId, setTimeoutId] = React.useState(null);
   const [defValue, setDefValue] = React.useState(isMultiple ? [] : { name: "", id: null });
+  const navigate = useNavigate();
   const links = {
     categories: '/api/c/category/all',
     'parent category': '/api/c/category/all',
@@ -24,7 +27,7 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
     setDefValue(defaultValue ? defaultValue : info?.data)
   }, [info]);
 
-  const { isLoading, data: response, mutate } =
+  const { isLoading, mutate } =
     useMutation(({ url, keyword }) => httpClient.get(`${url}?keyword=${keyword}`), {
           refetchOnWindowFocus: false ,
         onSuccess: (data) => {
@@ -32,8 +35,8 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
         },
         onError: error => {
             const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
         }
     });
 

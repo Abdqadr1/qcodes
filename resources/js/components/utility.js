@@ -3,20 +3,16 @@ export default class Util {
         return text.substring(0, len) + '...';
     }
 
-    static getSelectionText() {
-        var text = "";
-        if (window.getSelection) {
-            text = window.getSelection().toString();
-        } else if (document.selection && document.selection.type != "Control") {
-            text = document.selection.createRange().text;
-        }
-        return text;
-    }
     static listFormData(data, formData){
         for (const key of Object.keys(data)) {
             console.log(key, data[key]);
             formData.set(key, data[key]);
         }
+    }
+
+    static checkAuthError(status, navigate) {
+        if (status && navigate && (status === 401 || status === 419))
+            navigate('/admin/login');
     }
 
     static useThrottle (cb, delay) {

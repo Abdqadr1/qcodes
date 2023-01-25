@@ -1,4 +1,5 @@
 
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -9,33 +10,57 @@ import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import React, {useState} from 'react';
-import { useMutation } from 'react-query';
 import Typography from '@mui/material/Typography';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import Zoom from '@mui/material/Zoom';
+import Util from '../utility';
+import { useNavigate } from 'react-router';
 
-const AdminRegistration = ({ httpClient }) => {
-    const [alert, setAlert] = useState({ message: "", show: false });
+const Profile = ({ httpClient }) => {
+    const [alert, setAlert] = useState({ message: "", show: false, severity: "error" });
+    const [userData, setUserData] = useState({});
     const [errors, setErrors] = useState({});
-    const [registered, setRegistered] = useState(false);
 
+    const queryClient = useQueryClient();
+    const navigate = useNavigate
 
+     const { isLoading, error } = useQuery('getAdminUser', () =>
+        httpClient.get('/api/admin'),{ 
+            refetchOnWindowFocus: false,
+            onSuccess: data => {
+                queryClient.setQueryData('userData', data.data);
+                setUserData({...data.data});
+            },
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+            } 
+        }
+    );
 
-    const { isLoading, mutate } =
-        useMutation(formData => httpClient.post('/api/admin/signup', formData), {
-        onSuccess: () => {
-            setRegistered(true);
+    const handleInput = e => {
+        setUserData(s => ({
+            ...s,
+            [e.target.name]: e.target.value
+        }));
+    }
+
+    const { isLoading: updateLoading, mutate } =
+        useMutation(formData => httpClient.post('/api/admin/update', formData), {
+        onSuccess: (data) => {
+            queryClient.setQueryData('userData', data.data);
+                setAlert(s => ({ ...s, show: true, message: "Account Updated!", severity:'success'}))
         },
         onError: error => {
             const response = error?.response;
+            Util.checkAuthError(response?.status, navigate);
+
             const message = response?.data?.message ?? "An error occurred";
             const errors = response?.data?.errors;
 
             if (errors)  setErrors({ ...errors });
-            else setAlert(s => ({ ...s, show: true, message }));
+            else setAlert(s => ({ ...s, show: true, message, severity: 'error' }));
         }
     });
-
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -45,29 +70,6 @@ const AdminRegistration = ({ httpClient }) => {
         mutate(formData);
     }
 
-    if (registered) {
-        return (
-            <Container maxWidth="lg">
-                <Grid container spacing={2}
-                    justifyContent="center"
-                    alignItems="center" sx={{height: '100vh'}}
-                >
-                    <Grid item xs={12} md={6} >
-                        <Paper elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
-                            <Typography variant="h5" display="block" gutterBottom>
-                                Verify Your Email Address. Email Has Been Set <br />
-                                <Zoom in style={{ transitionDelay: '500ms' }}>
-                                <TaskAltIcon sx={{mt: 4, fontSize: '3rem', color: 'success.dark'}}/>
-                                </Zoom>
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Container>
-        )
-    }
-
-    
     return ( 
         <Container maxWidth="lg">
             <Grid container spacing={2}
@@ -93,12 +95,11 @@ const AdminRegistration = ({ httpClient }) => {
                                 justifyContent="space-between"
                                 alignItems="center"
                             >
-                                <h4 className='mb-3'>Admin Registration</h4>
-                                <Link color={'warning'} href="/admin/login" underline="none">LogIn</Link>
+                                <h4 className='mb-3'>Account Information</h4>
                             </Stack>
                             {
                                 (alert.show)
-                                ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
+                                ? <Alert severity={alert.severity} className='mb-3' >{alert.message}</Alert>
                                 : ''
                             }
                             <Grid
@@ -114,6 +115,8 @@ const AdminRegistration = ({ httpClient }) => {
                                         required name='first_name'
                                         id="outlined-required"
                                         label="First Name"
+                                        value={userData?.first_name ?? ''}
+                                        onChange={handleInput}
                                         helperText={(errors?.first_name) ? errors.first_name[0] : ''}
                                         error={(errors?.first_name)}
                                     />
@@ -124,6 +127,8 @@ const AdminRegistration = ({ httpClient }) => {
                                         required name='last_name'
                                         id="outlined-required"
                                         label="Last Name"
+                                        value={userData?.last_name ?? ""}
+                                        onChange={handleInput}
                                         helperText={(errors?.last_name) ? errors.last_name[0] : ''}
                                         error={(errors?.last_name)}
                                     />
@@ -132,9 +137,11 @@ const AdminRegistration = ({ httpClient }) => {
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name='email'
-                                        type={'email'}
+                                        type={'email'} disabled
                                         id="outlined-required"
                                         label="Email Address"
+                                        value={userData?.email ?? ""}
+                                        onChange={handleInput}
                                         helperText={(errors?.email) ? errors.email[0] : ''}
                                         error={(errors?.email)}
                                     />
@@ -145,6 +152,8 @@ const AdminRegistration = ({ httpClient }) => {
                                         required name='mobile' type={'tel'}
                                         id="outlined-required"
                                         label="Mobile No"
+                                        value={userData?.mobile ?? ""}
+                                        onChange={handleInput}
                                         helperText={(errors?.mobile) ? errors.mobile[0] : ''}
                                         error={(errors?.mobile)}
                                     />
@@ -154,11 +163,13 @@ const AdminRegistration = ({ httpClient }) => {
                                     <TextField
                                         sx={{ width: '100%' }}                       
                                         multiline
-                                        rows={2} maxRows={2}
+                                        rows={2}
                                         required name='street_address'
                                         id="outlined-required"
                                         minLength={150}
                                         label="Street Address"
+                                        value={userData?.street_address ?? ""}
+                                        onChange={handleInput}
                                         helperText={(errors?.street_address) ? errors.street_address[0] : ''}
                                         error={(errors?.street_address)}
                                     />
@@ -169,6 +180,8 @@ const AdminRegistration = ({ httpClient }) => {
                                         required name='state'
                                         id="outlined-required"
                                         label="State"
+                                        value={userData?.state ?? ""}
+                                        onChange={handleInput}
                                         helperText={(errors?.state) ? errors.state[0] : ''}
                                         error={(errors?.state)}
                                     />
@@ -179,31 +192,12 @@ const AdminRegistration = ({ httpClient }) => {
                                         required name='country'
                                         id="outlined-required"
                                         label="Country"
+                                        value={userData?.country ?? ""}
+                                        onChange={handleInput}
                                         helperText={(errors?.country) ? errors.country[0] : ''}
                                         error={(errors?.country)}
                                     />
                                 </Grid>
-                                <Grid item xs={6}> 
-                                    <TextField
-                                        sx={{width: '100%'}}
-                                        required name="password"
-                                        id="outlined-required"
-                                        label="Password" type={'password'}
-                                        helperText={(errors?.password) ? errors.password[0] : ''}
-                                        error={(errors?.password)}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}> 
-                                    <TextField
-                                        sx={{width: '100%'}}
-                                        required name="password_confirmation"
-                                        id="outlined-required"
-                                        label="Confirm Password" type={'password'}
-                                        helperText={(errors?.password_confirmation) ? errors.password_confirmation[0] : ''}
-                                        error={(errors?.password_confirmation)}
-                                    />
-                                </Grid>
-
                             </Grid>
 
                             <Stack direction="row" spacing={2} mt={3}
@@ -211,20 +205,17 @@ const AdminRegistration = ({ httpClient }) => {
                                 alignItems="center"
                             >
                                 <Button
-                                    disabled={isLoading}
+                                    disabled={isLoading || updateLoading}
                                     type='submit' variant="contained" color='success'
                                     sx={{width: 150}}
-                                >Sign Up</Button>
-                                <Link href="#" underline="none">
-                                    Forgot Password?
-                                </Link>
+                                >Save</Button>
                             </Stack>
                         </Paper>  
                     </Box>
                 </Grid>
             </Grid>
         </Container>
-     );
+    );
 }
  
-export default AdminRegistration;
+export default Profile;

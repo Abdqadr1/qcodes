@@ -24,6 +24,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router';
 
 const theme = createTheme();
 
@@ -42,14 +43,17 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const MyArticles = ({ httpClient }) => {
-    const [edit, setEdit] = useState({ show: false, data: {} });
     const [keyword, setKeyword] = useState('');
     
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const { isFetching, error, data, refetch } = useQuery('articleData', () =>
         httpClient.get(`/api/article/all?keyword=${keyword}`),{ 
-            refetchOnWindowFocus: false 
+            refetchOnWindowFocus: false,
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+            } 
         }
     );
 
@@ -60,8 +64,8 @@ const MyArticles = ({ httpClient }) => {
         },
         onError: error => {
             const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
         }
     });
 
@@ -77,8 +81,8 @@ const MyArticles = ({ httpClient }) => {
         },
         onError: error => {
             const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            console.info(message);
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
         }
      });
 

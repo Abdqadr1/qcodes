@@ -29,12 +29,16 @@ class AdminRepository implements AdminRepositoryInterface
     public function updateAdmin($id, array $details)
     {
         Admin::whereId($id)->update($details);
-        return Admin::find($id);
+        return $this->getAdminById($id);
     }
 
     public function getAdminById($id)
     {
-        return Admin::findOrFail($id);
+        return Admin::select([
+            'id', 'first_name', 'last_name', 'bio', 'mobile', 'street_address',
+            'state', 'country', 'enabled', 'email', 'last_login_at'
+        ])
+            ->findOrFail($id);
     }
 
     public function deleteAdmin($id)

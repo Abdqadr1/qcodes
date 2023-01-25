@@ -46,9 +46,10 @@ const NewArticle = ({ httpClient }) => {
             },
             onError: error => {
                 const response = error?.response;
+                Util.checkAuthError(response?.status, navigate);
                 const message = response?.data?.message ?? "An error occurred";
                 setToast(s => ({ ...s, show: true, message, severity: 'error' }));
-                setBackdropOpen(false);          
+                setBackdropOpen(false);       
             }
         });
 
@@ -61,6 +62,7 @@ const NewArticle = ({ httpClient }) => {
             },
             onError: error => {
                 const response = error?.response;
+                Util.checkAuthError(response?.status, navigate);
                 const message = response?.data?.message ?? "An error occurred";
                 setToast(s => ({ ...s, show: true, message, severity: 'error' }));
                 setBackdropOpen(false);

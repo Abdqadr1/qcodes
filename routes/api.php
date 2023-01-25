@@ -19,40 +19,47 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('/admin/signup', [AdminAuthController::class, 'register']);
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
-Route::get('/admin/all', [AdminController::class, 'getAllAdmin']);
-Route::get('/article/all', [ArticleController::class, 'getMyArticlesPaginate']);
-Route::get('/c/article/all', [ArticleController::class, 'getMyArticles']);
-Route::get('/category/all', [CategoryController::class, 'getAllCategoriesPaginate']);
-Route::get('/c/category/all', [CategoryController::class, 'getAllCategories']);
-Route::get('/tag/all', [TagController::class, 'getAllTagsPaginate']);
-Route::get('/c/tag/all', [TagController::class, 'getAllTags']);
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/admin', function (Request $request) {
+        return $request->user('admin');
+    });
+
+    Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
+
+    Route::post('/admin/update', [AdminAuthController::class, 'update']);
+    Route::get('/admin/all', [AdminController::class, 'getAllAdmin']);
+    Route::get('/article/all', [ArticleController::class, 'getMyArticlesPaginate']);
+    Route::get('/c/article/all', [ArticleController::class, 'getMyArticles']);
+    Route::get('/category/all', [CategoryController::class, 'getAllCategoriesPaginate']);
+    Route::get('/c/category/all', [CategoryController::class, 'getAllCategories']);
+    Route::get('/tag/all', [TagController::class, 'getAllTagsPaginate']);
+    Route::get('/c/tag/all', [TagController::class, 'getAllTags']);
 
 
-Route::get('/admin/roles', [AdminController::class, 'getAllRoles']);
+    Route::get('/admin/roles', [AdminController::class, 'getAllRoles']);
 
 
-Route::post('/admin/edit/{id}', [AdminController::class, 'editAdmin']);
-Route::post('/category/edit/{id}', [CategoryController::class, 'editCategory']);
-Route::post('/tag/edit/{id}', [TagController::class, 'editTag']);
-Route::post('/article/edit/{id}', [ArticleController::class, 'getArticleById']);
-Route::post('/article/unpublish/{id}', [ArticleController::class, 'unpublishArticle']);
+    Route::post('/admin/edit/{id}', [AdminController::class, 'editAdmin']);
+    Route::post('/category/edit/{id}', [CategoryController::class, 'editCategory']);
+    Route::post('/tag/edit/{id}', [TagController::class, 'editTag']);
+    Route::post('/article/edit/{id}', [ArticleController::class, 'getArticleById']);
+    Route::post('/article/unpublish/{id}', [ArticleController::class, 'unpublishArticle']);
 
 
-Route::post('/admin/create', [AdminController::class, 'createAdmin']);
-Route::post('/article/create', [ArticleController::class, 'createArticle']);
-Route::post('/article/publish', [ArticleController::class, 'publishArticle']);
-Route::post('/category/create', [CategoryController::class, 'createCategory']);
-Route::post('/tag/create', [TagController::class, 'createTag']);
+    Route::post('/admin/create', [AdminController::class, 'createAdmin']);
+    Route::post('/article/create', [ArticleController::class, 'createArticle']);
+    Route::post('/article/publish', [ArticleController::class, 'publishArticle']);
+    Route::post('/category/create', [CategoryController::class, 'createCategory']);
+    Route::post('/tag/create', [TagController::class, 'createTag']);
 
 
-Route::delete('/admin/delete/{id}', [AdminController::class, 'deleteAdmin']);
-Route::delete('/article/delete/{id}', [ArticleController::class, 'deleteArticle']);
-Route::delete('/category/delete/{id}', [CategoryController::class, 'deleteCategory']);
-Route::delete('/tag/delete/{id}', [TagController::class, 'deleteTag']);
+    Route::delete('/admin/delete/{id}', [AdminController::class, 'deleteAdmin']);
+    Route::delete('/article/delete/{id}', [ArticleController::class, 'deleteArticle']);
+    Route::delete('/category/delete/{id}', [CategoryController::class, 'deleteCategory']);
+    Route::delete('/tag/delete/{id}', [TagController::class, 'deleteTag']);
+});

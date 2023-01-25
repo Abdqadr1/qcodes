@@ -7,8 +7,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -21,6 +19,10 @@ import Alert from '@mui/material/Alert';
 import React, {useState} from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import { useNavigate } from 'react-router';
 
 const AdminLogin = ({ httpClient }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +30,7 @@ const AdminLogin = ({ httpClient }) => {
     const [errors, setErrors] = useState({});
 
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -39,6 +42,7 @@ const AdminLogin = ({ httpClient }) => {
         useMutation(formData => httpClient.post('/api/admin/login', formData), {
         onSuccess: data => {
             queryClient.setQueryData('userData', data.data);
+            navigate('/admin/profile');
         },
         onError: error => {
             const response = error?.response;
@@ -56,7 +60,6 @@ const AdminLogin = ({ httpClient }) => {
         setErrors({});
         setAlert(s => ({ ...s, show: false }));
         const formData = new FormData(e.target);
-        console.log(formData);
         mutate(formData);
     }
 
@@ -100,7 +103,7 @@ const AdminLogin = ({ httpClient }) => {
                                     }
                                     label="Email"
                                 />
-                                {(errors?.email) ? <FormHelperText error>errors.email[0]</FormHelperText> : ''}
+                                {(errors?.email) ? <FormHelperText error>{errors.email[0]}</FormHelperText> : ''}
                             </FormControl>
                             <FormControl sx={{ my: 1, width: '100%' }} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -123,6 +126,14 @@ const AdminLogin = ({ httpClient }) => {
                                     label="Password"
                                 />
                             </FormControl>
+            
+                            <FormGroup>
+                                <FormControlLabel
+                                    sx={{ fontSize: '10px', }}
+                                    control={<Checkbox name='remember' size="small" />}
+                                    label={<Typography variant="body2" color="textSecondary">Remember me?</Typography>} 
+                                />
+                            </FormGroup>
                             <Stack direction="row" spacing={2} mt={3}
                                 justifyContent="space-between"
                                 alignItems="center"

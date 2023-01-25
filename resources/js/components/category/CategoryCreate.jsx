@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import Autocompletion from '../article/Autocompletion';
 import Stack  from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router';
+import Util from '../utility';
 
 
 const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
@@ -13,6 +15,7 @@ const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
     const handleClose = e => setCreate(false);
     const [parent, setParent] = useState({isError: false, data:null, errorMessage: ""});
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
     
     const { mutate, isLoading, } = useMutation(
         (form) => httpClient.post(`/api/category/create`, form), {
@@ -25,7 +28,9 @@ const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
             handleClose();
         },
         onError: error => {
-            const message = error?.response?.data?.message ?? "An error occurred. Try again";
+            const response = error?.response;
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
             setAlert(s => ({ ...s, show: true, message }));
         }
     });

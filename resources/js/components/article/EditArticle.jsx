@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from '@mui/material/Button';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import React, { useRef, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Blog from '../Blog';
 import Util from '../utility';
 import ArticleEditor from './ArticleEditor';
@@ -37,6 +37,8 @@ const EditArticle = ({ httpClient }) => {
     const [backdropOpen, setBackdropOpen] = useState(false);
     const [isPublished, setPublished] = useState(false);
 
+    const navigate = useNavigate();
+
     const { isLoading } = useQuery('articleData', () =>
         httpClient.post(`/api/article/edit/${id}`),
         {
@@ -52,8 +54,8 @@ const EditArticle = ({ httpClient }) => {
                 setPublished(is_published);
             },
             onError: error => {
-                console.error(error);
                 const response = error?.response;
+                Util.checkAuthError(response?.status, navigate);
                 const message = response?.data?.message ?? "An error occurred";
                 setToast(s => ({ ...s, show: true, message, severity: 'error' }));
             }
@@ -69,6 +71,7 @@ const EditArticle = ({ httpClient }) => {
             },
             onError: error => {
                 const response = error?.response;
+                Util.checkAuthError(response?.status, navigate);
                 const message = response?.data?.message ?? "An error occurred";
                 setToast(s => ({ ...s, show: true, message, severity: 'error' }));
                 setBackdropOpen(false);
@@ -90,6 +93,7 @@ const EditArticle = ({ httpClient }) => {
             },
             onError: error => {
                 const response = error?.response;
+                Util.checkAuthError(response?.status, navigate);
                 const message = response?.data?.message ?? "An error occurred";
                 setToast(s => ({ ...s, show: true, message, severity: 'error' }));
                 setBackdropOpen(false);
