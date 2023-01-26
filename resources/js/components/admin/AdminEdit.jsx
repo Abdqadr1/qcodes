@@ -8,7 +8,9 @@ import { useNavigate } from 'react-router';
 import Util from '../utility';
 
 const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
-    const [alert, setAlert] = useState({message: "", show:false})
+    const [alert, setAlert] = useState({ message: "", show: false });
+    const [errors, setErrors] = useState({});
+    
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -28,13 +30,18 @@ const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
             const response = error?.response;
             Util.checkAuthError(response?.status, navigate);
             const message = response?.data?.message ?? "An error occurred. Try again";
-            setAlert(s => ({ ...s, show: true, message }));
+            
+            const errors = response?.data?.errors;
+            if (errors)  setErrors({ ...errors });
+            else setAlert(s => ({ ...s, show: true, message, severity: 'error' }));
         }
     });
 
     const data = edit.data;
 
     const handleSubmit = e => {
+        setErrors({});
+        setAlert(s => ({ ...s, show: false }));
         e.preventDefault();
         const target = e.target;
         mutate([data?.id, new FormData(target)]);
@@ -63,18 +70,100 @@ const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
                             ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
                             : ''
                         }
-                        <Form.Control defaultValue={data?.first_name} name="first_name" className='mb-3' type="text" placeholder="First Name" required />
-                        <Form.Control defaultValue={data?.last_name} name="last_name" className='mb-3' type="text" placeholder="Last Name" required />
-                        <Form.Control defaultValue={data?.email} name="email" className='mb-3' type="email" placeholder="Enter email" required />
-                        <Form.Control defaultValue={data?.mobile} name="mobile" className='mb-3' type="tel" placeholder="Phone Number" required />
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data?.first_name} name="first_name" type="text"
+                                placeholder="First Name" required />
+                             {
+                                (errors?.first_name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.first_name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data?.last_name} name="last_name" type="text" 
+                                placeholder="Last Name" required />
+                             {
+                                (errors?.last_name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.last_name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data?.email} name="email" type="email" 
+                                placeholder="Enter email" required />
+                             {
+                                (errors?.email)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.email[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data?.mobile} name="mobile" type="tel" 
+                                placeholder="Phone Number" required />
+                             {
+                                (errors?.mobile)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.mobile[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                         <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data?.street_address} name='street_address' as="textarea" rows={2}
+                                placeholder="Street Address" required />
+                             {
+                                (errors?.street_address)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.street_address[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data?.state} name="state" placeholder="State" required />
+                             {
+                                (errors?.state)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.state[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data?.country} name="country" placeholder="Country" required />
+                             {
+                                (errors?.country)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.country[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+                        
 
                         <Form.Check name='enabled' className='mb-3'
                             type='checkbox'
                             label="Enabled"
                             defaultChecked={data?.enabled}
                         />
-
-                        <Form.Control defaultValue={data?.bio} name='bio' className='mb-3' as="textarea" rows={3} placeholder="Bio" required />
 
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Roles</Form.Label>
@@ -84,6 +173,14 @@ const AdminEditModal = ({ edit, setEdit, httpClient, roles }) => {
                                     type='checkbox' label={role.name} value={role.id} 
                                     />)
                             }
+                            {
+                                (errors?.roles)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.roles[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
                         </Form.Group>
                         
                         <Button variant="primary" type="submit">

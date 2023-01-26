@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('banner')->default('');
             $table->string('title', 100)->nullable();
             $table->string('meta_title', 160)->nullable();
-            $table->string('slug', 100)->nullable();
+            $table->string('slug')->nullable();
             $table->tinyText('summary')->nullable();
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();

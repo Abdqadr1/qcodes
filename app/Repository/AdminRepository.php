@@ -11,8 +11,16 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function getAllAdmins($keyword = "")
     {
-        if (empty($keyword)) return Admin::orderBy('created_at', 'DESC')->paginate(8);
-        return Admin::orderBy('created_at', 'DESC')
+        if (empty($keyword)) return Admin::select([
+            'id', 'first_name', 'last_name', 'bio', 'mobile', 'street_address',
+            'state', 'country', 'enabled', 'email', 'last_login_at'
+        ])
+            ->orderBy('created_at', 'DESC')->paginate(8);
+        return Admin::select([
+            'id', 'first_name', 'last_name', 'bio', 'mobile', 'street_address',
+            'state', 'country', 'enabled', 'email', 'last_login_at'
+        ])
+            ->orderBy('created_at', 'DESC')
             ->where(function ($query) use ($keyword) {
                 $query->where('first_name', 'like', '%' . $keyword . '%');
                 $query->orWhere('last_name', 'like', '%' . $keyword . '%');

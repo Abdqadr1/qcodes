@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\AdminRepositoryInterface;
+use App\Rules\PhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -25,19 +27,27 @@ class AdminController extends Controller
     public function editAdmin(Request $request)
     {
         $id = $request->route('id');
-        return DB::transaction(function () use ($id, $request) {
-            $admin =
-                $this->adminRepo->updateAdmin($id, [
-                    'first_name' => $request->input('first_name'),
-                    'last_name' => $request->input('last_name'),
-                    'email' => $request->input('email'),
-                    'mobile' => $request->input('mobile'),
-                    'bio' => $request->input('bio'),
-                    'enabled' => $request->boolean('enabled')
-                ]);
+        $validated = $request->validate([
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => ['required', 'email', 'max:255', Rule::unique('admins', 'email')->ignore($id)],
+            'mobile' => ['required', 'max:20', Rule::unique('admins', 'mobile')->ignore($id), new PhoneNumber],
+            'street_address' => 'required|max:150',
+            'state' => 'required|max:100',
+            'country' => 'required|max:100',
+            'roles' => 'required|array',
+            'roles.*' => 'numeric',
+        ]);
+
+        $validated['enabled'] = $request->boolean('enabled');
+        return DB::transaction(function () use ($id, $validated) {
+            $roles = $validated['roles'];
+            unset($validated['roles']);
+
+            $admin = $this->adminRepo->updateAdmin($id, $validated);
 
             $admin->roles()->syncWithPivotValues(
-                $request->roles,
+                $roles,
                 ['updated_at' => now()]
             );
 
@@ -53,19 +63,27 @@ class AdminController extends Controller
 
     public function createAdmin(Request $request)
     {
-        return DB::transaction(function () use ($request) {
-            $admin =  $this->adminRepo->createAdmin([
-                'first_name' => $request->input('first_name'),
-                'last_name' => $request->input('last_name'),
-                'email' => $request->input('email'),
-                'mobile' => $request->input('mobile'),
-                'bio' => $request->input('bio'),
-                'enabled' => $request->boolean('enabled'),
-                'password' => Hash::make('password')
-            ]);
+        $validated = $request->validate([
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:admins',
+            'mobile' => ['required', 'max:20', 'unique:admins', new PhoneNumber],
+            'street_address' => 'required|max:150',
+            'state' => 'required|max:100',
+            'country' => 'required|max:100',
+            'roles' => 'required|array',
+            'roles.*' => 'numeric',
+        ]);
+        $validated['enabled'] = $request->boolean('enabled');
+
+        return DB::transaction(function () use ($validated) {
+
+            $validated['password'] = bcrypt('password');
+
+            $admin =  $this->adminRepo->createAdmin($validated);
 
             $admin->roles()->syncWithPivotValues(
-                $request->roles,
+                $validated['roles'],
                 ['created_at' => now(), 'updated_at' => now()]
             );
 

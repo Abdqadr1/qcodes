@@ -47,7 +47,6 @@ class AdminAuthController extends Controller
         $validated = $request->validate([
             'email' => 'required|email|max:255|exists:admins',
             'password' => 'required|min:8|max:255',
-            'remember' => 'accepted'
         ]);
 
         if (Auth::guard('admin')->attempt([
@@ -55,7 +54,7 @@ class AdminAuthController extends Controller
             'password' => $validated['password'],
             'enabled' => 1,
             fn ($query) => $query->whereNull('email_verified_at')
-        ], $validated['remember'])) {
+        ], $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             $admin = $this->adminRepo->updateAdmin(

@@ -6,6 +6,7 @@ use App\Interfaces\ArticleRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ArticleController extends Controller
 {
@@ -37,31 +38,69 @@ class ArticleController extends Controller
         return $this->articleRepo->deleteArticle($id);
     }
 
+    public function validateArticle(Request $request, $publish = false)
+    {
+        $id = $request->input('id');
+
+        if ($publish) {
+            return $request->validate([
+                'title' => ['required', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
+                'meta_title' => 'required|max:160',
+                'content' => 'required|max:10000',
+                'parent_id' => [
+                    'nullable', 'numeric', 'exists:articles,id', Rule::notIn([$id])
+                ],
+
+                'summary' => 'required|max:160',
+                'banner' => 'nullable|max:200',
+
+                'tags' => 'required|array',
+                'tags.*' => 'required|numeric|exists:tags,id',
+                'categories' => 'required|array',
+                'categories.*' => 'required|numeric|exists:categories,id',
+            ]);
+        } else {
+            return $request->validate([
+                'title' => ['nullable', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
+                'meta_title' => 'nullable|max:160',
+                'content' => 'required|max:10000',
+                'parent_id' => [
+                    'nullable', 'numeric', 'exists:articles,id'
+                ],
+                'summary' => 'nullable|max:160',
+                'banner' => 'nullable|max:200',
+
+                'tags' => 'nullable|array',
+                'tags.*' => 'nullable|numeric|exists:tags,id',
+                'categories' => 'nullable|array',
+                'categories.*' => 'nullable|numeric|exists:categories,id',
+            ]);
+        }
+    }
+
     public function saveArticle(Request $request, $publish = false)
     {
         return DB::transaction(function () use ($request, $publish) {
             $id = $request->input('id');
-            $tags = $request->tags;
-            $categories = $request->categories;
-            $parent = $request->has('parent_id') ? $request->input('parent_id') : null;
 
-            $array = [
-                'content' => $request->input('content'),
-                'title' => $request->input('title') ?? "",
-                'meta_title' => $request->input('meta_title') ?? "",
-                'meta_title' => $request->input('meta_title') ?? "",
-                'summary' => $request->input('summary') ?? "",
-                'slug' => Str::random(50),
-                'parent_id' => $parent,
-                'author_id' => rand(1, 15),
-            ];
+            $validated = $this->validateArticle($request, $publish);
 
-            if ($publish) $array['is_published'] = true;
+            $tags = $validated['tags'] ?? null;
+            $categories = $validated['categories'] ?? null;
+            unset($validated['tags']);
+            unset($validated['categories']);
+
+            $validated['slug'] = Str::slug($validated['title'] ?? '');
+            $validated['author_id'] = $request->user('admin')->id;
+
+
+            if ($publish) $validated['is_published'] = true;
 
             if ($id) {
-                $this->articleRepo->updateArticle($id, $array);
+                unset($validated['author_id']);
+                $this->articleRepo->updateArticle($id, $validated);
             } else {
-                $id = $this->articleRepo->createArticle($array);
+                $id = $this->articleRepo->createArticle($validated);
             }
 
             if ($tags) $this->articleRepo->syncTags($id, $tags);

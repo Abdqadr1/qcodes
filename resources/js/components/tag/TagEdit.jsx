@@ -9,7 +9,9 @@ import Util from '../utility';
 
 const TagEditModal = ({ edit, setEdit, httpClient }) => {
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
-    const [alert, setAlert] = useState({message: "", show:false})
+    const [alert, setAlert] = useState({ message: "", show: false });
+    const [errors, setErrors] = useState({});
+
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
@@ -28,13 +30,18 @@ const TagEditModal = ({ edit, setEdit, httpClient }) => {
             const response = error?.response;
             Util.checkAuthError(response?.status, navigate);
             const message = response?.data?.message ?? "An error occurred. Try again";
-            setAlert(s => ({ ...s, show: true, message }));
+            const errors = response?.data?.errors;
+
+            if (errors)  setErrors({ ...errors });
+            else setAlert(s => ({ ...s, show: true, message, severity: 'error' }));
         }
     });
 
     const data = edit.data;
 
     const handleSubmit = e => {
+        setErrors({});
+        setAlert(s => ({ ...s, show: false }));
         e.preventDefault();
         const target = e.target;
         mutate([data?.id, new FormData(target)]);
@@ -59,12 +66,44 @@ const TagEditModal = ({ edit, setEdit, httpClient }) => {
                             ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
                             : ''
                         }
-                        <Form.Control defaultValue={data.name} name="name" className='mb-3' type="text" placeholder="Tag Name" required />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data.name} name="name" type="text" placeholder="Tag Name" required />
+                             {
+                                (errors?.name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
 
-                        <Form.Control defaultValue={data.content} name='content' maxLength={100} className='mb-3' as="textarea" rows={3} placeholder="Content" required />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data.content} name='content' maxLength={100} as="textarea" rows={3} 
+                                placeholder="Content" required />
+                             {
+                                (errors?.content)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.content[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
 
-                        <Form.Control defaultValue={data.meta_title} name='meta_title' maxLength={150} className='mb-3' as="textarea" rows={3} placeholder="Meta Title" required />
-                        
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data.meta_title} name='meta_title' maxLength={150} as="textarea" rows={3} 
+                                placeholder="Meta Title" required />
+                             {
+                                (errors?.meta_title)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.meta_title[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
                         
                         <Button variant="primary" type="submit">
                             { isLoading ? "Loading" : "Submit" }

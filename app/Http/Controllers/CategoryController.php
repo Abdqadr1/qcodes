@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Interfaces\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -28,25 +28,34 @@ class CategoryController extends Controller
 
     public function createCategory(Request $request)
     {
-        return $this->categoryRepo->createCategory([
-            'name' => $request->input('name'),
-            'meta_title' => $request->input('meta_title'),
-            'content' => $request->input('content'),
-            'parent_id' => $request->input('parent'),
-            'slug' => Str::random(50),
+        $validated = $request->validate([
+            'name' => 'required|max:100|unique:categories',
+            'meta_title' => 'required|max:160',
+            'content' => 'required|max:500',
+            'parent_id' => ['nullable', 'numeric', 'exists:categories,id'],
         ]);
+
+        $validated['slug'] = Str::slug($validated['name'], '_');
+
+        return $this->categoryRepo->createCategory($validated);
     }
 
     public function editCategory(Request $request)
     {
         $id = $request->route('id');
-        return $this->categoryRepo->updateCategory($id, [
-            'name' => $request->input('name'),
-            'meta_title' => $request->input('meta_title'),
-            'content' => $request->input('content'),
-            'parent_id' => $request->input('parent'),
-            'slug' => Str::random(50)
+
+        $validated = $request->validate([
+            'name' => ['required', 'max:100', Rule::unique('categories', 'name')->ignore($id)],
+            'meta_title' => 'required|max:160',
+            'content' => 'required|max:500',
+            'parent_id' => [
+                'nullable', 'numeric', Rule::notIn([$id])
+            ],
         ]);
+
+        $validated['slug'] = Str::slug($validated['name'], '_');
+
+        return $this->categoryRepo->updateCategory($id, $validated);
     }
 
     public function deleteCategory(Request $request)

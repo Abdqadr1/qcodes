@@ -22,11 +22,12 @@ const Profile = ({ httpClient }) => {
     const [errors, setErrors] = useState({});
 
     const queryClient = useQueryClient();
-    const navigate = useNavigate
+    const navigate = useNavigate();
 
      const { isLoading, error } = useQuery('getAdminUser', () =>
         httpClient.get('/api/admin'),{ 
-            refetchOnWindowFocus: false,
+         refetchOnWindowFocus: false,
+            retry: false,
             onSuccess: data => {
                 queryClient.setQueryData('userData', data.data);
                 setUserData({...data.data});

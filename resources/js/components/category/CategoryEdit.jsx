@@ -12,7 +12,9 @@ import { useNavigate } from 'react-router';
 const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
     const data = edit.data;
     const [parent, setParent] = useState({isError: false, data: data?.parent?.id, errorMessage: ""});
-    const [alert, setAlert] = useState({message: "", show:false})
+    const [alert, setAlert] = useState({ message: "", show: false });
+    const [errors, setErrors] = useState({});
+
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -32,12 +34,17 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
             const response = error?.response;
             Util.checkAuthError(response?.status, navigate);
             const message = response?.data?.message ?? "An error occurred. Try again";
-            setAlert(s => ({ ...s, show: true, message }));
+            const errors = response?.data?.errors;
+
+            if (errors)  setErrors({ ...errors });
+            else setAlert(s => ({ ...s, show: true, message, severity: 'error' }));
         }
     });
 
 
     const handleSubmit = e => {
+        setErrors({});
+        setAlert(s => ({ ...s, show: false }));
         e.preventDefault();
         const target = e.target;
         const formData = new FormData(target);
@@ -66,11 +73,44 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
                             ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
                             : ''
                         }
-                        <Form.Control defaultValue={data.name} name="name" className='mb-3' type="text" placeholder="Category Name" required />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data.name} name="name" type="text" placeholder="Category Name" required />
+                             {
+                                (errors?.name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
 
-                        <Form.Control defaultValue={data.content} name='content' maxLength={100} className='mb-3' as="textarea" rows={3} placeholder="Content" required />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data.content} name='content' maxLength={100} as="textarea"
+                                rows={3} placeholder="Content" required />
+                             {
+                                (errors?.first_name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.first_name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
 
-                        <Form.Control defaultValue={data.meta_title} name='meta_title' maxLength={150} className='mb-3' as="textarea" rows={3} placeholder="Meta Title" required />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control defaultValue={data.meta_title} name='meta_title' maxLength={150} as="textarea"
+                                rows={3} placeholder="Meta Title" required />
+                             {
+                                (errors?.first_name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.first_name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
 
                         <Stack className='mb-3'>
                             <Autocompletion defaultValue={data?.parent}

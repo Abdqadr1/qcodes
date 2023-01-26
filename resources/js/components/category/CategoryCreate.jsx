@@ -11,9 +11,12 @@ import Util from '../utility';
 
 
 const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
-    const [alert, setAlert] = useState({message: "", show:false})
+    const [alert, setAlert] = useState({ message: "", show: false });
+    const [parent, setParent] = useState({ isError: false, data: null, errorMessage: "" });
+    const [errors, setErrors] = useState({});
+
     const handleClose = e => setCreate(false);
-    const [parent, setParent] = useState({isError: false, data:null, errorMessage: ""});
+    
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     
@@ -36,11 +39,13 @@ const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
     });
 
     const handleSubmit = e => {
+        setErrors({});
+        setAlert(s => ({ ...s, show: false }));
         e.preventDefault();
         const target = e.target;
         const formData = new FormData(target);
         if (parent?.data) {
-            formData.set('parent', parent.data);
+            formData.set('parent_id', parent.data?.id);
         }
         mutate(formData);
     }
@@ -63,11 +68,44 @@ const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
                             ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
                             : ''
                         }
-                        <Form.Control name="name" className='mb-3' type="text" placeholder="Category Name" required />
 
-                        <Form.Control name='content' maxLength={100} className='mb-3' as="textarea" rows={3} placeholder="Content" required />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name="name" type="text" placeholder="Category Name" required />
+                             {
+                                (errors?.name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
 
-                        <Form.Control name='meta_title' maxLength={150} className='mb-3' as="textarea" rows={3} placeholder="Meta Title" required />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name='content' maxLength={500} as="textarea" rows={3}
+                                placeholder="Content" required />
+                             {
+                                (errors?.content)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.content[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name='meta_title' maxLength={150} as="textarea" rows={3}
+                                placeholder="Meta Title" required />
+                             {
+                                (errors?.meta_title)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.meta_title[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
 
                         <Stack className='mb-3'>
                             <Autocompletion info={parent} name='Parent Category' httpClient={httpClient} setData={setParent} />

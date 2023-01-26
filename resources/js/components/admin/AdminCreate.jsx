@@ -8,10 +8,13 @@ import { useNavigate } from 'react-router';
 import Util from '../utility';
 
 const AdminCreateModal = ({ httpClient, show, setCreate, roles }) => {
-    const [alert, setAlert] = useState({message: "", show:false})
+    const [alert, setAlert] = useState({ message: "", show: false });
+    const [errors, setErrors] = useState({});
+
     const handleClose = e => setCreate(false);
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+
     const { mutate, isLoading, } = useMutation(
         (form) => httpClient.post(`/api/admin/create`, form), {
         onSuccess: data => {
@@ -26,11 +29,16 @@ const AdminCreateModal = ({ httpClient, show, setCreate, roles }) => {
             const response = error?.response;
             Util.checkAuthError(response?.status, navigate);
             const message = response?.data?.message ?? "An error occurred. Try again";
-            setAlert(s => ({ ...s, show: true, message }));
+            const errors = response?.data?.errors;
+            
+            if (errors)  setErrors({ ...errors });
+            else setAlert(s => ({ ...s, show: true, message, severity: 'error' }));
         }
     });
 
     const handleSubmit = e => {
+        setErrors({});
+        setAlert(s => ({ ...s, show: false }));
         e.preventDefault();
         const target = e.target;
         mutate(new FormData(target));
@@ -55,23 +63,109 @@ const AdminCreateModal = ({ httpClient, show, setCreate, roles }) => {
                             : ''
                         }
                         
-                        <Form.Control name="first_name" className='mb-3' type="text" placeholder="First Name" required />
-                        <Form.Control name="last_name" className='mb-3' type="text" placeholder="Last Name" required />
-                        <Form.Control name="email" className='mb-3' type="email" placeholder="Enter email" required />
-                        <Form.Control name="mobile" className='mb-3' type="tel" placeholder="Phone Number" required />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name="first_name" type="text" placeholder="First Name" required />
+                             {
+                                (errors?.first_name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.first_name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name="last_name" type="text" placeholder="Last Name" required />
+                             {
+                                (errors?.last_name)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.last_name[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name="email" type="email" placeholder="Enter email" required />
+                             {
+                                (errors?.email)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.email[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name="mobile" type="tel" placeholder="Phone Number" required />
+                             {
+                                (errors?.mobile)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.mobile[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name='street_address' as="textarea" rows={2}
+                                placeholder="Street Address" required />
+                             {
+                                (errors?.street_address)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.street_address[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name="state" placeholder="State" required />
+                             {
+                                (errors?.state)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.state[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control name="country" placeholder="Country" required />
+                             {
+                                (errors?.country)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.country[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
+                        </Form.Group>
 
                         <Form.Check
                             name='enabled' className='mb-3'
                             type='checkbox' label="Enabled"
                         />
 
-                        <Form.Control name='bio' className='mb-3' as="textarea" rows={3} placeholder="Bio" required />
-
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Roles</Form.Label>
                             {
                                 roles?.map(role => <Form.Check key={role.id} name='roles[]' type='checkbox' label={role.name} value={role.id}  />)
                             }
+                             {
+                                (errors?.roles)
+                                    ?
+                                    <Form.Text className="text-muted text-danger">
+                                        <span className='text-danger'>{errors?.roles[0]}</span>
+                                    </Form.Text>
+                                    : '' 
+                             }
                         </Form.Group>
                         
                         <Button variant="primary" type="submit">

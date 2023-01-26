@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Interfaces\TagRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use Illuminate\Validation\Rule;
 
 class TagController extends Controller
 {
@@ -28,23 +28,29 @@ class TagController extends Controller
 
     public function createTag(Request $request)
     {
-        return $this->repo->createTag([
-            'name' => $request->input('name'),
-            'meta_title' => $request->input('meta_title'),
-            'content' => $request->input('content'),
-            'slug' => Str::random(50)
+        $validated = $request->validate([
+            'name' => 'required|max:100|unique:tags',
+            'meta_title' => 'required|max:160',
+            'content' => 'required|max:500',
         ]);
+        $validated['slug'] = Str::slug($validated['name'], '_');
+
+        return $this->repo->createTag($validated);
     }
 
     public function editTag(Request $request)
     {
         $id = $request->route('id');
-        return $this->repo->updateTag($id, [
-            'name' => $request->input('name'),
-            'meta_title' => $request->input('meta_title'),
-            'content' => $request->input('content'),
-            'slug' => Str::random(50)
+
+        $validated = $request->validate([
+            'name' => ['required', 'max:100', Rule::unique('tags', 'name')->ignore($id)],
+            'meta_title' => 'required|max:160',
+            'content' => 'required|max:500',
         ]);
+
+        $validated['slug'] = Str::slug($validated['name'], '_');
+
+        return $this->repo->updateTag($id, $validated);
     }
 
     public function deleteTag(Request $request)

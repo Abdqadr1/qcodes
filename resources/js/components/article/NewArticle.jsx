@@ -124,6 +124,9 @@ const NewArticle = ({ httpClient }) => {
     }
 
     const handlePublish = e => {
+        setCategories(s => ({ ...s, isError: false}));
+        setTags(s => ({ ...s, isError: false}));
+
         if (!(form?.title && form?.meta_title)) {
             setToast(s => ({ ...s, show: true, message: 'Title and Meta title is required', severity: 'error' }));
             return;
@@ -176,7 +179,7 @@ const NewArticle = ({ httpClient }) => {
                 />
 
                 <TextField className='mb-3 fs-4' onInput={handleInput}
-                    name='summary' value={form?.meta_title ?? ''} 
+                    name='summary' value={form?.summary ?? ''} 
                     id="outlined-textarea"
                     label="Summary"
                     placeholder="Summary..."

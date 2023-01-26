@@ -208,7 +208,7 @@ const EditArticle = ({ httpClient }) => {
                 />
 
                 <TextField className='mb-3 fs-4' onInput={handleInput}
-                    name='summary' value={form?.meta_title ?? ''} 
+                    name='summary' value={form?.summary ?? ''} 
                     id="outlined-textarea"
                     label="Summary"
                     placeholder="Summary..."
