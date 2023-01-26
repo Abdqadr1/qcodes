@@ -35,4 +35,39 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Article::class, 'author_id');
     }
+
+    public function hasRole(string $roleName)
+    {
+        $roles = $this->roles()->get();
+        foreach ($roles as $role) {
+            if (strtolower($role->name) === strtolower($roleName)) return true;
+        }
+        return false;
+    }
+
+    public function hasRoles($roleNames = [])
+    {
+        $roles = $this->roles()->get();
+        $roleNames = is_array($roleNames) ? $roleNames : func_get_args();
+
+        $filtered = array_filter($roleNames, function ($name) use ($roles) {
+            foreach ($roles as $role) {
+                if (strtolower($role->name) === strtolower($name)) return true;
+            }
+            return false;
+        });
+    }
+
+    public function hasAnyRole($roleNames = [])
+    {
+        $roles = $this->roles()->get();
+        $roleNames = is_array($roleNames) ? $roleNames : func_get_args();
+
+        foreach ($roleNames as $name) {
+            foreach ($roles as $role) {
+                if (strtolower($role->name) === strtolower($name)) return true;
+            }
+        }
+        return false;
+    }
 }

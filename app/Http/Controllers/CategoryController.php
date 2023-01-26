@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\CategoryRepositoryInterface;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -28,6 +29,8 @@ class CategoryController extends Controller
 
     public function createCategory(Request $request)
     {
+        $this->authorize('create', Category::class);
+
         $validated = $request->validate([
             'name' => 'required|max:100|unique:categories',
             'meta_title' => 'required|max:160',
@@ -42,6 +45,8 @@ class CategoryController extends Controller
 
     public function editCategory(Request $request)
     {
+        $this->authorize('update', Category::class);
+
         $id = $request->route('id');
 
         $validated = $request->validate([
@@ -61,6 +66,10 @@ class CategoryController extends Controller
     public function deleteCategory(Request $request)
     {
         $id = $request->route("id");
+
+        $this->authorize('delete', Category::findOrFail($id));
+
+
         return $this->categoryRepo->deleteCategory($id);
     }
 }

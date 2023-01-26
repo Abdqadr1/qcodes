@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\TagRepositoryInterface;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -28,6 +29,8 @@ class TagController extends Controller
 
     public function createTag(Request $request)
     {
+        $this->authorize('create', Tag::class);
+
         $validated = $request->validate([
             'name' => 'required|max:100|unique:tags',
             'meta_title' => 'required|max:160',
@@ -40,6 +43,7 @@ class TagController extends Controller
 
     public function editTag(Request $request)
     {
+        $this->authorize('update', Tag::class);
         $id = $request->route('id');
 
         $validated = $request->validate([
@@ -56,6 +60,8 @@ class TagController extends Controller
     public function deleteTag(Request $request)
     {
         $id = $request->route("id");
+        $this->authorize('delete', Tag::findOrFail($id));
+
         return $this->repo->deleteTag($id);
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\AdminRepositoryInterface;
+use App\Models\Admin;
 use App\Rules\PhoneNumber;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +28,10 @@ class AdminController extends Controller
 
     public function editAdmin(Request $request)
     {
+        $this->authorize('update', Admin::class);
+
         $id = $request->route('id');
+
         $validated = $request->validate([
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
@@ -57,12 +62,23 @@ class AdminController extends Controller
 
     public function deleteAdmin(Request $request)
     {
+        $this->authorize('delete', Admin::class);
+
         $id = $request->route("id");
+
+
+        if ($request->user('admin')->id == $id) {
+            abort(403, 'Invalid action');
+        }
+
+
         return $this->adminRepo->deleteAdmin($id);
     }
 
     public function createAdmin(Request $request)
     {
+        $this->authorize('create', Admin::class);
+
         $validated = $request->validate([
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
