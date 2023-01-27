@@ -1,10 +1,8 @@
-
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Pages from '../paginate';
 import React, { useState } from "react";
-import AdminEditModal from '../admin/AdminEdit';
 import Button from '@mui/material/Button';
-import AdminCreateModal from '../admin/AdminCreate';
+import Util from '../utility';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -26,9 +24,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
-import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router';
-import Util from '../utility';
 
 const theme = createTheme();
 
@@ -46,26 +42,14 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-
-const Admin = ({ httpClient }) => {
-    const [edit, setEdit] = useState({ show: false, data: {} });
+const AllArticles = ({ httpClient }) => {
     const [keyword, setKeyword] = useState('');
-    const [create, setCreate] = useState(false);
-
+    
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { error, data, refetch, isFetching } = useQuery('adminData', () =>
-        httpClient.get(`/api/admin/all?keyword=${keyword}`),{ 
-            refetchOnWindowFocus: false,
-            onError: error => {
-                Util.checkAuthError(error?.response?.status, navigate);
-            }  
-        }
-    );
-
-    const { isLoading:roleLoading, error:roleError, data:roleData } = useQuery('roleData', () =>
-        httpClient.get('/api/admin/roles'),{ 
+    const { isFetching, error, data, refetch } = useQuery('articleData', () =>
+        httpClient.get(`/api/article/all?keyword=${keyword}`),{ 
             refetchOnWindowFocus: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
@@ -73,20 +57,22 @@ const Admin = ({ httpClient }) => {
         }
     );
 
-    const { isLoading: pageFetching, error: pageError, mutate:pageMutate } =
-        useMutation(url => httpClient.get(`${url}g&keyword=${keyword}`), {
+    const { isLoading: pageFetching, error: pageError, mutate: pageMutate } =
+        useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
         onSuccess: data => {
-            queryClient.setQueryData('adminData', data);
+            queryClient.setQueryData('articleData', data);
         },
         onError: error => {
-            Util.checkAuthError(error?.response?.status, navigate);
-        } 
+            const response = error?.response;
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
+        }
     });
 
     const { isLoading: deleteFetching, error: deleteError, mutate: deleteMutate } =
-        useMutation(id => httpClient.delete(`/api/admin/delete/${id}`), {
+        useMutation(id => httpClient.delete(`/api/article/delete/${id}`), {
         onSuccess: (data, id) => {
-            queryClient.setQueryData('adminData', oldData => {
+            queryClient.setQueryData('articleData', oldData => {
                 const list = oldData.data.data;
                 const index = list.findIndex(l => l.id === id);
                 list.splice(index, 1);
@@ -94,36 +80,34 @@ const Admin = ({ httpClient }) => {
             });
         },
         onError: error => {
-            Util.checkAuthError(error?.response?.status, navigate);
-        } 
-    });
+            const response = error?.response;
+            Util.checkAuthError(response?.status, navigate);
+            const message = response?.data?.message ?? "An error occurred. Try again";
+        }
+     });
 
-    const handleSearch = e => {
-        refetch({ throwOnError: true, cancelRefetch: true });
-    }
-
-    const handleDelete = id => {
+      const handleDelete = id => {
         if (confirm("Are you sure?")) {
             deleteMutate(id);
         }
     }
 
-    const showCreateModal = () => {
-        setCreate(true);
+     const handleSearch = e => {
+        refetch({ throwOnError: true, cancelRefetch: true });
     }
 
-
-    if (isFetching || pageFetching || deleteFetching || roleLoading) return (
+     
+    if (isFetching || pageFetching || deleteFetching) return (
         <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={true}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
-    );
+        );
 
-     if (error || deleteError || pageError || roleError) {
-        const err = error ?? deleteError ?? pageError ?? roleError;
+     if (error || deleteError || pageError) {
+        const err = error ?? deleteError ?? pageError;
         return (
             <Snackbar
                 open={true}
@@ -144,7 +128,7 @@ const Admin = ({ httpClient }) => {
     }
 
     return ( 
-        <div className='px-4 py-2'>
+         <div className='p-4'>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Stack
@@ -156,7 +140,7 @@ const Admin = ({ httpClient }) => {
                         mt={3} mb={5}
                     >
                         <ThemeProvider theme={theme}>
-                            <Typography variant="h3">Search Admin: </Typography>
+                            <Typography variant="h3">Search Articles: </Typography>
                         </ThemeProvider>
                         <TextField
                             id="outlined-name"
@@ -177,11 +161,12 @@ const Admin = ({ httpClient }) => {
                         <CardHeader className="px-4"
                             action={
                                 <Button
-                                    onClick={showCreateModal} color="primary" size="small"
-                                    variant='contained' endIcon={<AddIcon />}
-                                    >Add Admin</Button>
+                                href='/admin/article/new' color='primary'
+                                variant="outlined" size="small"
+                                endIcon={<AddIcon />}
+                                >New Article</Button>
                                 }
-                            title="Admins table"
+                            title="Articles table"
                             subheader=""
                         />
                         <CardContent className="pb-2">
@@ -189,47 +174,46 @@ const Admin = ({ httpClient }) => {
                                 <Table aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell>Roles</TableCell>
-                                        <TableCell>Status</TableCell>
-                                        <TableCell>Last Login</TableCell>
+                                        <TableCell>Title</TableCell>
+                                        <TableCell>Summary</TableCell>
+                                        <TableCell>Published</TableCell>
+                                        <TableCell>Slug</TableCell>
+                                        <TableCell>Visit</TableCell>
                                         <TableCell>Actions</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {
                                         data.data.data.map(
-                                            admin => <TableRow key={admin.id}>
-                                                <TableCell sx={{maxWidth: '200px'}}>
-                                                    <div className="d-flex px-2 py-1">
-                                                    <Avatar sx={{marginRight: 1}} alt={admin.first_name} src="/static/images/avatar/1.jpg" />
-                                                    <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">{`${admin.first_name} ${admin.last_name}`}</h6>
-                                                        <p className="text-xs text-secondary mb-0">{admin.email}</p>
-                                                    </div>
-                                                    </div>
+                                            article => <TableRow key={article.id}>
+                                                <TableCell style={{ maxWidth: '150px'}}>
+                                                    <p className=''>{Util.ellipsis(article.title)}</p>
+                                                </TableCell>
+                                                    <TableCell className="align-middle text-start" style={{ maxWidth: '150px'}}>
+                                                    <span className="text-secondary text-xs font-weight-bold">{Util.ellipsis(article.summary)}</span>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <p className="text-xs font-weight-bold mb-0">Manager</p>
-                                                    <p className="text-xs text-secondary mb-0">Organization</p>
+                                                    <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <span className="">{admin.enabled ? "Enabled" : "Disabled"}</span>
+                                                <TableCell style={{ maxWidth: '150px'}}>
+                                                    <span>{Util.ellipsis(article.slug)}</span>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <span className="text-secondary text-xs font-weight-bold">{admin.last_login_at}</span>
+                                                <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
+                                                    <p className="text-xs font-weight-bold mb-0">{article.visit}</p>
                                                 </TableCell>
                                                 <TableCell className="align-middle">
-                                                    <Button size="small" onClick={() => setEdit(s => ({ ...s, show: true, data: admin }))}
-                                                        variant="outlined" color='primary'>Edit</Button>
+                                                    <Button size='small' variant="outlined"
+                                                        href={`/admin/article/edit/${article.id}`}
+                                                        >Edit</Button>
                                                     {' '}
-                                                    <Button onClick={() => handleDelete(admin.id)} variant="outlined"  color='error'
-                                                        size="small">Delete</Button>
+                                                    <Button variant="outlined" size='small' color='error'
+                                                        onClick={() => handleDelete(article.id)} 
+                                                    >Delete</Button>
                                                 </TableCell>
                                             </TableRow>
                                         )
                                     }
-                                   </TableBody>
+                                </TableBody>
                                 </Table>
                             </TableContainer>
                             {/* pagination */}
@@ -242,10 +226,8 @@ const Admin = ({ httpClient }) => {
                     </Card>
                 </Grid>
             </Grid>
-            <AdminEditModal edit={edit} setEdit={setEdit} httpClient={httpClient} roles={roleData.data} />
-            <AdminCreateModal show={create} setCreate={setCreate} httpClient={httpClient} roles={roleData.data} />
         </div>
      );
 }
  
-export default Admin;
+export default AllArticles;

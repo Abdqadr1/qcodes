@@ -23,6 +23,7 @@ class AdminController extends Controller
 
     public function getAllAdmin(Request $request)
     {
+        $this->authorize('viewAll', Admin::class);
         return $this->adminRepo->getAllAdmins($request->input('keyword'));
     }
 

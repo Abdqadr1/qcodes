@@ -49,7 +49,7 @@ const MyArticles = ({ httpClient }) => {
     const navigate = useNavigate();
 
     const { isFetching, error, data, refetch } = useQuery('articleData', () =>
-        httpClient.get(`/api/article/all?keyword=${keyword}`),{ 
+        httpClient.get(`/api/my_article/all?keyword=${keyword}`),{ 
             refetchOnWindowFocus: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);

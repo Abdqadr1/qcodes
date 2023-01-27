@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\ArticleRepositoryInterface;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -27,6 +28,12 @@ class ArticleController extends Controller
         return $this->articleRepo->getMyArticlesPaginate($request);
     }
 
+    public function getAllArticlesPaginate(Request $request)
+    {
+        $this->authorize('viewAll', Article::class);
+        return $this->articleRepo->getAllArticlesPaginate($request);
+    }
+
     public function getMyArticles(Request $request)
     {
         return $this->articleRepo->getMyArticles($request);
@@ -35,6 +42,8 @@ class ArticleController extends Controller
     public function deleteArticle(Request $request)
     {
         $id = $request->route('id');
+        $this->authorize('delete', Article::findOrFail($id));
+
         return $this->articleRepo->deleteArticle($id);
     }
 
@@ -112,17 +121,29 @@ class ArticleController extends Controller
 
     public function createArticle(Request $request)
     {
+        if ($request->has('id')) {
+            $this->authorize('update', Article::findOrFail($request->input('id')));
+        } else {
+            $this->authorize('create', Article::class);
+        }
+
         return $this->saveArticle($request);
     }
 
     public function publishArticle(Request $request)
     {
+        if ($request->has('id')) {
+            $this->authorize('update', Article::findOrFail($request->input('id')));
+        } else {
+            $this->authorize('create', Article::class);
+        }
         return $this->saveArticle($request, true);
     }
 
     public function unpublishArticle(Request $request)
     {
         $id = $request->route('id');
+        $this->authorize('update', Article::findOrFail($id));
 
         $array = [
             'is_published' => false,

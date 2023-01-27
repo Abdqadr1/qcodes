@@ -11,26 +11,17 @@ class AdminPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\Admin  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(Admin $user)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\Admin  $user
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(Admin $user, Admin $admin)
+    public function viewAll(Admin $user)
     {
-        //
+        return $user->hasRole('admin')
+            ? Response::allow()
+            : Response::deny('You must be an administrator to perform this action');
     }
 
     /**

@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
@@ -97,6 +98,9 @@ const Profile = ({ httpClient }) => {
                                 alignItems="center"
                             >
                                 <h4 className='mb-3'>Account Information</h4>
+                                {
+                                    userData?.roles?.map(role => <Chip key={ role.id } label={role.name} />)
+                                }
                             </Stack>
                             {
                                 (alert.show)

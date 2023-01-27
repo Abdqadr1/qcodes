@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import Button  from '@mui/material/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
 import { useMutation, useQueryClient } from 'react-query';
 import Autocompletion from '../article/Autocompletion';
 import Stack  from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router';
 import Util from '../utility';
 
@@ -62,59 +64,53 @@ const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
                     <Modal.Title>New Category</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleSubmit}>
+                    <Box sx={{}} component='form'
+                        onSubmit={handleSubmit}>
                         {
                             (alert.show)
                             ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
                             : ''
                         }
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control name="name" type="text" placeholder="Category Name" required />
-                             {
-                                (errors?.name)
-                                    ?
-                                    <Form.Text className="text-muted text-danger">
-                                        <span className='text-danger'>{errors?.name[0]}</span>
-                                    </Form.Text>
-                                    : '' 
-                             }
-                        </Form.Group>
+                        <TextField
+                            sx={{width: '100%', mb:3}}
+                            required name='name'
+                            id="outlined-required"
+                            label="Category Name"
+                            size='small'
+                            helperText={(errors?.name) ? errors.name[0] : ''}
+                            error={(errors?.name)}
+                        />
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control name='content' maxLength={500} as="textarea" rows={3}
-                                placeholder="Content" required />
-                             {
-                                (errors?.content)
-                                    ?
-                                    <Form.Text className="text-muted text-danger">
-                                        <span className='text-danger'>{errors?.content[0]}</span>
-                                    </Form.Text>
-                                    : '' 
-                             }
-                        </Form.Group>
+                        <TextField
+                            sx={{width: '100%', mb:3}}
+                            required name='content'
+                            id="outlined-required"
+                            label="Content" maxLength={100}
+                            size='small' multiline rows={3}
+                            helperText={(errors?.content) ? errors.content[0] : ''}
+                            error={(errors?.content)}
+                        />
+                    
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control name='meta_title' maxLength={150} as="textarea" rows={3}
-                                placeholder="Meta Title" required />
-                             {
-                                (errors?.meta_title)
-                                    ?
-                                    <Form.Text className="text-muted text-danger">
-                                        <span className='text-danger'>{errors?.meta_title[0]}</span>
-                                    </Form.Text>
-                                    : '' 
-                             }
-                        </Form.Group>
+                        <TextField
+                            sx={{width: '100%', mb:3}}
+                            required name='meta_title'
+                            id="outlined-required"
+                            label="Meta Title" maxLength={150}
+                            size='small' multiline rows={3}
+                            helperText={(errors?.meta_title) ? errors.meta_title[0] : ''}
+                            error={(errors?.meta_title)}
+                        />
 
                         <Stack className='mb-3'>
                             <Autocompletion info={parent} name='Parent Category' httpClient={httpClient} setData={setParent} />
                         </Stack>
                         
                         <Button disabled={isLoading} variant="contained" color='primary' type="submit">
-                            { isLoading ? "Loading" : "Submit" }
+                            { isLoading ? "Loading..." : "Submit" }
                         </Button>
-                    </Form>
+                    </Box>
                 </Modal.Body>
             </Modal>
         </>

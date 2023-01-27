@@ -33,7 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/admin/update', [AdminAuthController::class, 'update']);
     Route::get('/admin/all', [AdminController::class, 'getAllAdmin']);
-    Route::get('/article/all', [ArticleController::class, 'getMyArticlesPaginate']);
+    Route::get('/my_article/all', [ArticleController::class, 'getMyArticlesPaginate']);
+    Route::get('/article/all', [ArticleController::class, 'getAllArticlesPaginate']);
     Route::get('/c/article/all', [ArticleController::class, 'getMyArticles']);
     Route::get('/category/all', [CategoryController::class, 'getAllCategoriesPaginate']);
     Route::get('/c/category/all', [CategoryController::class, 'getAllCategories']);

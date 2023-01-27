@@ -18,6 +18,31 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getMyArticlesPaginate(Request $request)
     {
         $keyword = $request->input('keyword');
+        $id = $request->user('admin')->id;
+
+        if ($keyword) {
+            return Article::orderBy('created_at', 'DESC')
+                ->where('author_id', $id)
+                ->where(function ($query) use ($keyword) {
+                    $query->where('title', 'like', '%' . $keyword . '%');
+                    $query->orWhere('summary', 'like', '%' . $keyword . '%');
+                    $query->orWhere('content', 'like', '%' . $keyword . '%');
+                    $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
+                })
+                ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+                ->paginate(5);
+        }
+        return Article::orderBy('created_at', 'DESC')
+            ->where('author_id', $id)
+            ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+            ->paginate(5);
+    }
+
+    public function getAllArticlesPaginate(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $id = $request->user('admin')->id;
+
         if ($keyword) {
             return Article::orderBy('created_at', 'DESC')
                 ->where(function ($query) use ($keyword) {
@@ -33,6 +58,7 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
             ->paginate(5);
     }
+
     public function getMyArticles(Request $request)
     {
         $keyword = $request->input('keyword');

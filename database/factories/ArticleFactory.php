@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Article>
@@ -19,7 +20,7 @@ class ArticleFactory extends Factory
         return [
             "title" => fake()->text(100),
             "meta_title" => fake()->text(100),
-            "slug" => fake()->text(100),
+            "slug" => Str::slug(fake()->text(100)),
             "summary" => fake()->text(150),
             "author_id" => fake()->numberBetween(1, 39),
             "parent_id" => fake()->numberBetween(1, 50),

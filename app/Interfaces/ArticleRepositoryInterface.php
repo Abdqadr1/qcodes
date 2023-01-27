@@ -9,6 +9,7 @@ interface ArticleRepositoryInterface
     public function getAllArticles();
     public function getMyArticles(Request $request);
     public function getMyArticlesPaginate(Request $request);
+    public function getAllArticlesPaginate(Request $request);
 
     public function createArticle(array $details);
     public function updateArticle($id, array $details);

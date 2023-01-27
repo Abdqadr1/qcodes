@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
 import { useMutation, useQueryClient } from 'react-query';
 import Alert from '@mui/material/Alert';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Util from '../utility';
 import { useNavigate } from 'react-router';
 
@@ -57,55 +62,47 @@ const TagCreateModal = ({ httpClient, show, setCreate }) => {
                     <Modal.Title>New Tag</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleSubmit}>
+                    <Box sx={{}} component='form' onSubmit={handleSubmit}>
                         {
                             (alert.show)
                             ? <Alert severity="error" >{alert.message}</Alert>
                             : ''
                         }
-                        <Form.Group className="mb-3" controlId="formBasicName">
-                            <Form.Control name="name" type="text" placeholder="Tag Name" required />
-                             {
-                                (errors?.name)
-                                    ?
-                                    <Form.Text className="text-muted text-danger">
-                                        <span className='text-danger'>{errors?.name[0]}</span>
-                                    </Form.Text>
-                                    : '' 
-                             }
-                        </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control name='content' maxLength={100} as="textarea" rows={3} 
-                                placeholder="Content" required />
-                             {
-                                (errors?.content)
-                                    ?
-                                    <Form.Text className="text-muted text-danger">
-                                        <span className='text-danger'>{errors?.content[0]}</span>
-                                    </Form.Text>
-                                    : '' 
-                             }
-                        </Form.Group>
+                        <TextField
+                            sx={{width: '100%', mb:3}}
+                            required name='name'
+                            id="outlined-required"
+                            label="Tag Name"
+                            size='small'
+                            helperText={(errors?.name) ? errors.name[0] : ''}
+                            error={(errors?.name)}
+                        />
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control name='meta_title' maxLength={150} as="textarea" rows={3} 
-                                placeholder="Meta Title" required />
-                             {
-                                (errors?.meta_title)
-                                    ?
-                                    <Form.Text className="text-muted text-danger">
-                                        <span className='text-danger'>{errors?.meta_title[0]}</span>
-                                    </Form.Text>
-                                    : '' 
-                             }
-                        </Form.Group>
+                        <TextField
+                            sx={{width: '100%', mb:3}}
+                            required name='content'
+                            id="outlined-required"
+                            label="Content" maxLength={100}
+                            size='small' multiline rows={3}
+                            helperText={(errors?.content) ? errors.content[0] : ''}
+                            error={(errors?.content)}
+                        />
 
+                        <TextField
+                            sx={{width: '100%', mb:3}}
+                            required name='meta_title'
+                            id="outlined-required"
+                            label="Meta Title" maxLength={150}
+                            size='small' multiline rows={3} 
+                            helperText={(errors?.meta_title) ? errors.meta_title[0] : ''}
+                            error={(errors?.meta_title)}
+                        />
 
-                        <Button variant="primary" type="submit">
+                        <Button variant='contained' color="primary" type="submit">
                             { isLoading ? "Loading" : "Submit" }
                         </Button>
-                    </Form>
+                    </Box>
                 </Modal.Body>
             </Modal>
         </>
