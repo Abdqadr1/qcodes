@@ -51,39 +51,47 @@ const Admin = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
     const [keyword, setKeyword] = useState('');
     const [create, setCreate] = useState(false);
+    const [showSnackBar, setShowSnackBar] = useState(false);
+    const [error, setError] = useState({});
 
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { error, data, refetch, isFetching } = useQuery('adminData', () =>
+    const {data, refetch, isFetching } = useQuery('adminData', () =>
         httpClient.get(`/api/admin/all?keyword=${keyword}`),{ 
             refetchOnWindowFocus: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
             }  
         }
     );
 
-    const { isLoading:roleLoading, error:roleError, data:roleData } = useQuery('roleData', () =>
+    const { isLoading:roleLoading, data:roleData } = useQuery('roleData', () =>
         httpClient.get('/api/admin/roles'),{ 
             refetchOnWindowFocus: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
             } 
         }
     );
 
-    const { isLoading: pageFetching, error: pageError, mutate:pageMutate } =
+    const { isLoading: pageFetching, mutate:pageMutate } =
         useMutation(url => httpClient.get(`${url}g&keyword=${keyword}`), {
         onSuccess: data => {
             queryClient.setQueryData('adminData', data);
         },
         onError: error => {
             Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
         } 
     });
 
-    const { isLoading: deleteFetching, error: deleteError, mutate: deleteMutate } =
+    const { isLoading: deleteFetching, mutate: deleteMutate } =
         useMutation(id => httpClient.delete(`/api/admin/delete/${id}`), {
         onSuccess: (data, id) => {
             queryClient.setQueryData('adminData', oldData => {
@@ -95,6 +103,8 @@ const Admin = ({ httpClient }) => {
         },
         onError: error => {
             Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
         } 
     });
 
@@ -122,26 +132,6 @@ const Admin = ({ httpClient }) => {
             </Backdrop>
     );
 
-     if (error || deleteError || pageError || roleError) {
-        const err = error ?? deleteError ?? pageError ?? roleError;
-        return (
-            <Snackbar
-                open={true}
-                autoHideDuration={2000}
-                anchorOrigin={
-                    {
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                >
-                <Alert
-                    severity={'error'} sx={{ width: '100%' }}
-                >
-                    {err?.response?.data?.message ?? "An error occurred. Try again"}
-                </Alert>
-            </Snackbar>
-        )
-    }
 
     return ( 
         <div className='px-4 py-2'>
@@ -244,6 +234,22 @@ const Admin = ({ httpClient }) => {
             </Grid>
             <AdminEditModal edit={edit} setEdit={setEdit} httpClient={httpClient} roles={roleData.data} />
             <AdminCreateModal show={create} setCreate={setCreate} httpClient={httpClient} roles={roleData.data} />
+            <Snackbar
+                open={showSnackBar}
+                autoHideDuration={5000}
+                anchorOrigin={
+                    {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                onClose={e => setShowSnackBar(false)}
+                >
+                <Alert
+                    severity={'error'} sx={{ width: '100%' }}
+                >
+                    {error?.response?.data?.message ?? "An error occurred. Try again"}
+                </Alert>
+            </Snackbar>
         </div>
      );
 }

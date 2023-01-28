@@ -47,30 +47,36 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const Categories = ({ httpClient }) => {
     const [edit, setEdit] = useState({ show: false, data: {} });
     const [create, setCreate] = useState(false);
+    const [showSnackBar, setShowSnackBar] = useState(false);
+    const [error, setError] = useState({});
     const [keyword, setKeyword] = useState('');
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { isFetching, error, data, refetch } = useQuery('categoryData', () =>
+    const { isFetching, data, refetch } = useQuery('categoryData', () =>
         httpClient.get(`/api/category/all?keyword=${keyword}`),{
             refetchOnWindowFocus: false ,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
             }
         } 
     );
 
-    const { isLoading: pageFetching, error: pageError, mutate:pageMutate } =
+    const { isLoading: pageFetching, mutate:pageMutate } =
         useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
             onSuccess: data => {
                 queryClient.setQueryData('categoryData', data);
             },
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
             } 
         });
 
-    const { isLoading: deleteFetching, error: deleteError, mutate: deleteMutate } =
+    const { isLoading: deleteFetching, mutate: deleteMutate } =
         useMutation(id => httpClient.delete(`/api/category/delete/${id}`), {
             onSuccess: (data, id) => {
                 queryClient.setQueryData('categoryData', oldData => {
@@ -82,6 +88,8 @@ const Categories = ({ httpClient }) => {
             },
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
             } 
         });
 
@@ -106,27 +114,6 @@ const Categories = ({ httpClient }) => {
                 <CircularProgress color="inherit" />
         </Backdrop>
     );
-
-    if (error || deleteError || pageError) {
-        const err = error ?? deleteError ?? pageError;
-        return (
-            <Snackbar
-                open={true}
-                autoHideDuration={2000}
-                anchorOrigin={
-                    {
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                >
-                <Alert
-                    severity={'error'} sx={{ width: '100%' }}
-                >
-                    {err?.response?.data?.message ?? "An error occurred. Try again"}
-                </Alert>
-            </Snackbar>
-        )
-    }
 
     return ( 
         <div className='p-4'>
@@ -220,6 +207,22 @@ const Categories = ({ httpClient }) => {
             </Grid>
             <CategoryEditModal edit={edit} setEdit={setEdit} httpClient={httpClient} />
             <CategoryCreateModal show={create} setCreate={setCreate} httpClient={httpClient} />
+            <Snackbar
+                open={showSnackBar}
+                autoHideDuration={5000}
+                onClose={e => setShowSnackBar(false)}
+                anchorOrigin={
+                    {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                >
+                <Alert
+                    severity={'error'} sx={{ width: '100%' }}
+                >
+                    {error?.response?.data?.message ?? "An error occurred. Try again"}
+                </Alert>
+            </Snackbar>
         </div>
      );
 }

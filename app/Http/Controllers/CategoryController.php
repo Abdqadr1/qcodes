@@ -66,8 +66,9 @@ class CategoryController extends Controller
     public function deleteCategory(Request $request)
     {
         $id = $request->route("id");
+        $category = Category::withCount(['children', 'articles'])->findOrFail($id);
 
-        $this->authorize('delete', Category::findOrFail($id));
+        $this->authorize('delete', $category);
 
 
         return $this->categoryRepo->deleteCategory($id);

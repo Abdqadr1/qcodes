@@ -47,7 +47,11 @@ class CategoryPolicy
      */
     public function delete(Admin $user, Category $category)
     {
-        //TODO: check if category has children and articles
-        return Response::deny('You cannot perform this action');
+        if ($category->children_count > 0 || $category->articles_count > 0) {
+            return Response::deny('Invalid action, this category has children and/or articles.');
+        }
+        return $user->hasAnyRole('editor', 'admin', 'writer')
+            ? Response::allow()
+            : Response::deny('You are not authorized to perform this action');
     }
 }

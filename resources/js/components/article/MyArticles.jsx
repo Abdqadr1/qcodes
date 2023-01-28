@@ -44,20 +44,24 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const MyArticles = ({ httpClient }) => {
     const [keyword, setKeyword] = useState('');
+    const [showSnackBar, setShowSnackBar] = useState(false);
+    const [error, setError] = useState({});
     
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { isFetching, error, data, refetch } = useQuery('articleData', () =>
+    const { isFetching, data, refetch } = useQuery('articleData', () =>
         httpClient.get(`/api/my_article/all?keyword=${keyword}`),{ 
             refetchOnWindowFocus: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
             } 
         }
     );
 
-    const { isLoading: pageFetching, error: pageError, mutate: pageMutate } =
+    const { isLoading: pageFetching, mutate: pageMutate } =
         useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
         onSuccess: data => {
             queryClient.setQueryData('articleData', data);
@@ -65,11 +69,12 @@ const MyArticles = ({ httpClient }) => {
         onError: error => {
             const response = error?.response;
             Util.checkAuthError(response?.status, navigate);
-            const message = response?.data?.message ?? "An error occurred. Try again";
+                setError({ ...error });
+                setShowSnackBar(true);
         }
     });
 
-    const { isLoading: deleteFetching, error: deleteError, mutate: deleteMutate } =
+    const { isLoading: deleteFetching, mutate: deleteMutate } =
         useMutation(id => httpClient.delete(`/api/article/delete/${id}`), {
         onSuccess: (data, id) => {
             queryClient.setQueryData('articleData', oldData => {
@@ -82,7 +87,8 @@ const MyArticles = ({ httpClient }) => {
         onError: error => {
             const response = error?.response;
             Util.checkAuthError(response?.status, navigate);
-            const message = response?.data?.message ?? "An error occurred. Try again";
+                setError({ ...error });
+                setShowSnackBar(true);
         }
      });
 
@@ -106,26 +112,7 @@ const MyArticles = ({ httpClient }) => {
             </Backdrop>
         );
 
-     if (error || deleteError || pageError) {
-        const err = error ?? deleteError ?? pageError;
-        return (
-            <Snackbar
-                open={true}
-                autoHideDuration={2000}
-                anchorOrigin={
-                    {
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                >
-                <Alert
-                    severity={'error'} sx={{ width: '100%' }}
-                >
-                    {err?.response?.data?.message ?? "An error occurred. Try again"}
-                </Alert>
-            </Snackbar>
-        )
-    }
+    
 
     return ( 
          <div className='p-4'>
@@ -226,6 +213,22 @@ const MyArticles = ({ httpClient }) => {
                     </Card>
                 </Grid>
             </Grid>
+            <Snackbar
+                open={showSnackBar}
+                autoHideDuration={5000}
+                anchorOrigin={
+                    {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                onClose={()=>setShowSnackBar(false)}
+                >
+                <Alert
+                    severity={'error'} sx={{ width: '100%' }}
+                >
+                    {error?.response?.data?.message ?? "An error occurred. Try again"}
+                </Alert>
+            </Snackbar>
         </div>
      );
 }
