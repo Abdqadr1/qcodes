@@ -80,7 +80,7 @@ const NewArticle = ({ httpClient }) => {
     const initFormData = (c) => {
         c = c ? c : content;
         const formData = new FormData();
-        formData.set('content', content);
+        formData.set('content', c);
 
         if (response?.data) formData.set('id', response.data);
 
@@ -102,6 +102,7 @@ const NewArticle = ({ httpClient }) => {
 
     const handleChange = c => {
         if (c === content) return;
+        console.log(c);
         setContent(c);
         mutate(initFormData(c))
     }

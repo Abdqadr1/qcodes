@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\ArticleRepositoryInterface;
 use App\Models\Article;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -52,7 +54,7 @@ class ArticleController extends Controller
         $id = $request->input('id');
 
         if ($publish) {
-            return $request->validate([
+            $request->validate([
                 'title' => ['required', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'required|max:160',
                 'content' => 'required|max:10000',
@@ -69,7 +71,7 @@ class ArticleController extends Controller
                 'categories.*' => 'required|numeric|exists:categories,id',
             ]);
         } else {
-            return $request->validate([
+            $request->validate([
                 'title' => ['nullable', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'nullable|max:160',
                 'content' => 'required|max:10000',
@@ -85,6 +87,14 @@ class ArticleController extends Controller
                 'categories.*' => 'nullable|numeric|exists:categories,id',
             ]);
         }
+        return [
+            'title' => $request->input('title') ?? '',
+            'meta_title' => $request->input('meta_title') ?? '',
+            'content' => $request->input('content') ?? '',
+            'parent_id' => $request->input('parent_id') ?? null,
+            'summary' => $request->input('summary') ?? '',
+            'banner' => $request->input('banner') ?? '',
+        ];
     }
 
     public function saveArticle(Request $request, $publish = false)
@@ -94,10 +104,8 @@ class ArticleController extends Controller
 
             $validated = $this->validateArticle($request, $publish);
 
-            $tags = $validated['tags'] ?? null;
-            $categories = $validated['categories'] ?? null;
-            unset($validated['tags']);
-            unset($validated['categories']);
+            $tags = $request->tags ?? null;
+            $categories = $request->categories ?? null;
 
             $validated['slug'] = Str::slug($validated['title'] ?? '');
             $validated['author_id'] = $request->user('admin')->id;
@@ -150,5 +158,17 @@ class ArticleController extends Controller
         ];
 
         return $this->articleRepo->updateArticle($id, $array);
+    }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'upload' => 'required|file|max:1024'
+        ]);
+
+        $file = $request->file('upload');
+        $name = $request->user('admin')->id . '_' . Str::random(20) . '.' . $file->extension();
+        $path = $file->storePubliclyAs('articles', $name);
+        return new JsonResponse(['url' => '/' . $path]);
     }
 }

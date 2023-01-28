@@ -14,12 +14,20 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
             <CKEditor
                 config={{
                     placeholder: "Start typing...",
-                    removePlugins: [],
                     wordCount: {
                         showWordCount: true,
                         showCharCount: false,
                         onUpdate: stats => {
                             handleWordCount(stats.words);
+                        }
+                    },
+                    simpleUpload: {
+                        // The URL that the images are uploaded to.
+                        uploadUrl: '/api/article/upload/image',
+                        withCredentials: true,
+                        headers: {
+                            'X-Requested-With' : 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         }
                     }
                 } }

@@ -111,7 +111,7 @@ const EditArticle = ({ httpClient }) => {
     const initFormData = (c) => {
         c = c ? c : content;
         const formData = new FormData();
-        formData.set('content', content);
+        formData.set('content', c);
 
         formData.set('id', id);
 

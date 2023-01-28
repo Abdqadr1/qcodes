@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user('admin');
     });
 
+    Route::post('/article/upload/image', [ArticleController::class, 'uploadImage']);
+
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 
     Route::post('/admin/update', [AdminAuthController::class, 'update']);
