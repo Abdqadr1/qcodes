@@ -47,8 +47,11 @@ class TagPolicy
      */
     public function delete(Admin $user, Tag $tag)
     {
-        //TODO: check if tag has any articles associated with it
-
-        return Response::deny('You cannot perform this action');
+        if ($tag->articles_count > 0) {
+            return Response::deny('Invalid action, this tag has articles.');
+        }
+        return $user->hasAnyRole('editor', 'admin', 'writer')
+            ? Response::allow()
+            : Response::deny('You are not authorized to perform this action');
     }
 }

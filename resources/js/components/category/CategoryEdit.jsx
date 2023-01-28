@@ -15,8 +15,8 @@ import Util from '../utility';
 import { useNavigate } from 'react-router';
 
 const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
-    const data = edit.data;
-    const [parent, setParent] = useState({isError: false, data: data?.parent?.id, errorMessage: ""});
+    const data = {...edit.data};
+    const [parent, setParent] = useState({isError: false, data: {...data?.parent}, errorMessage: ""});
     const [alert, setAlert] = useState({ message: "", show: false });
     const [errors, setErrors] = useState({});
 
@@ -53,8 +53,8 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
         e.preventDefault();
         const target = e.target;
         const formData = new FormData(target);
-        if (parent?.data) {
-            formData.set('parent', parent.data);
+        if (parent?.data?.id) {
+            formData.set('parent_id', parent.data.id);
         }
         mutate([data?.id, formData]);
     }
@@ -100,7 +100,6 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
                             helperText={(errors?.content) ? errors.content[0] : ''}
                             error={(errors?.content)}
                         />
-                        
 
                         <TextField
                             sx={{width: '100%', mb:3}}
@@ -112,8 +111,6 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
                             helperText={(errors?.meta_title) ? errors.meta_title[0] : ''}
                             error={(errors?.meta_title)}
                         />
-                        
-
 
                         <Stack className='mb-3'>
                             <Autocompletion defaultValue={data?.parent}

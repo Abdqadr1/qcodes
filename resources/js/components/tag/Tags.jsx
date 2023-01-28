@@ -156,53 +156,59 @@ const Tags = ({ httpClient }) => {
                             title="Tags table"
                             subheader=""
                         />
-                        <CardContent className="pb-2">
-                            <TableContainer>
-                                <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell>Meta Title</TableCell>
-                                        <TableCell>Content</TableCell>
-                                        <TableCell>Actions</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                        {
-                                            data.data.data.map(
-                                                tag => <TableRow key={tag.id}>
-                                                    <TableCell>
-                                                        <p>{ tag.name }</p>
-                                                    </TableCell>
-                                                    <TableCell style={{ maxWidth: '150px'}}>
-                                                        <p className="text-xs font-weight-bold mb-0">{tag.meta_title}</p>
-                                                    </TableCell>
-                                                    <TableCell className="" style={{ maxWidth: '150px'}}>
-                                                        <span className="">{tag.content}</span>
-                                                    </TableCell>
-                                                    <TableCell className="align-middle">
-                                                        <Button
-                                                            color='primary' size="small"
-                                                            onClick={() => setEdit(s => ({ ...s, show: true, data: tag }))}
-                                                            variant="outlined">Edit</Button>
-                                                        {' '}
-                                                        <Button
-                                                            color='error' onClick={() => handleDelete(tag.id)}
-                                                            variant="outlined" size="small">Delete</Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            )
-                                        }
-                                   </TableBody>
-                                </Table>
-                            </TableContainer>
-                            {/* pagination */}
-                            <Pages
-                                mutate={pageMutate} path={data.data.path}
-                                from={data.data.from} total={data.data.total} lastPage={data.data.last_page}
-                                to={data.data.to} currentPage={data.data.current_page}
-                            />
-                        </CardContent>
+                        {
+                            (data.data.data.length > 0)
+                                ? 
+                                <CardContent className="pb-2">
+                                    <TableContainer>
+                                        <Table aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Name</TableCell>
+                                                <TableCell>Meta Title</TableCell>
+                                                <TableCell>Content</TableCell>
+                                                <TableCell>Actions</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                                {
+                                                    data.data.data.map(
+                                                        tag => <TableRow key={tag.id}>
+                                                            <TableCell>
+                                                                <p>{ tag.name }</p>
+                                                            </TableCell>
+                                                            <TableCell style={{ maxWidth: '150px'}}>
+                                                                <p className="text-xs font-weight-bold mb-0">{tag.meta_title}</p>
+                                                            </TableCell>
+                                                            <TableCell className="" style={{ maxWidth: '150px'}}>
+                                                                <span className="">{tag.content}</span>
+                                                            </TableCell>
+                                                            <TableCell className="align-middle">
+                                                                <Button
+                                                                    color='primary' size="small"
+                                                                    onClick={() => setEdit(s => ({ ...s, show: true, data: tag }))}
+                                                                    variant="outlined">Edit</Button>
+                                                                {' '}
+                                                                <Button
+                                                                    color='error' onClick={() => handleDelete(tag.id)}
+                                                                    variant="outlined" size="small">Delete</Button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )
+                                                }
+                                        </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    {/* pagination */}
+                                    <Pages
+                                        mutate={pageMutate} path={data.data.path}
+                                        from={data.data.from} total={data.data.total} lastPage={data.data.last_page}
+                                        to={data.data.to} currentPage={data.data.current_page}
+                                    />
+                                </CardContent>
+                            : <CardContent className="pb-2"> No Tag found </CardContent>
+                        }
+                        
                     </Card>
                 </Grid>
             </Grid>

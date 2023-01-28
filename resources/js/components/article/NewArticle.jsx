@@ -30,7 +30,7 @@ const NewArticle = ({ httpClient }) => {
     const [toast, setToast] = useState({ show: false, message: "Draft Saved!", action: null, severity: 'success' });
     const [form, setForm] = useState({});
     const [content, setContent] = useState("");
-    const [timeoutId, setTimeoutId] = useState(null);
+    const [wordCount, setWordCount] = useState(0);
     const [backdropOpen, setBackdropOpen] = useState(false);
 
     const navigate = useNavigate();
@@ -100,21 +100,13 @@ const NewArticle = ({ httpClient }) => {
         return formData;
     }
 
-    const handleChange = content => {
-        setContent(content);
-        clearTimeout(timeoutId);
-        setTimeoutId(
-            setTimeout(
-                () => {
-                    mutate(initFormData(content))
-                },
-                3000
-            )
-        );
+    const handleChange = c => {
+        if (c === content) return;
+        setContent(c);
+        mutate(initFormData(c))
     }
 
      const saveChanges = () => {
-        clearTimeout(timeoutId);
         setBackdropOpen(true);
         mutate(initFormData());
     }
@@ -124,6 +116,10 @@ const NewArticle = ({ httpClient }) => {
     }
 
     const handlePublish = e => {
+        if (wordCount < Blog.wordLimit) {
+            return setToast(s => ({ ...s, show: true, message: `Minimum word count is ${Blog.wordLimit}`, severity: 'error' }));
+        }
+
         setCategories(s => ({ ...s, isError: false}));
         setTags(s => ({ ...s, isError: false}));
 
@@ -139,6 +135,7 @@ const NewArticle = ({ httpClient }) => {
             setTags(s => ({ ...s, isError: true, errorMessage: 'Choose tags' }));
             return;
         }
+
         
         clearTimeout(timeoutId);
         setBackdropOpen(true);
@@ -149,7 +146,7 @@ const NewArticle = ({ httpClient }) => {
         <Row className='mx-0'>
             <Col sm={8} className='px-1 blog-side pt-5'>
                 <div>
-                    <ArticleEditor handleChange={handleChange} />
+                    <ArticleEditor content={content} handleChange={handleChange} handleWordCount={c => setWordCount(c)} />
                 </div>
             </Col>
             <Col sm={4} className='border-start border-secondary p-1' id='right-side'>

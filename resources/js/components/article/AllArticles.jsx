@@ -156,60 +156,68 @@ const AllArticles = ({ httpClient }) => {
                             title="Articles table"
                             subheader=""
                         />
-                        <CardContent className="pb-2">
-                            <TableContainer>
-                                <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Title</TableCell>
-                                        <TableCell>Summary</TableCell>
-                                        <TableCell>Published</TableCell>
-                                        <TableCell>Slug</TableCell>
-                                        <TableCell>Visit</TableCell>
-                                        <TableCell>Actions</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {
-                                        data.data.data.map(
-                                            article => <TableRow key={article.id}>
-                                                <TableCell style={{ maxWidth: '150px'}}>
-                                                    <p className=''>{Util.ellipsis(article.title)}</p>
-                                                </TableCell>
-                                                    <TableCell className="align-middle text-start" style={{ maxWidth: '150px'}}>
-                                                    <span className="text-secondary text-xs font-weight-bold">{Util.ellipsis(article.summary)}</span>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
-                                                </TableCell>
-                                                <TableCell style={{ maxWidth: '150px'}}>
-                                                    <span>{Util.ellipsis(article.slug)}</span>
-                                                </TableCell>
-                                                <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
-                                                    <p className="text-xs font-weight-bold mb-0">{article.visit}</p>
-                                                </TableCell>
-                                                <TableCell className="align-middle">
-                                                    <Button size='small' variant="outlined"
-                                                        href={`/admin/article/edit/${article.id}`}
-                                                        >Edit</Button>
-                                                    {' '}
-                                                    <Button variant="outlined" size='small' color='error'
-                                                        onClick={() => handleDelete(article.id)} 
-                                                    >Delete</Button>
-                                                </TableCell>
+
+                         {
+                            (data.data.data.length > 0)
+                                ?
+                                <CardContent className="pb-2">
+                                    <TableContainer>
+                                        <Table aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Title</TableCell>
+                                                <TableCell>Summary</TableCell>
+                                                <TableCell>Published</TableCell>
+                                                <TableCell>Slug</TableCell>
+                                                <TableCell>Visit</TableCell>
+                                                <TableCell>Actions</TableCell>
                                             </TableRow>
-                                        )
-                                    }
-                                </TableBody>
-                                </Table>
-                            </TableContainer>
-                            {/* pagination */}
-                            <Pages
-                                mutate={pageMutate} path={data.data.path}
-                                from={data.data.from} total={data.data.total} lastPage={data.data.last_page}
-                                to={data.data.to} currentPage={data.data.current_page}
-                            />
-                        </CardContent>
+                                        </TableHead>
+                                        <TableBody>
+                                            {
+                                                data.data.data.map(
+                                                    article => <TableRow key={article.id}>
+                                                        <TableCell style={{ maxWidth: '150px'}}>
+                                                            <p className=''>{Util.ellipsis(article.title)}</p>
+                                                        </TableCell>
+                                                            <TableCell className="align-middle text-start" style={{ maxWidth: '150px'}}>
+                                                            <span className="text-secondary text-xs font-weight-bold">{Util.ellipsis(article.summary)}</span>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
+                                                        </TableCell>
+                                                        <TableCell style={{ maxWidth: '150px'}}>
+                                                            <span>{Util.ellipsis(article.slug)}</span>
+                                                        </TableCell>
+                                                        <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
+                                                            <p className="text-xs font-weight-bold mb-0">{article.visit}</p>
+                                                        </TableCell>
+                                                        <TableCell className="align-middle">
+                                                            <Button size='small' variant="outlined"
+                                                                href={`/admin/article/edit/${article.id}`}
+                                                                >Edit</Button>
+                                                            {' '}
+                                                            <Button variant="outlined" size='small' color='error'
+                                                                onClick={() => handleDelete(article.id)} 
+                                                            >Delete</Button>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )
+                                            }
+                                        </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    {/* pagination */}
+                                    <Pages
+                                        mutate={pageMutate} path={data.data.path}
+                                        from={data.data.from} total={data.data.total} lastPage={data.data.last_page}
+                                        to={data.data.to} currentPage={data.data.current_page}
+                                    />
+                                </CardContent>
+                                : <CardContent className="pb-2">
+                                    No Article found
+                                </CardContent>
+                        }
                     </Card>
                 </Grid>
             </Grid>

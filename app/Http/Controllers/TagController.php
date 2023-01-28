@@ -60,7 +60,8 @@ class TagController extends Controller
     public function deleteTag(Request $request)
     {
         $id = $request->route("id");
-        $this->authorize('delete', Tag::findOrFail($id));
+        $tag = Tag::withCount(['articles'])->findOrFail($id);
+        $this->authorize('delete', $tag);
 
         return $this->repo->deleteTag($id);
     }

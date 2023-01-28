@@ -18,15 +18,15 @@ return new class extends Migration
             $table->bigInteger('author_id');
             $table->bigInteger('parent_id')->nullable();
             $table->string('banner')->default('');
-            $table->string('title', 100)->nullable();
-            $table->string('meta_title', 160)->nullable();
-            $table->string('slug')->nullable();
-            $table->tinyText('summary')->nullable();
+            $table->string('title', 100)->default('');
+            $table->string('meta_title', 160)->default('');
+            $table->string('slug')->default('');
+            $table->tinyText('summary')->default('');
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->bigInteger('visit')->default(0);
             $table->timestamp('last_visited')->nullable();
-            $table->text('content')->index()->nullable();
+            $table->text('content')->index()->default('');
             $table->timestamps();
         });
     }

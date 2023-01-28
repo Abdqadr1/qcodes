@@ -7,7 +7,6 @@ import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment.js';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat.js';
 import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage.js';
 import AutoLink from '@ckeditor/ckeditor5-link/src/autolink.js';
-import Autosave from '@ckeditor/ckeditor5-autosave/src/autosave.js';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote.js';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold.js';
 import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices.js';
@@ -23,6 +22,7 @@ import GeneralHtmlSupport from '@ckeditor/ckeditor5-html-support/src/generalhtml
 import Heading from '@ckeditor/ckeditor5-heading/src/heading.js';
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight.js';
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline.js';
+import HtmlComment from '@ckeditor/ckeditor5-html-support/src/htmlcomment.js';
 import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed.js';
 import Image from '@ckeditor/ckeditor5-image/src/image.js';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption.js';
@@ -37,15 +37,24 @@ import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic.js';
 import Link from '@ckeditor/ckeditor5-link/src/link.js';
 import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage.js';
 import List from '@ckeditor/ckeditor5-list/src/list.js';
-import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown.js';
+import ListProperties from '@ckeditor/ckeditor5-list/src/listproperties.js';
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed.js';
+import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar.js';
+import Mention from '@ckeditor/ckeditor5-mention/src/mention.js';
 import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak.js';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice.js';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js';
 import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter.js';
+import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting.js';
 import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters.js';
+import SpecialCharactersArrows from '@ckeditor/ckeditor5-special-characters/src/specialcharactersarrows.js';
+import SpecialCharactersCurrency from '@ckeditor/ckeditor5-special-characters/src/specialcharacterscurrency.js';
+import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials.js';
+import SpecialCharactersLatin from '@ckeditor/ckeditor5-special-characters/src/specialcharacterslatin.js';
+import SpecialCharactersMathematical from '@ckeditor/ckeditor5-special-characters/src/specialcharactersmathematical.js';
 import SpecialCharactersText from '@ckeditor/ckeditor5-special-characters/src/specialcharacterstext.js';
+import StandardEditingMode from '@ckeditor/ckeditor5-restricted-editing/src/standardeditingmode.js';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough.js';
 import Style from '@ckeditor/ckeditor5-style/src/style.js';
 import Subscript from '@ckeditor/ckeditor5-basic-styles/src/subscript.js';
@@ -70,7 +79,6 @@ Editor.builtinPlugins = [
 	Autoformat,
 	AutoImage,
 	AutoLink,
-	Autosave,
 	BlockQuote,
 	Bold,
 	CloudServices,
@@ -86,6 +94,7 @@ Editor.builtinPlugins = [
 	Heading,
 	Highlight,
 	HorizontalLine,
+	HtmlComment,
 	HtmlEmbed,
 	Image,
 	ImageCaption,
@@ -100,15 +109,24 @@ Editor.builtinPlugins = [
 	Link,
 	LinkImage,
 	List,
-	// Markdown,
+	ListProperties,
 	MediaEmbed,
+	MediaEmbedToolbar,
+	Mention,
 	PageBreak,
 	Paragraph,
 	PasteFromOffice,
 	RemoveFormat,
 	SimpleUploadAdapter,
+	SourceEditing,
 	SpecialCharacters,
+	SpecialCharactersArrows,
+	SpecialCharactersCurrency,
+	SpecialCharactersEssentials,
+	SpecialCharactersLatin,
+	SpecialCharactersMathematical,
 	SpecialCharactersText,
+	StandardEditingMode,
 	Strikethrough,
 	Style,
 	Subscript,
@@ -135,45 +153,46 @@ Editor.defaultConfig = {
 			'bold',
 			'italic',
 			'underline',
-			'strikethrough',
 			'horizontalLine',
-			'highlight',
-			'|',
+			'strikethrough',
+			'link',
 			'bulletedList',
 			'numberedList',
-			'outdent',
-			'indent',
+			'|',
+			'fontColor',
+			'highlight',
+			'fontFamily',
+			'fontSize',
+			'fontBackgroundColor',
+			'|',
+			'code',
+			'codeBlock',
+			'htmlEmbed',
 			'todoList',
 			'alignment',
+			'outdent',
+			'indent',
+			'restrictedEditingException',
 			'|',
-			'codeBlock',
-			'code',
-			'htmlEmbed',
 			'imageUpload',
 			'imageInsert',
 			'blockQuote',
 			'insertTable',
 			'mediaEmbed',
 			'|',
-			'fontColor',
-			'fontFamily',
-			'fontBackgroundColor',
-			'fontSize',
+			'sourceEditing',
+			'specialCharacters',
+			'pageBreak',
+			'removeFormat',
+			'findAndReplace',
 			'|',
 			'undo',
 			'redo',
-			'|',
-			'findAndReplace',
-			'specialCharacters',
 			'superscript',
 			'subscript',
 			'|',
-			'removeFormat',
-			'pageBreak',
-			'|',
 			'style',
-			'textPartLanguage',
-			'|'
+			'textPartLanguage'
 		]
 	},
 	language: 'en',

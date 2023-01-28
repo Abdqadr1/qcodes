@@ -2,7 +2,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import Editor from 'ckeditor5-custom-build';
 
 
-const ArticleEditor = ({ handleChange, content }) => {
+const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
 
     const change = (e) => {
         handleChange(e.getData());
@@ -14,7 +14,14 @@ const ArticleEditor = ({ handleChange, content }) => {
             <CKEditor
                 config={{
                     placeholder: "Start typing...",
-                    removePlugins: []
+                    removePlugins: [],
+                    wordCount: {
+                        showWordCount: true,
+                        showCharCount: false,
+                        onUpdate: stats => {
+                            handleWordCount(stats.words);
+                        }
+                    }
                 } }
                 editor={Editor}
                 data={content ?? ""}
@@ -29,10 +36,10 @@ const ArticleEditor = ({ handleChange, content }) => {
                     });
                 } }
                 onChange={ ( event, editor ) => {
-                    change(editor);
+                    
                 } }
                 onBlur={ ( event, editor ) => {
-                    // handleBlur(editor);
+                    change(editor);
                 } }
                 onFocus={ ( event, editor ) => {
                     // console.log( 'Focus.', editor );

@@ -46,7 +46,7 @@ const CategoryCreateModal = ({ httpClient, show, setCreate }) => {
         e.preventDefault();
         const target = e.target;
         const formData = new FormData(target);
-        if (parent?.data) {
+        if (parent?.data?.id) {
             formData.set('parent_id', parent.data?.id);
         }
         mutate(formData);

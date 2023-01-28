@@ -29,7 +29,7 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
 
   const { isLoading, mutate } =
     useMutation(({ url, keyword }) => httpClient.get(`${url}?keyword=${keyword}`), {
-          refetchOnWindowFocus: false ,
+        refetchOnWindowFocus: false ,
         onSuccess: (data) => {
           setList([...data.data]);
         },
@@ -41,7 +41,6 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
     });
 
   const handleChange = (e, val) => {
-    setDefValue(val);
     if (isMultiple) {
       const limitReached = val.length >= 5;
       if (limitReached) {

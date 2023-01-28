@@ -33,7 +33,7 @@ const EditArticle = ({ httpClient }) => {
     const [toast, setToast] = useState({ show: false, message: "", action: null, severity: 'success' });
     const [form, setForm] = useState({});
     const [content, setContent] = useState("");
-    const [timeoutId, setTimeoutId] = useState(null);
+    const [wordCount, setWordCount] = useState(0);
     const [backdropOpen, setBackdropOpen] = useState(false);
     const [isPublished, setPublished] = useState(false);
 
@@ -133,20 +133,12 @@ const EditArticle = ({ httpClient }) => {
 
     const handleChange = c => {
         if (isFirstFetch) return;
+        if (c === content) return; 
         setContent(c);
-        clearTimeout(timeoutId);
-        setTimeoutId(
-            setTimeout(
-                () => {
-                    mutate(initFormData(c))
-                },
-                3000
-            )
-        );
+        mutate(initFormData(c))
     }
 
     const saveChanges = () => {
-        clearTimeout(timeoutId);
         setBackdropOpen(true);
         mutate(initFormData());
     }
@@ -156,6 +148,9 @@ const EditArticle = ({ httpClient }) => {
     }
 
     const handlePublish = e => {
+         if (wordCount < Blog.wordLimit) {
+            return setToast(s => ({ ...s, show: true, message: `Minimum word count is ${Blog.wordLimit}`, severity: 'error' }));
+        }
         if (!(form?.title && form?.meta_title && form?.summary)) {
             setToast(s => ({ ...s, show: true, message: 'Title and Meta title is required', severity: 'error' }));
             return;
@@ -178,7 +173,7 @@ const EditArticle = ({ httpClient }) => {
         <Row className='mx-0'>
             <Col sm={8} className='px-1 blog-side pt-5'>
                 <div>
-                    <ArticleEditor handleChange={handleChange} content={content} />
+                    <ArticleEditor handleChange={handleChange} content={content} handleWordCount={c => setWordCount(c)} />
                 </div>
             </Col>
             <Col sm={4} className='border-start border-secondary p-1' id='right-side'>

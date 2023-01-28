@@ -174,61 +174,67 @@ const Admin = ({ httpClient }) => {
                             title="Admins table"
                             subheader=""
                         />
-                        <CardContent className="pb-2">
-                            <TableContainer>
-                                <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell>Roles</TableCell>
-                                        <TableCell>Status</TableCell>
-                                        <TableCell>Last Login</TableCell>
-                                        <TableCell>Actions</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {
-                                        data.data.data.map(
-                                            admin => <TableRow key={admin.id}>
-                                                <TableCell sx={{maxWidth: '200px'}}>
-                                                    <div className="d-flex px-2 py-1">
-                                                    <Avatar sx={{marginRight: 1}} alt={admin.first_name} src="/static/images/avatar/1.jpg" />
-                                                    <div className="d-flex flex-column justify-content-center">
-                                                        <h6 className="mb-0 text-sm">{`${admin.first_name} ${admin.last_name}`}</h6>
-                                                        <p className="text-xs text-secondary mb-0">{admin.email}</p>
-                                                    </div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <p className="text-xs font-weight-bold mb-0">Manager</p>
-                                                    <p className="text-xs text-secondary mb-0">Organization</p>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <span className="">{admin.enabled ? "Enabled" : "Disabled"}</span>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <span className="text-secondary text-xs font-weight-bold">{admin.last_login_at}</span>
-                                                </TableCell>
-                                                <TableCell className="align-middle">
-                                                    <Button size="small" onClick={() => setEdit(s => ({ ...s, show: true, data: admin }))}
-                                                        variant="outlined" color='primary'>Edit</Button>
-                                                    {' '}
-                                                    <Button onClick={() => handleDelete(admin.id)} variant="outlined"  color='error'
-                                                        size="small">Delete</Button>
-                                                </TableCell>
+                        {
+                            (data.data.data.length > 0)
+                                ?
+                                <CardContent className="pb-2">
+                                    <TableContainer>
+                                        <Table aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Name</TableCell>
+                                                <TableCell>Roles</TableCell>
+                                                <TableCell>Status</TableCell>
+                                                <TableCell>Last Login</TableCell>
+                                                <TableCell>Actions</TableCell>
                                             </TableRow>
-                                        )
-                                    }
-                                   </TableBody>
-                                </Table>
-                            </TableContainer>
-                            {/* pagination */}
-                            <Pages
-                                mutate={pageMutate} path={data.data.path}
-                                from={data.data.from} total={data.data.total} lastPage={data.data.last_page}
-                                to={data.data.to} currentPage={data.data.current_page}
-                            />
-                        </CardContent>
+                                        </TableHead>
+                                        <TableBody>
+                                            {
+                                                data.data.data.map(
+                                                    admin => <TableRow key={admin.id}>
+                                                        <TableCell sx={{maxWidth: '200px'}}>
+                                                            <div className="d-flex px-2 py-1">
+                                                            <Avatar sx={{marginRight: 1}} alt={admin.first_name} src="/static/images/avatar/1.jpg" />
+                                                            <div className="d-flex flex-column justify-content-center">
+                                                                <h6 className="mb-0 text-sm">{`${admin.first_name} ${admin.last_name}`}</h6>
+                                                                <p className="text-xs text-secondary mb-0">{admin.email}</p>
+                                                            </div>
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <p className="text-xs font-weight-bold mb-0">Manager</p>
+                                                            <p className="text-xs text-secondary mb-0">Organization</p>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <span className="">{admin.enabled ? "Enabled" : "Disabled"}</span>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <span className="text-secondary text-xs font-weight-bold">{admin.last_login_at}</span>
+                                                        </TableCell>
+                                                        <TableCell className="align-middle">
+                                                            <Button size="small" onClick={() => setEdit(s => ({ ...s, show: true, data: admin }))}
+                                                                variant="outlined" color='primary'>Edit</Button>
+                                                            {' '}
+                                                            <Button onClick={() => handleDelete(admin.id)} variant="outlined"  color='error'
+                                                                size="small">Delete</Button>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )
+                                            }
+                                        </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    {/* pagination */}
+                                    <Pages
+                                        mutate={pageMutate} path={data.data.path}
+                                        from={data.data.from} total={data.data.total} lastPage={data.data.last_page}
+                                        to={data.data.to} currentPage={data.data.current_page}
+                                    />
+                                </CardContent>
+                            :
+                                <CardContent className="pb-2"> No Admin found </CardContent>
+                        }
                     </Card>
                 </Grid>
             </Grid>
