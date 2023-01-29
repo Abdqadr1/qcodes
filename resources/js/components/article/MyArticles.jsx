@@ -24,6 +24,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
+import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router';
 
 const theme = createTheme();
@@ -164,6 +165,7 @@ const MyArticles = ({ httpClient }) => {
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
+                                                <TableCell>Banner</TableCell>
                                                 <TableCell>Title</TableCell>
                                                 <TableCell>Summary</TableCell>
                                                 <TableCell>Published</TableCell>
@@ -176,6 +178,13 @@ const MyArticles = ({ httpClient }) => {
                                             {
                                                 data.data.data.map(
                                                     article => <TableRow key={article.id}>
+                                                        <TableCell style={{ maxWidth: '150px', paddingLeft: 0  }}>
+                                                            <Avatar variant='square'
+                                                                alt={Util.ellipsis(article?.title, 5)}
+                                                                src={article?.banner}
+                                                                sx={{ width: 100, height: 80, objectFit: 'fill'}}
+                                                            >{ Util.ellipsis(article?.title, 5)}</Avatar>
+                                                        </TableCell>
                                                         <TableCell style={{ maxWidth: '150px'}}>
                                                             <p className=''>{Util.ellipsis(article.title)}</p>
                                                         </TableCell>
@@ -189,7 +198,7 @@ const MyArticles = ({ httpClient }) => {
                                                             <span>{Util.ellipsis(article.slug)}</span>
                                                         </TableCell>
                                                         <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
-                                                            <p className="text-xs font-weight-bold mb-0">{article.visit}</p>
+                                                            <p className='text-center'>{article.visit}</p>
                                                         </TableCell>
                                                         <TableCell className="align-middle">
                                                             <Button size='small' variant="outlined"

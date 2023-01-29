@@ -29,19 +29,18 @@ class ArticleRepository implements ArticleRepositoryInterface
                     $query->orWhere('content', 'like', '%' . $keyword . '%');
                     $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
                 })
-                ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+                ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit', 'banner'])
                 ->paginate(5);
         }
         return Article::orderBy('created_at', 'DESC')
             ->where('author_id', $id)
-            ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+            ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit', 'banner'])
             ->paginate(5);
     }
 
     public function getAllArticlesPaginate(Request $request)
     {
         $keyword = $request->input('keyword');
-        $id = $request->user('admin')->id;
 
         if ($keyword) {
             return Article::orderBy('created_at', 'DESC')
@@ -51,11 +50,11 @@ class ArticleRepository implements ArticleRepositoryInterface
                     $query->orWhere('content', 'like', '%' . $keyword . '%');
                     $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
                 })
-                ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+                ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit', 'banner'])
                 ->paginate(5);
         }
         return Article::orderBy('created_at', 'DESC')
-            ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+            ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit', 'banner'])
             ->paginate(5);
     }
 

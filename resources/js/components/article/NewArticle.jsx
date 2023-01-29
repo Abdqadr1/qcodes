@@ -32,6 +32,8 @@ const NewArticle = ({ httpClient }) => {
     const [content, setContent] = useState("");
     const [wordCount, setWordCount] = useState(0);
     const [backdropOpen, setBackdropOpen] = useState(false);
+    const [banner, setBanner] = useState('');
+    const bannerRef = useRef();
 
     const navigate = useNavigate();
     
@@ -69,6 +71,22 @@ const NewArticle = ({ httpClient }) => {
             }
         });
 
+    const { isLoading:bannerLoading, mutate: bannerMutate } =
+        useMutation((formData) => httpClient.post('/api/article/upload/banner', formData),
+            {
+            onSuccess: data => {
+                    setBanner(data.data.url);
+            },
+            onError: error => {
+                const response = error?.response;
+                Util.checkAuthError(response?.status, navigate);
+                const message = response?.data?.message ?? "An error occurred";
+                setToast(s => ({ ...s, show: true, message, severity: 'error' }));
+                setBanner('');
+            }
+        });
+
+
 
     const handleInput = e => {
         const target = e.target;
@@ -81,6 +99,7 @@ const NewArticle = ({ httpClient }) => {
         c = c ? c : content;
         const formData = new FormData();
         formData.set('content', c);
+        formData.set('banner', banner);
 
         if (response?.data) formData.set('id', response.data);
 
@@ -112,8 +131,13 @@ const NewArticle = ({ httpClient }) => {
         mutate(initFormData());
     }
     
-    const uploadBanner = e => {
-        console.log(e.target.value);
+    const uploadBanner = event => {
+        const input = event.target;
+        const file = input.files[0]
+        Util.showImage(file, e => bannerRef.current.src = e);
+        const formData = new FormData();
+        formData.set('upload', file);
+        bannerMutate(formData);
     }
 
     const handlePublish = e => {
@@ -161,6 +185,9 @@ const NewArticle = ({ httpClient }) => {
                     multiline
                 />
                 <div className='blog-banner mb-3'>
+                    <img alt='article banner' ref={bannerRef} src={banner} />
+                    {(bannerLoading) ? <CircularProgress className='loading' color="inherit" /> : ''}
+
                     <IconButton color="primary" aria-label="upload picture" component="label">
                         <input hidden accept="image/*" type="file" onChange={uploadBanner} />
                         <PhotoCamera />

@@ -171,4 +171,16 @@ class ArticleController extends Controller
         $path = $file->storePubliclyAs('articles', $name);
         return new JsonResponse(['url' => '/' . $path]);
     }
+
+    public function uploadBanner(Request $request)
+    {
+        $request->validate([
+            'upload' => 'required|file|max:1024'
+        ]);
+
+        $file = $request->file('upload');
+        $name = $request->user('admin')->id . '_' . Str::random(20) . '.' . $file->extension();
+        $path = $file->storePubliclyAs('banners', $name);
+        return new JsonResponse(['url' => '/' . $path]);
+    }
 }

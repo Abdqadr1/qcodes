@@ -1,5 +1,7 @@
 export default class Util {
     static ellipsis(text, len = 50) {
+        if (text.length <= len) return text;
+        
         return text?.substring(0, len) + '...';
     }
 
@@ -37,5 +39,13 @@ export default class Util {
         shouldWait = true;
         setTimeout(setTimeoutFunc, delay)
         };
+    }
+
+    static showImage(file, setImage) {
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+            setImage(event.target.result);
+        }
+        fileReader.readAsDataURL(file);
     }
 }

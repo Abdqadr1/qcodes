@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/article/upload/image', [ArticleController::class, 'uploadImage']);
+    Route::post('/article/upload/banner', [ArticleController::class, 'uploadBanner']);
 
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 
