@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import Util from '../utility';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
+import PreviewIcon from '@mui/icons-material/Preview';
+import Link from '@mui/material/Link';
 import ClearIcon from '@mui/icons-material/Clear';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -26,6 +28,7 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router';
+import { IconButton } from '@mui/material';
 
 const theme = createTheme();
 
@@ -208,6 +211,10 @@ const MyArticles = ({ httpClient }) => {
                                                             <Button variant="outlined" size='small' color='error'
                                                                 onClick={() => handleDelete(article.id)} 
                                                             >Delete</Button>
+                                                            {' '}
+                                                            <Link href={`/article/${article?.slug}/preview`} variant="outlined" size='small' title='preview'>
+                                                                <PreviewIcon />
+                                                            </Link>
                                                         </TableCell>
                                                     </TableRow>
                                                 )

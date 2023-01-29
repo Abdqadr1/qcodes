@@ -15,6 +15,13 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->with(['tags:id,name', 'categories:id,name', 'parent:id,title'])
             ->find($id);
     }
+
+    public function getArticleByTitle($slug)
+    {
+        return Article::with(['tags:id,name', 'categories:id,name', 'parent:id,title'])
+            ->where('slug', $slug)->first();
+    }
+
     public function getMyArticlesPaginate(Request $request)
     {
         $keyword = $request->input('keyword');

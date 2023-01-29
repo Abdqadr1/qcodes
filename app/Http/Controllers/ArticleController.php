@@ -25,6 +25,11 @@ class ArticleController extends Controller
         return $this->articleRepo->getArticleById($request->route('id'));
     }
 
+    public function getArticleBySlug(Request $request)
+    {
+        return $this->articleRepo->getArticleByTitle($request->route('slug'));
+    }
+
     public function getMyArticlesPaginate(Request $request)
     {
         return $this->articleRepo->getMyArticlesPaginate($request);

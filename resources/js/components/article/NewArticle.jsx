@@ -121,6 +121,7 @@ const NewArticle = ({ httpClient }) => {
 
     const handleChange = c => {
         if (c === content) return;
+        if (!form?.title) return;
         console.log(c);
         setContent(c);
         mutate(initFormData(c))
@@ -161,8 +162,6 @@ const NewArticle = ({ httpClient }) => {
             return;
         }
 
-        
-        clearTimeout(timeoutId);
         setBackdropOpen(true);
         publishMutate(initFormData());
     }

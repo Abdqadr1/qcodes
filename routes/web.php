@@ -29,3 +29,7 @@ Route::get('/admin', function () {
 Route::get('/admin/{path?}', function () {
     return view('admin.home', ['title' => 'Admin']);
 })->where('path', '.*');
+
+Route::get('/article/{title}/preview', function () {
+    return view('article.preview', ['title' => 'Preview']);
+});

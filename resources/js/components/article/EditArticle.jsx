@@ -153,6 +153,7 @@ const EditArticle = ({ httpClient }) => {
     const handleChange = c => {
         if (isFirstFetch) return;
         if (c === content) return; 
+        if (!form?.title) return;
         setContent(c);
         mutate(initFormData(c))
     }
@@ -188,8 +189,6 @@ const EditArticle = ({ httpClient }) => {
             return;
         }
         setBackdropOpen(true);
-
-        clearTimeout(timeoutId);
         publishMutate(initFormData());
     }
 

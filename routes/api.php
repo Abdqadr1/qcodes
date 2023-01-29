@@ -52,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/category/edit/{id}', [CategoryController::class, 'editCategory']);
     Route::post('/tag/edit/{id}', [TagController::class, 'editTag']);
     Route::post('/article/edit/{id}', [ArticleController::class, 'getArticleById']);
+    Route::post('/article/preview/{slug}', [ArticleController::class, 'getArticleBySlug']);
     Route::post('/article/unpublish/{id}', [ArticleController::class, 'unpublishArticle']);
 
 
