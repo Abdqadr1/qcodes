@@ -42,6 +42,17 @@ class AdminAuthController extends Controller
         return $admin;
     }
 
+    public function forgotPassword(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|max:255|exists:admins',
+        ]);
+
+        $admin = Admin::where('email', $validated['email'])->first();
+
+        //TODO: send change password mail to user;
+    }
+
     public function login(Request $request)
     {
         $validated = $request->validate([
