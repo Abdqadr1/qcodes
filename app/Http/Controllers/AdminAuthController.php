@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\AdminRepositoryInterface;
 use App\Models\Admin;
+use App\Models\AdminResetPassword;
 use App\Rules\PhoneNumber;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use RuntimeException;
 
 class AdminAuthController extends Controller
@@ -42,15 +45,51 @@ class AdminAuthController extends Controller
         return $admin;
     }
 
+    public function confirmEmail(Request $request)
+    {
+
+        $request->validate([
+            'email' => 'required|email|max:255|exists:admins',
+        ]);
+    }
+
     public function forgotPassword(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'email' => 'required|email|max:255|exists:admins',
         ]);
 
-        $admin = Admin::where('email', $validated['email'])->first();
+        $reset = DB::table('admin_password_resets')->upsert([
+            'email' => $request->email,
+            'token' => Str::random(64),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], ['email'], ['token', 'updated_at']);
 
         //TODO: send change password mail to user;
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:8|max:255|confirmed',
+            'email' => 'required|email|max:255|exists:admin_password_resets',
+            'token' => 'required|max:255|exists:admin_password_resets',
+        ]);
+
+
+        $adminReset = DB::table('admin_password_resets')->where(function ($query) use ($request) {
+            $query->where('email', $request->email);
+            $query->where('token', $request->token);
+        })->first();
+
+        $password = bcrypt($request->password);
+
+        if ($adminReset) {
+            $admin = Admin::where('email', $request->email)->first();
+            $admin->password = $password;
+            $admin->save();
+        }
     }
 
     public function login(Request $request)

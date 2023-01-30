@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/admin/signup', [AdminAuthController::class, 'register']);
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/admin/forgotpassword', [AdminAuthController::class, 'forgotPassword']);
+Route::post('/admin/changepassword', [AdminAuthController::class, 'changePassword']);
 
 
 Route::middleware('auth:sanctum')->group(function () {

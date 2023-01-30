@@ -15,6 +15,7 @@ import AdminRegistration from './auth/Registration';
 import Profile from './auth/Profile';
 import AllArticles from './article/AllArticles';
 import ForgotPassword from './auth/ForgotPassword';
+import ChangePassword from './auth/ChangePassword';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
                         <Route path='/admin/article/new' element={<NewArticle httpClient={http} />} />
                         <Route path='/admin/article/edit/:id' element={<EditArticle httpClient={http} />} />
                         <Route path='/admin/forgotpassword' element={<ForgotPassword httpClient={http} />} />
+                        <Route path='/admin/changepassword/:token' element={<ChangePassword httpClient={http} />} />
                         <Route path='*' element={<h4>404: Not Found</h4>} />
                     </Routes>
                 </QueryClientProvider>

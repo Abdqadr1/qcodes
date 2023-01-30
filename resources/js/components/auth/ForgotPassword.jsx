@@ -92,7 +92,7 @@ const ForgotPassword = ({ httpClient }) => {
                         onSubmit={handleSubmit}
                     >
                         <Paper elevation={2} sx={{ padding: '4em 2em', textAlign: 'center', }}>
-                            <h4 className='mb-3'>Forgot Password</h4>
+                            <h4 className='mb-3'>Reset Password</h4>
                             {
                                 (alert.show)
                                 ? <Alert severity="error" className='mb-3' >{alert.message}</Alert>
@@ -119,9 +119,9 @@ const ForgotPassword = ({ httpClient }) => {
                             >
                                 <Button
                                     disabled={isLoading}
-                                    type='submit' variant="contained" color='success'
-                                    sx={{width: 150}}
-                                >Send Mail</Button>
+                                    type='submit' variant="contained" color='primary'
+                                    sx={{width: 250}}
+                                >Send Reset Password Link</Button>
                             </Stack>
                         </Paper>  
                     </Box>
