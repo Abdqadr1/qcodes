@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Service\MailService;
 use App\Interfaces\AdminRepositoryInterface;
 use App\Models\Admin;
 use App\Models\AdminResetPassword;
@@ -41,6 +42,17 @@ class AdminAuthController extends Controller
         $admin =  $this->adminRepo->createAdmin($validated);
 
         //TODO: send verification mail
+        if ($admin) {
+            MailService::send([
+                'message' => "You have been registered as an employee at our company",
+                'subject' => "Confirm your email address",
+                'from' => "registration@employee.com",
+                'view' => "mail.admin.registration",
+                'to' => $admin->email,
+                'link' => '',
+            ]);
+        }
+
 
         return $admin;
     }
@@ -67,6 +79,16 @@ class AdminAuthController extends Controller
         ], ['email'], ['token', 'updated_at']);
 
         //TODO: send change password mail to user;
+        if ($reset) {
+            MailService::send([
+                'message' => "You have been registered as an employee at our company",
+                'subject' => "Confirm your email address",
+                'from' => "registration@employee.com",
+                'view' => "mail.admin.forgotpassword",
+                'to' => $request->email,
+                'link' => '',
+            ]);
+        }
     }
 
     public function changePassword(Request $request)
