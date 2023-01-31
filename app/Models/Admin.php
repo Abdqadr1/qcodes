@@ -13,7 +13,8 @@ class Admin extends Authenticatable
     protected $table = "admins";
 
     protected $casts = [
-        'enabled' => 'boolean'
+        'enabled' => 'boolean',
+        'email_verified_at' => 'timestamp',
     ];
 
     protected $with = ['roles'];
@@ -23,7 +24,7 @@ class Admin extends Authenticatable
         "bio", "email", "password",
         "last_login_at", "enabled", 'first_name',
         'last_name', 'street_address', 'state',
-        'country', 'password',
+        'country', 'password', 'remember_token'
     ];
 
 

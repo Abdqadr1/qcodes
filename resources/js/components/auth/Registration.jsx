@@ -54,7 +54,7 @@ const AdminRegistration = ({ httpClient }) => {
                 >
                     <Grid item xs={12} md={6} >
                         <Paper elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
-                            <Typography variant="h5" display="block" gutterBottom>
+                            <Typography variant="h6" display="block" gutterBottom>
                                 Verify your email address, Mail has been sent. <br />
                                 <Zoom in style={{ transitionDelay: '500ms' }}>
                                 <TaskAltIcon sx={{mt: 4, fontSize: '3rem', color: 'success.dark'}}/>

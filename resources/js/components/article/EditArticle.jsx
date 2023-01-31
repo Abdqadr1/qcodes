@@ -165,11 +165,12 @@ const EditArticle = ({ httpClient }) => {
     
     const uploadBanner = event => {
         const input = event.target;
-        const file = input.files[0]
-        Util.showImage(file, e => bannerRef.current.src = e);
+        const file = input.files[0];
+        const show = e => bannerRef.current.src = e;
         const formData = new FormData();
         formData.set('upload', file);
-        bannerMutate(formData);
+        const mutate = () => bannerMutate(formData);
+        Util.showImage(file, show, setToast, mutate);
     }
 
     const handlePublish = e => {

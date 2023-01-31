@@ -11,7 +11,7 @@ class ArticleRepository implements ArticleRepositoryInterface
 {
     public function getArticleById($id)
     {
-        return Article::orderBy('created_at', 'DESC')
+        return Article::orderBy('updated_at', 'DESC')
             ->with(['tags:id,name', 'categories:id,name', 'parent:id,title'])
             ->find($id);
     }
@@ -28,7 +28,7 @@ class ArticleRepository implements ArticleRepositoryInterface
         $id = $request->user('admin')->id;
 
         if ($keyword) {
-            return Article::orderBy('created_at', 'DESC')
+            return Article::orderBy('updated_at', 'DESC')
                 ->where('author_id', $id)
                 ->where(function ($query) use ($keyword) {
                     $query->where('title', 'like', '%' . $keyword . '%');
@@ -39,7 +39,7 @@ class ArticleRepository implements ArticleRepositoryInterface
                 ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit', 'banner'])
                 ->paginate(5);
         }
-        return Article::orderBy('created_at', 'DESC')
+        return Article::orderBy('updated_at', 'DESC')
             ->where('author_id', $id)
             ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit', 'banner'])
             ->paginate(5);
@@ -50,7 +50,7 @@ class ArticleRepository implements ArticleRepositoryInterface
         $keyword = $request->input('keyword');
 
         if ($keyword) {
-            return Article::orderBy('created_at', 'DESC')
+            return Article::orderBy('updated_at', 'DESC')
                 ->where(function ($query) use ($keyword) {
                     $query->where('title', 'like', '%' . $keyword . '%');
                     $query->orWhere('summary', 'like', '%' . $keyword . '%');
@@ -60,7 +60,7 @@ class ArticleRepository implements ArticleRepositoryInterface
                 ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit', 'banner'])
                 ->paginate(5);
         }
-        return Article::orderBy('created_at', 'DESC')
+        return Article::orderBy('updated_at', 'DESC')
             ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit', 'banner'])
             ->paginate(5);
     }

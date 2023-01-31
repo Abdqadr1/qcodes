@@ -168,7 +168,7 @@ class ArticleController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'upload' => 'required|file|max:1024'
+            'upload' => 'required|file|max:2048'
         ]);
 
         $file = $request->file('upload');
@@ -180,7 +180,7 @@ class ArticleController extends Controller
     public function uploadBanner(Request $request)
     {
         $request->validate([
-            'upload' => 'required|file|max:1024'
+            'upload' => 'required|file|max:2048'
         ]);
 
         $file = $request->file('upload');

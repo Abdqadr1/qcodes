@@ -41,10 +41,24 @@ export default class Util {
         };
     }
 
-    static showImage(file, setImage) {
+    static showImage(file, setImage, setToast, mutate) {
         const fileReader = new FileReader();
         fileReader.onload = (event) => {
-            setImage(event.target.result);
+            const image = new Image();
+            image.src = event.target.result;
+            image.onload = function () {
+                const height = this.height;
+                const width = this.width;
+                if (height < 540 || width < 1100) {
+                    //TODO: specify image text
+                    setToast(s => ({...s, show: true, message: "Image dimension is not accepted", severity: 'warning' }))
+                    return false;
+                }else{
+                    setImage(event.target.result);
+                    mutate();
+                    return true;
+                }
+            };
         }
         fileReader.readAsDataURL(file);
     }

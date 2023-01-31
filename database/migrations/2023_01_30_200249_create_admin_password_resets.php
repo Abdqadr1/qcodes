@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('admin_password_resets', function (Blueprint $table) {
             $table->string('email')->unique();
             $table->string('token');
+            $table->timestamp('expired_at');
             $table->timestamps();
         });
     }

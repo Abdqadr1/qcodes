@@ -5,7 +5,9 @@ import Typography from '@mui/material/Typography';
 const Pages = ({ from, total, lastPage, to, currentPage, mutate, path }) => {
 
     const handleChange = (_event, newPage) => {
-        mutate(`${path}?page=${newPage}`);
+        if (newPage !== currentPage) {
+            mutate(`${path}?page=${newPage}`);
+        }
     };
     
     
@@ -17,6 +19,7 @@ const Pages = ({ from, total, lastPage, to, currentPage, mutate, path }) => {
                 siblingCount={2} boundaryCount={2} 
                 count={lastPage} defaultPage={currentPage}
                 showFirstButton showLastButton onChange={handleChange}
+                
             />
         </div>
      );

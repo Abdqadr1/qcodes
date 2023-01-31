@@ -159,7 +159,7 @@ const AllArticles = ({ httpClient }) => {
                         />
 
                          {
-                            (data.data.data.length > 0)
+                            (data?.data.data.length > 0)
                                 ?
                                 <CardContent className="pb-2">
                                     <TableContainer>

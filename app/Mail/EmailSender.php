@@ -48,8 +48,9 @@ class EmailSender extends Mailable
         return new Content(
             view: $this->data['view'],
             with: [
-                'bodyMessage' => $this->data['message'],
+                'bodyMessage' => $this->data['message'] ?? '',
                 'link' => $this->data['link'],
+                'first_name' => $this->data['first_name'] ?? '',
             ]
         );
     }

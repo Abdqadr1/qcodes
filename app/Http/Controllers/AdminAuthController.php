@@ -12,6 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use RuntimeException;
 
@@ -39,30 +41,47 @@ class AdminAuthController extends Controller
 
         $validated['password'] = bcrypt($validated['password']);
 
+        $token = Str::random(80);
+
+        $validated['remember_token'] = $token;
+
         $admin =  $this->adminRepo->createAdmin($validated);
 
-        //TODO: send verification mail
         if ($admin) {
             MailService::send([
-                'message' => "You have been registered as an employee at our company",
-                'subject' => "Confirm your email address",
+                'first_name' => $admin->first_name,
+                'subject' => env('APP_NAME') . " Confirmation Email",
                 'from' => "registration@employee.com",
                 'view' => "mail.admin.registration",
                 'to' => $admin->email,
-                'link' => '',
+                'link' => URL::to('/admin/confirm?token=' .  $token . '&email=' . $request->email),
             ]);
         }
 
-
-        return $admin;
+        return;
     }
 
     public function confirmEmail(Request $request)
     {
-
         $request->validate([
             'email' => 'required|email|max:255|exists:admins',
+            'token' => 'required|size:80',
         ]);
+
+        $admin = Admin::where(function ($query) use ($request) {
+            $query->where('email', $request->email);
+            $query->where('remember_token', $request->token);
+        })->first();
+
+        if ($admin) {
+            if ($admin->email_verified_at) {
+                return new JsonResponse(['message' => 'Email address has already been confirmed'], 400);
+            }
+            $admin->email_verified_at = now();
+            $admin->save();
+        } else {
+            return new JsonResponse(['message' => 'Invalid email or token'], 400);
+        }
     }
 
     public function forgotPassword(Request $request)
@@ -71,22 +90,23 @@ class AdminAuthController extends Controller
             'email' => 'required|email|max:255|exists:admins',
         ]);
 
+        $token = Str::random(64);
+
         $reset = DB::table('admin_password_resets')->upsert([
             'email' => $request->email,
-            'token' => Str::random(64),
+            'token' => $token,
             'created_at' => now(),
             'updated_at' => now(),
-        ], ['email'], ['token', 'updated_at']);
+            'expired_at' => now()->addWeek(),
+        ], ['email'], ['token', 'updated_at', 'expired_at']);
 
-        //TODO: send change password mail to user;
         if ($reset) {
             MailService::send([
-                'message' => "You have been registered as an employee at our company",
-                'subject' => "Confirm your email address",
-                'from' => "registration@employee.com",
+                'subject' => "Forgot your password?",
+                'from' => "account@qcodes.com",
                 'view' => "mail.admin.forgotpassword",
                 'to' => $request->email,
-                'link' => '',
+                'link' => URL::to('/admin/changepassword/' . $token . '?email=' . $request->email),
             ]);
         }
     }
@@ -107,10 +127,15 @@ class AdminAuthController extends Controller
 
         $password = bcrypt($request->password);
 
-        if ($adminReset) {
+        if ($adminReset && now()->lte($adminReset->expired_at)) {
             $admin = Admin::where('email', $request->email)->first();
+            if (Hash::check($request->password, $admin->password)) {
+                return new JsonResponse(['message' => 'Use another password'], 400);
+            }
             $admin->password = $password;
             $admin->save();
+        } else {
+            return new JsonResponse(['message' => 'Invalid email or expired token'], 400);
         }
     }
 
@@ -125,7 +150,7 @@ class AdminAuthController extends Controller
             'email' => $validated['email'],
             'password' => $validated['password'],
             'enabled' => 1,
-            fn ($query) => $query->whereNull('email_verified_at')
+            fn ($query) => $query->whereNotNull('email_verified_at')
         ], $request->boolean('remember'))) {
             $request->session()->regenerate();
 
