@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import Util from '../utility';
 
 export default function Autocompletion({ name, httpClient, setData, info, defaultValue }) {
+  console.log(defaultValue, info);
   const isMultiple = !name.includes('Parent');
   const [isLimitReached, setLimitReached] = React.useState(false);
   const [list, setList] = React.useState([]);
@@ -79,7 +80,7 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
         onChange={handleChange}
         inputValue={inputValue}
         onInputChange={handleInput}
-        getOptionLabel={(option) => option?.name ?? option.title}
+        getOptionLabel={(option) => option?.name ?? option?.title ?? ''}
         isOptionEqualToValue={(option, value) => {
           if (option?.title) return option.title === value.title;
           return option.name === value.name;

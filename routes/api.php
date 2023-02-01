@@ -70,4 +70,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/article/delete/{id}', [ArticleController::class, 'deleteArticle']);
     Route::delete('/category/delete/{id}', [CategoryController::class, 'deleteCategory']);
     Route::delete('/tag/delete/{id}', [TagController::class, 'deleteTag']);
+
+    Route::get('/admin/notification', [NotificationController::class, 'getUserNotifications']);
 });

@@ -172,7 +172,7 @@ class ArticleController extends Controller
         ]);
 
         $file = $request->file('upload');
-        $name = $request->user('admin')->id . '_' . Str::random(20) . '.' . $file->extension();
+        $name = $request->user('admin')->id . '_' . Str::random(30) . '.' . $file->extension();
         $path = $file->storePubliclyAs('articles', $name);
         return new JsonResponse(['url' => '/' . $path]);
     }
@@ -184,7 +184,7 @@ class ArticleController extends Controller
         ]);
 
         $file = $request->file('upload');
-        $name = $request->user('admin')->id . '_' . Str::random(20) . '.' . $file->extension();
+        $name = $request->user('admin')->id . '_' . Str::random(30) . '.' . $file->extension();
         $path = $file->storePubliclyAs('banners', $name);
         return new JsonResponse(['url' => '/' . $path]);
     }
