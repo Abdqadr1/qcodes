@@ -212,7 +212,7 @@ const Admin = ({ httpClient }) => {
                                                         <TableCell>
                                                             <span className="text-secondary text-xs font-weight-bold">{admin.last_login_at}</span>
                                                         </TableCell>
-                                                        <TableCell className="align-middle">
+                                                        <TableCell className="align-top">
                                                             <Button size="small" onClick={() => setEdit(s => ({ ...s, show: true, data: admin }))}
                                                                 variant="outlined" color='primary'>Edit</Button>
                                                             {' '}

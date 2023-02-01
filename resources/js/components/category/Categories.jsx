@@ -183,7 +183,7 @@ const Categories = ({ httpClient }) => {
                                                             <TableCell className="" style={{ maxWidth: '150px'}}>
                                                                 <span className="">{category.content}</span>
                                                             </TableCell>
-                                                            <TableCell className="align-middle">
+                                                            <TableCell className="align-top">
                                                                 <Button size="small" color='primary'
                                                                     onClick={() => setEdit(s => ({ ...s, show: true, data: category }))}
                                                                     variant="outlined">Edit</Button>

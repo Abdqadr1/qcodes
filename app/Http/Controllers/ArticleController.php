@@ -27,7 +27,7 @@ class ArticleController extends Controller
 
     public function getArticleBySlug(Request $request)
     {
-        return $this->articleRepo->getArticleByTitle($request->route('slug'));
+        return $this->articleRepo->getArticleBySlug($request->route('slug'));
     }
 
     public function getMyArticlesPaginate(Request $request)

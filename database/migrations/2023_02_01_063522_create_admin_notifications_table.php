@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('admin_notifications', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('to');
+            $table->bigInteger('to')->nullable();
             $table->string('title');
             $table->text('content');
             $table->enum('type', config('enum.notification_type'));

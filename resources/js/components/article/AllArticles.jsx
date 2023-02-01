@@ -201,7 +201,7 @@ const AllArticles = ({ httpClient }) => {
                                                         <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
                                                             <p className="text-center">{article.visit}</p>
                                                         </TableCell>
-                                                        <TableCell className="align-middle">
+                                                        <TableCell className="align-top">
                                                             <Button size='small' variant="outlined"
                                                                 href={`/admin/article/edit/${article.id}`}
                                                                 >Edit</Button>

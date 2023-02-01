@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Admin;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Notification;
 use App\Models\Role;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
@@ -20,8 +21,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10)->create();
+        Notification::factory(15)->create();
 
+        \App\Models\User::factory(10)->create();
         Admin::factory(15)->create();
 
         Article::factory(15)->create();
@@ -29,6 +31,7 @@ class DatabaseSeeder extends Seeder
         Category::factory(15)->create();
 
         Tag::factory(15)->create();
+
 
         $roles = config('enum.roles');
         foreach ($roles as $role) {

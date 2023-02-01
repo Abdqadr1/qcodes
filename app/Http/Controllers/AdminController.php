@@ -27,6 +27,12 @@ class AdminController extends Controller
         return $this->adminRepo->getAllAdmins($request->input('keyword'));
     }
 
+    public function getAllAdminsPaginate(Request $request)
+    {
+        $this->authorize('viewAll', Admin::class);
+        return $this->adminRepo->getAllAdminsPaginate($request->input('keyword'));
+    }
+
     public function editAdmin(Request $request)
     {
         $this->authorize('update', Admin::class);

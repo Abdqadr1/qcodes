@@ -7,21 +7,21 @@ import { useNavigate } from 'react-router';
 import Util from '../utility';
 
 export default function Autocompletion({ name, httpClient, setData, info, defaultValue }) {
-  console.log(defaultValue, info);
-  const isMultiple = !name.includes('Parent');
+  const isMultiple = !name.startsWith('To') && !name.includes('Parent');
   const [isLimitReached, setLimitReached] = React.useState(false);
   const [list, setList] = React.useState([]);
   const [inputValue, setInputValue] = React.useState('');
   const [timeoutId, setTimeoutId] = React.useState(null);
   const [defValue, setDefValue] = React.useState(isMultiple ? [] : { name: "", id: null });
   const navigate = useNavigate();
+
   const links = {
     categories: '/api/c/category/all',
     'parent category': '/api/c/category/all',
     tags: '/api/c/tag/all',
     'parent': '/api/c/article/all',
+    to: '/api/c/admin/all'
   }
-  const dataName = `${name}Data`;
   const url = links[name.toLowerCase()];
 
   React.useEffect(() => {
@@ -80,9 +80,10 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
         onChange={handleChange}
         inputValue={inputValue}
         onInputChange={handleInput}
-        getOptionLabel={(option) => option?.name ?? option?.title ?? ''}
+        getOptionLabel={(option) => option?.name ?? option?.title ?? option?.email ?? ''}
         isOptionEqualToValue={(option, value) => {
           if (option?.title) return option.title === value.title;
+          if (option?.email) return option.email === value.email;
           return option.name === value.name;
         }}
         freeSolo={true}

@@ -74,6 +74,7 @@ const NavBar = ({ httpClient }) => {
                   <Nav.Link href="/admin/tags">Tags</Nav.Link>
                   <Nav.Link href="/admin/articles">My Articles</Nav.Link>
                   <Nav.Link href="/admin/article/all">All Articles</Nav.Link>
+                  <Nav.Link href="/admin/notification">Notifications</Nav.Link>
                   <NavDropdown
                     title="Dropdown"
                     id={`offcanvasNavbarDropdown-expand-lg`}

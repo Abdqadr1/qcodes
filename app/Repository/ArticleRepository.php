@@ -16,7 +16,7 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->find($id);
     }
 
-    public function getArticleByTitle($slug)
+    public function getArticleBySlug($slug)
     {
         return Article::with(['tags:id,name', 'categories:id,name', 'parent:id,title'])
             ->where('slug', $slug)->first();

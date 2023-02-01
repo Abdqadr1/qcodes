@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Interfaces\AdminRepositoryInterface;
 use App\Interfaces\ArticleRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
+use App\Interfaces\NotificationRepositoryInterface;
 use App\Interfaces\TagRepositoryInterface;
 use App\Repository\AdminRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\TagRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,7 @@ class InjectionProvider extends ServiceProvider
         $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
+        $this->app->bind(NotificationRepositoryInterface::class, NotificationRepository::class);
     }
 
     /**

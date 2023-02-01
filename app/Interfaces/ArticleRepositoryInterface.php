@@ -16,6 +16,6 @@ interface ArticleRepositoryInterface
     public function syncTags($id, array $details);
     public function syncCategories($id, array $details);
     public function getArticleById($id);
-    public function getArticleByTitle($title);
+    public function getArticleBySlug($slug);
     public function deleteArticle($id);
 }

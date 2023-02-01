@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,14 +39,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 
     Route::post('/admin/update', [AdminAuthController::class, 'update']);
-    Route::get('/admin/all', [AdminController::class, 'getAllAdmin']);
+    Route::get('/admin/all', [AdminController::class, 'getAllAdminsPaginate']);
     Route::get('/my_article/all', [ArticleController::class, 'getMyArticlesPaginate']);
     Route::get('/article/all', [ArticleController::class, 'getAllArticlesPaginate']);
     Route::get('/c/article/all', [ArticleController::class, 'getMyArticles']);
     Route::get('/category/all', [CategoryController::class, 'getAllCategoriesPaginate']);
+    Route::get('/admin/notification/all', [NotificationController::class, 'getAllNotificationsPaginate']);
     Route::get('/c/category/all', [CategoryController::class, 'getAllCategories']);
     Route::get('/tag/all', [TagController::class, 'getAllTagsPaginate']);
     Route::get('/c/tag/all', [TagController::class, 'getAllTags']);
+    Route::get('c/admin/all', [AdminController::class, 'getAllAdmin']);
 
 
     Route::get('/admin/roles', [AdminController::class, 'getAllRoles']);
@@ -64,12 +67,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/article/publish', [ArticleController::class, 'publishArticle']);
     Route::post('/category/create', [CategoryController::class, 'createCategory']);
     Route::post('/tag/create', [TagController::class, 'createTag']);
+    Route::post('/admin/notification/create', [NotificationController::class, 'createNotification']);
 
 
     Route::delete('/admin/delete/{id}', [AdminController::class, 'deleteAdmin']);
     Route::delete('/article/delete/{id}', [ArticleController::class, 'deleteArticle']);
     Route::delete('/category/delete/{id}', [CategoryController::class, 'deleteCategory']);
     Route::delete('/tag/delete/{id}', [TagController::class, 'deleteTag']);
+    Route::delete('/admin/notification/delete/{id}', [NotificationController::class, 'deleteNotification']);
 
-    Route::get('/admin/notification', [NotificationController::class, 'getUserNotifications']);
+    Route::get('/admin/my-notification', [NotificationController::class, 'getUserNotifications']);
+    Route::get('/admin/notification/type', [NotificationController::class, 'getNotificationsType']);
 });

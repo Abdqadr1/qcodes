@@ -183,7 +183,7 @@ const Tags = ({ httpClient }) => {
                                                             <TableCell className="" style={{ maxWidth: '150px'}}>
                                                                 <span className="">{tag.content}</span>
                                                             </TableCell>
-                                                            <TableCell className="align-middle">
+                                                            <TableCell className="align-top">
                                                                 <Button
                                                                     color='primary' size="small"
                                                                     onClick={() => setEdit(s => ({ ...s, show: true, data: tag }))}

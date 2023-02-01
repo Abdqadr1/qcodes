@@ -1,12 +1,13 @@
+
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Pages from '../paginate';
 import React, { useState } from "react";
+import NotificationCreateModal from '../notification/NotificationCreate';
 import Button from '@mui/material/Button';
-import Util from '../utility';
+import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
-import PreviewIcon from '@mui/icons-material/Preview';
-import Link from '@mui/material/Link';
 import ClearIcon from '@mui/icons-material/Clear';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -26,9 +27,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
-import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router';
-import { IconButton } from '@mui/material';
+import Util from '../utility';
 
 const theme = createTheme();
 
@@ -46,16 +46,29 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const MyArticles = ({ httpClient }) => {
+
+const Notification = ({ httpClient }) => {
     const [keyword, setKeyword] = useState('');
+    const [create, setCreate] = useState(false);
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [error, setError] = useState({});
-    
+
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { isFetching, data, refetch } = useQuery('articleData', () =>
-        httpClient.get(`/api/my_article/all?keyword=${keyword}`),{ 
+    const {data, refetch, isFetching } = useQuery('adminNotificationData', () =>
+        httpClient.get(`/api/admin/notification/all?keyword=${keyword}`),{ 
+            refetchOnWindowFocus: false,
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
+            }  
+        }
+    );
+
+    const { isLoading:typeLoading, data:typeData } = useQuery('notificationTypeData', () =>
+        httpClient.get('/api/admin/notification/type'),{ 
             refetchOnWindowFocus: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
@@ -65,23 +78,22 @@ const MyArticles = ({ httpClient }) => {
         }
     );
 
-    const { isLoading: pageFetching, mutate: pageMutate } =
+    const { isLoading: pageFetching, mutate:pageMutate } =
         useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
         onSuccess: data => {
-            queryClient.setQueryData('articleData', data);
+            queryClient.setQueryData('adminNotificationData', data);
         },
         onError: error => {
-            const response = error?.response;
-            Util.checkAuthError(response?.status, navigate);
+            Util.checkAuthError(error?.response?.status, navigate);
                 setError({ ...error });
                 setShowSnackBar(true);
-        }
+        } 
     });
 
     const { isLoading: deleteFetching, mutate: deleteMutate } =
-        useMutation(id => httpClient.delete(`/api/article/delete/${id}`), {
+        useMutation(id => httpClient.delete(`/api/admin/notification/delete/${id}`), {
         onSuccess: (data, id) => {
-            queryClient.setQueryData('articleData', oldData => {
+            queryClient.setQueryData('adminNotificationData', oldData => {
                 const list = oldData.data.data;
                 const index = list.findIndex(l => l.id === id);
                 list.splice(index, 1);
@@ -89,37 +101,39 @@ const MyArticles = ({ httpClient }) => {
             });
         },
         onError: error => {
-            const response = error?.response;
-            Util.checkAuthError(response?.status, navigate);
+            Util.checkAuthError(error?.response?.status, navigate);
                 setError({ ...error });
                 setShowSnackBar(true);
-        }
-     });
+        } 
+    });
 
-      const handleDelete = id => {
+    const handleSearch = e => {
+        refetch({ throwOnError: true, cancelRefetch: true });
+    }
+
+    const handleDelete = id => {
         if (confirm("Are you sure?")) {
             deleteMutate(id);
         }
     }
 
-     const handleSearch = e => {
-        refetch({ throwOnError: true, cancelRefetch: true });
+    const showCreateModal = () => {
+        setCreate(true);
     }
 
-     
-    if (isFetching || pageFetching || deleteFetching) return (
+
+    if (isFetching || pageFetching || deleteFetching || typeLoading) return (
         <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={true}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
-        );
+    );
 
-    
 
     return ( 
-         <div className='p-4'>
+        <div className='px-4 py-2'>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Stack
@@ -131,7 +145,7 @@ const MyArticles = ({ httpClient }) => {
                         mt={3} mb={5}
                     >
                         <ThemeProvider theme={theme}>
-                            <Typography variant="h3">Search Articles: </Typography>
+                            <Typography variant="h3">Search Notification: </Typography>
                         </ThemeProvider>
                         <TextField
                             id="outlined-name"
@@ -152,12 +166,11 @@ const MyArticles = ({ httpClient }) => {
                         <CardHeader className="px-4"
                             action={
                                 <Button
-                                    href='/admin/article/new' color='primary'
-                                    variant="outlined" size="small"
-                                    endIcon={<AddIcon />}
-                                    >New Article</Button>
+                                    onClick={showCreateModal} color="primary" size="small"
+                                    variant='contained' endIcon={<AddIcon />}
+                                    >Add Notification</Button>
                                 }
-                            title="Articles table"
+                            title="Notifications table"
                             subheader=""
                         />
                         {
@@ -168,53 +181,36 @@ const MyArticles = ({ httpClient }) => {
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>Banner</TableCell>
+                                                <TableCell>To</TableCell>
                                                 <TableCell>Title</TableCell>
-                                                <TableCell>Summary</TableCell>
-                                                <TableCell>Published</TableCell>
-                                                <TableCell>Slug</TableCell>
-                                                <TableCell>Visit</TableCell>
+                                                <TableCell>Content</TableCell>
+                                                <TableCell>Read</TableCell>
+                                                <TableCell>Type</TableCell>
                                                 <TableCell>Actions</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                data.data.data.map(
-                                                    article => <TableRow key={article.id}>
-                                                        <TableCell style={{ maxWidth: '150px', paddingLeft: 0  }}>
-                                                            <Avatar variant='square'
-                                                                alt={Util.ellipsis(article?.title, 5)}
-                                                                src={article?.banner}
-                                                                sx={{ width: 100, height: 80, objectFit: 'fill'}}
-                                                            >{ Util.ellipsis(article?.title, 5)}</Avatar>
+                                                data?.data.data.map(
+                                                    notification => <TableRow key={notification.id}>
+                                                        <TableCell className="align-top">
+                                                            {notification.to}
                                                         </TableCell>
-                                                        <TableCell style={{ maxWidth: '150px'}}>
-                                                            <p className=''>{Util.ellipsis(article.title)}</p>
+                                                        <TableCell className="align-top" sx={{maxWidth: '200px'}}>
+                                                            {notification.title}
                                                         </TableCell>
-                                                            <TableCell className="align-middle text-start" style={{ maxWidth: '150px'}}>
-                                                            <span className="text-secondary text-xs font-weight-bold">{Util.ellipsis(article.summary)}</span>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
-                                                        </TableCell>
-                                                        <TableCell style={{ maxWidth: '150px'}}>
-                                                            <span>{Util.ellipsis(article.slug)}</span>
-                                                        </TableCell>
-                                                        <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
-                                                            <p className='text-center'>{article.visit}</p>
+                                                        <TableCell className="align-top" sx={{maxWidth: '200px'}}>
+                                                            {notification.content}
                                                         </TableCell>
                                                         <TableCell className="align-top">
-                                                            <Button size='small' variant="outlined"
-                                                                href={`/admin/article/edit/${article.id}`}
-                                                                >Edit</Button>
-                                                            {' '}
-                                                            <Button variant="outlined" size='small' color='error'
-                                                                onClick={() => handleDelete(article.id)} 
-                                                            >Delete</Button>
-                                                            {' '}
-                                                            <Link href={`/article/${article?.slug}/preview`} variant="outlined" size='small' title='preview'>
-                                                                <PreviewIcon />
-                                                            </Link>
+                                                            <span className="">{notification.read ? "Read" : "Unread"}</span>
+                                                        </TableCell>
+                                                        <TableCell className="align-top">
+                                                            {notification.type}
+                                                        </TableCell>
+                                                        <TableCell className="align-top">
+                                                            <IconButton onClick={() => handleDelete(notification.id)} color='error'
+                                                                size="small"><DeleteIcon /></IconButton>
                                                         </TableCell>
                                                     </TableRow>
                                                 )
@@ -229,13 +225,13 @@ const MyArticles = ({ httpClient }) => {
                                         to={data.data.to} currentPage={data.data.current_page}
                                     />
                                 </CardContent>
-                                : <CardContent className="pb-2">
-                                    No Article found
-                                </CardContent>
+                            :
+                                <CardContent className="pb-2"> No Notification found </CardContent>
                         }
                     </Card>
                 </Grid>
             </Grid>
+            <NotificationCreateModal show={create} setCreate={setCreate} httpClient={httpClient} types={typeData.data} />
             <Snackbar
                 open={showSnackBar}
                 autoHideDuration={5000}
@@ -244,7 +240,7 @@ const MyArticles = ({ httpClient }) => {
                         vertical: 'top',
                         horizontal: 'center',
                     }}
-                onClose={()=>setShowSnackBar(false)}
+                onClose={e => setShowSnackBar(false)}
                 >
                 <Alert
                     severity={'error'} sx={{ width: '100%' }}
@@ -256,4 +252,4 @@ const MyArticles = ({ httpClient }) => {
      );
 }
  
-export default MyArticles;
+export default Notification;
