@@ -12,26 +12,59 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import { useState } from 'react';
+import Util from './utility';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const NavBar = ({ httpClient }) => {
+  const [notifications, setNotifications] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { isLoading, mutate } =
-        useMutation(() => httpClient.post('/api/admin/logout'), {
-        onSuccess: () => {
-            queryClient.removeQueries('userData');
-            navigate('/admin/login');
-        },
-        onError: error => {
-            const response = error?.response;
-            const message = response?.data?.message ?? "An error occurred";
-            const errors = response?.data?.errors;
+  const {isLoading:notificationLoading } = useQuery('myNotificationData', () =>
+        httpClient.get('/api/admin/my-notification'),{ 
+            refetchOnWindowFocus: false,
+            onSuccess: data => setNotifications([...data.data]),
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+                setError({ ...error });
+                setShowSnackBar(true);
+            }  
         }
-        });
+    );
+
+
+
+  const { isLoading, mutate } =
+      useMutation(() => httpClient.post('/api/admin/logout'), {
+      onSuccess: () => {
+          queryClient.removeQueries('userData');
+          navigate('/admin/login');
+      },
+      onError: error => {
+          const response = error?.response;
+          const message = response?.data?.message ?? "An error occurred";
+          const errors = response?.data?.errors;
+      }
+      });
+
+  const { isLoading: markLoading, mutate:markMutate } =
+      useMutation((id) => httpClient.post(`/api/admin/notification/read/${id}`), {
+      onSuccess: (data, id) => {
+          setNotifications(s => {
+              const index = s.findIndex(l => l.id === id);
+              s[index].read = true;
+              return [...s];
+          });
+      },
+      onError: error => {
+          const response = error?.response;
+          const message = response?.data?.message ?? "An error occurred";
+          const errors = response?.data?.errors;
+      }
+    });
 
         
   const handleLogout = e => {
@@ -42,8 +75,10 @@ const NavBar = ({ httpClient }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = () => setAnchorEl(null);
+  const handleRead = (not) => {
     setAnchorEl(null);
+    if(not.type !== "GENERAL" && !not.read) markMutate(not.id);
   };
 
 
@@ -75,21 +110,10 @@ const NavBar = ({ httpClient }) => {
                   <Nav.Link href="/admin/articles">My Articles</Nav.Link>
                   <Nav.Link href="/admin/article/all">All Articles</Nav.Link>
                   <Nav.Link href="/admin/notification">Notifications</Nav.Link>
-                  <NavDropdown
-                    title="Dropdown"
-                    id={`offcanvasNavbarDropdown-expand-lg`}
-                  >
-                    <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
-                      Another action
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action5">
-                      Something else here
-                    </NavDropdown.Item>
-                </NavDropdown>
                   <Nav.Link>
-                    <Badge title='notifications' badgeContent={3} color="error">
+                  <Badge title='notifications' color="error"
+                    badgeContent={(notifications && notifications.length > 0) ? notifications.length : null}
+                  >
                       <NotificationsIcon color="primary"
                         onClick={handleClick}
                         size="small"
@@ -114,10 +138,10 @@ const NavBar = ({ httpClient }) => {
           PaperProps={{
             elevation: 0,
             sx: {
-              overflow: 'visible',
-              overflowY: 'scroll',
-              maxWidth: 320,
-              maxHeight: 200,
+              overflowY: 'auto',
+              width: 350,
+              maxWidth: 350,
+              maxHeight: '70vh',
               filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
               mt: 1.5,
               '& .MuiAvatar-root': {
@@ -143,32 +167,29 @@ const NavBar = ({ httpClient }) => {
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          <MenuItem onClick={handleClose}>
-            Profile
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
-            My account
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={handleClose}>
-            Add another account
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
-            Settings
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
-            Logout
-          </MenuItem><MenuItem onClick={handleClose}>
-            Logout
-          </MenuItem><MenuItem onClick={handleClose}>
-            Logout
-          </MenuItem><MenuItem onClick={handleClose}>
-            Logout
-          </MenuItem><MenuItem onClick={handleClose}>
-            Logout
-          </MenuItem><MenuItem onClick={handleClose}>
-            Logout
-          </MenuItem>
+        {
+          (notificationLoading)
+            ? <MenuItem sx={{justifyContent: 'center'}}>
+                <CircularProgress sx={{height: '20px !important', width: '20px !important'}} color="inherit" />
+              </MenuItem>
+           : 
+            (
+              (notifications && notifications.length > 0)
+              ? 
+                notifications?.map(not => (
+                  <div title={not.read ? '' : 'Mark as read'}
+                    className={`p-2 border-bottom notification ${not.read ? 'read' : 'unread'}`}
+                    key={not.id} onClick={() => handleRead(not)}>
+                    <div className='w-100 mb-2 fw-bold' style={{fontSize: 14, lineHeight: 1.1}}>{ not.title }</div>
+                    <div className='w-100 ' style={{fontSize: 12, lineHeight: 1.2}} >{ not.content }</div>
+                  </div>
+                ))
+              : <MenuItem>
+                  <div className='text-center w-100'>No Notification</div>
+                </MenuItem>
+          )
+        }
+          
         </Menu>
       </>
      );

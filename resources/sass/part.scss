@@ -86,3 +86,18 @@
 td{
     word-break: break-all !important;
 }
+
+.notification{
+    cursor: pointer;
+}
+
+.notification.read{
+    background-color: aqua;
+}
+
+.notification.unread {
+    background-color: antiquewhite;
+}
+.notification.unread:hover {
+    background-color: rgb(229, 185, 127);
+}

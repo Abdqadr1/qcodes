@@ -34,10 +34,10 @@ class NotificationController extends Controller
         $this->authorize('create', Notification::class);
 
         $validated = $request->validate([
-            'to' => 'required|exists:admins,id',
+            'type' => 'required|max:7',
+            'to' => 'required_unless:type,GENERAL|exists:admins,id',
             'title' => 'required|max:255',
             'content' => 'required|max:1000',
-            'type' => 'required|max:7',
         ]);
 
         return $this->repo->createNotification($validated);
@@ -61,5 +61,11 @@ class NotificationController extends Controller
     public function getNotificationsType()
     {
         return config('enum.notification_type');
+    }
+
+    public function readNotification(Request $request)
+    {
+        $id = $request->route('id');
+        return $this->repo->readNotification($id);
     }
 }

@@ -13,7 +13,15 @@ class NotificationRepository implements NotificationRepositoryInterface
     public function getNotificationsPaginate(Request $request)
     {
         $keyword = $request->input('keyword');
-        return Notification::orderBy('updated_at', 'DESC')->paginate($this->perPage);
+        if (empty($keyword)) {
+            return Notification::orderBy('updated_at', 'DESC')->paginate($this->perPage);
+        }
+        return Notification::orderBy('updated_at', 'DESC')
+            ->where(function ($query) use ($keyword) {
+                $query->where('to', $keyword);
+                $query->orWhere('title', 'like', '%' . $keyword . '%');
+                $query->orWhere('content', 'like', '%' . $keyword . '%');
+            })->paginate($this->perPage);
     }
 
     public function getAllNotifications(Request $request)
@@ -35,6 +43,17 @@ class NotificationRepository implements NotificationRepositoryInterface
             $query->orWhere('type', 'GENERAL');
         })->get();
     }
+
+    public function readNotification($id)
+    {
+        $not = Notification::findOrFail($id);
+        if ($not && $not->type !== "GENERAL") {
+            $not->read = true;
+            $not->save();
+        }
+    }
+
+
     public function createNotification(array $details)
     {
         return Notification::create($details);

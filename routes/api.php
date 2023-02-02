@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/article/edit/{id}', [ArticleController::class, 'getArticleById']);
     Route::post('/article/preview/{slug}', [ArticleController::class, 'getArticleBySlug']);
     Route::post('/article/unpublish/{id}', [ArticleController::class, 'unpublishArticle']);
+    Route::post('/admin/notification/read/{id}', [NotificationController::class, 'readNotification']);
 
 
     Route::post('/admin/create', [AdminController::class, 'createAdmin']);

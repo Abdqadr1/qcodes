@@ -13,4 +13,5 @@ interface NotificationRepositoryInterface
     public function updateNotification($id, array $details);
     public function getNotificationById($id);
     public function deleteNotification($id);
+    public function readNotification($id);
 }
