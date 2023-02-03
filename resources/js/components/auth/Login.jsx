@@ -30,7 +30,6 @@ const AdminLogin = ({ httpClient }) => {
     const [errors, setErrors] = useState({});
 
     const queryClient = useQueryClient();
-    const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -42,7 +41,7 @@ const AdminLogin = ({ httpClient }) => {
         useMutation(formData => httpClient.post('/api/admin/login', formData), {
         onSuccess: data => {
             queryClient.setQueryData('userData', data.data);
-            navigate('/admin/profile');
+            window.location = '/admin/profile';
         },
         onError: error => {
             const response = error?.response;

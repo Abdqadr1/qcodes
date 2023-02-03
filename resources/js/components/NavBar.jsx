@@ -23,6 +23,19 @@ const NavBar = ({ httpClient }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  const { isLoading:adminLoading, error, data:adminData } = useQuery('getAdminUser', () =>
+        httpClient.get('/api/admin'),{ 
+         refetchOnWindowFocus: false,
+            retry: false,
+            onSuccess: data => {
+              queryClient.setQueryData('userData', data.data);
+            },
+            onError: error => {
+              Util.checkAuthError(error?.response?.status, navigate);
+            } 
+        }
+    );
+
   const {isLoading:notificationLoading } = useQuery('myNotificationData', () =>
         httpClient.get('/api/admin/my-notification'),{ 
             refetchOnWindowFocus: false,
@@ -35,18 +48,11 @@ const NavBar = ({ httpClient }) => {
         }
     );
 
-
-
   const { isLoading, mutate } =
       useMutation(() => httpClient.post('/api/admin/logout'), {
       onSuccess: () => {
           queryClient.removeQueries('userData');
-          navigate('/admin/login');
-      },
-      onError: error => {
-          const response = error?.response;
-          const message = response?.data?.message ?? "An error occurred";
-          const errors = response?.data?.errors;
+          window.location = '/admin/login';
       }
       });
 
@@ -100,30 +106,46 @@ const NavBar = ({ httpClient }) => {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="/admin/login">Login</Nav.Link>
-                  <Nav.Link href="/admin/signup">Sign Up</Nav.Link>
-                  <Nav.Link href="/admin/profile">Profile</Nav.Link>
-                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                  <Nav.Link href="/admin">Admins</Nav.Link>
-                  <Nav.Link href="/admin/categories">Categories</Nav.Link>
-                  <Nav.Link href="/admin/tags">Tags</Nav.Link>
-                  <Nav.Link href="/admin/articles">My Articles</Nav.Link>
-                  <Nav.Link href="/admin/article/all">All Articles</Nav.Link>
-                  <Nav.Link href="/admin/notification">Notifications</Nav.Link>
-                  <Nav.Link>
-                  <Badge title='notifications' color="error"
-                    badgeContent={(notifications && notifications.length > 0) ? notifications.length : null}
-                  >
-                      <NotificationsIcon color="primary"
-                        onClick={handleClick}
-                        size="small"
-                        sx={{ ml: 2 }}
-                        aria-controls={open ? 'account-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                       />
-                    </Badge>
-                  </Nav.Link>
+                  {
+                    adminLoading ? '' : 
+                    ((adminData?.data) 
+                    ? <>
+                        {
+                          Util.hasRole(adminData.data.roles, 'Admin')
+                            ?
+                            <>
+                              <Nav.Link href="/admin">Admins</Nav.Link>
+                              <Nav.Link href="/admin/article/all">All Articles</Nav.Link>
+                              <Nav.Link href="/admin/notification">Notifications</Nav.Link>
+                            </>
+                           : ''
+                        }
+                        
+                        <Nav.Link href="/admin/profile">Profile</Nav.Link>
+                        <Nav.Link href="/admin/categories">Categories</Nav.Link>
+                        <Nav.Link href="/admin/tags">Tags</Nav.Link>
+                        <Nav.Link href="/admin/articles">My Articles</Nav.Link>
+                        <Nav.Link>
+                          <Badge title='notifications' color="error"
+                            badgeContent={(notifications && notifications.length > 0) ? notifications.length : null}
+                          >
+                              <NotificationsIcon color="primary"
+                                onClick={handleClick}
+                                size="small"
+                                sx={{ }}
+                                aria-controls={open ? 'account-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                              />
+                            </Badge>
+                        </Nav.Link>
+                        <Nav.Link className='text-danger' onClick={handleLogout}>Logout</Nav.Link>
+                      </>
+                     : <>
+                        <Nav.Link href="/admin/login">Login</Nav.Link>
+                        <Nav.Link href="/admin/signup">Sign Up</Nav.Link>
+                      </>)
+                  }
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

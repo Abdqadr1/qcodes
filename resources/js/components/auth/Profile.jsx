@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import Zoom from '@mui/material/Zoom';
@@ -18,26 +18,28 @@ import Util from '../utility';
 import { useNavigate } from 'react-router';
 
 const Profile = ({ httpClient }) => {
+    const queryClient = useQueryClient();
     const [alert, setAlert] = useState({ message: "", show: false, severity: "error" });
     const [userData, setUserData] = useState({});
     const [errors, setErrors] = useState({});
 
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-     const { isLoading, error } = useQuery('getAdminUser', () =>
+    const { } = useQuery('getAdminUser', () =>
         httpClient.get('/api/admin'),{ 
-         refetchOnWindowFocus: false,
             retry: false,
+            staleTime: Infinity,
             onSuccess: data => {
                 queryClient.setQueryData('userData', data.data);
-                setUserData({...data.data});
+                setUserData({ ...data.data });
             },
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
             } 
         }
     );
+    
+
 
     const handleInput = e => {
         setUserData(s => ({
@@ -50,7 +52,7 @@ const Profile = ({ httpClient }) => {
         useMutation(formData => httpClient.post('/api/admin/update', formData), {
         onSuccess: (data) => {
             queryClient.setQueryData('userData', data.data);
-                setAlert(s => ({ ...s, show: true, message: "Account Updated!", severity:'success'}))
+            setAlert(s => ({ ...s, show: true, message: "Account Updated!", severity:'success'}))
         },
         onError: error => {
             const response = error?.response;
@@ -210,7 +212,7 @@ const Profile = ({ httpClient }) => {
                                 alignItems="center"
                             >
                                 <Button
-                                    disabled={isLoading || updateLoading}
+                                    disabled={updateLoading}
                                     type='submit' variant="contained" color='success'
                                     sx={{width: 150}}
                                 >Save</Button>

@@ -53,7 +53,6 @@ class NotificationController extends Controller
 
     public function getUserNotifications(Request $request)
     {
-        $this->authorize('viewMine', Notification::class);
 
         return $this->repo->getUserNotifications($request);
     }

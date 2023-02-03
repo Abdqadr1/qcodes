@@ -13,8 +13,12 @@ export default class Util {
     }
 
     static checkAuthError(status, navigate) {
-        if (status && navigate && (status === 401 || status === 419))
-            navigate('/admin/login');
+        const pathName = window.location.pathname;
+        if (
+            status && navigate && (status === 401 || status === 419)
+            && pathName !== '/admin/login' && pathName !== '/admin/signup'
+        )
+            window.location='/admin/login';
     }
 
     static useThrottle (cb, delay) {
@@ -61,5 +65,9 @@ export default class Util {
             };
         }
         fileReader.readAsDataURL(file);
+    }
+
+    static hasRole(roles, roleName) {
+        return roles.some(role => role.name == roleName);
     }
 }
