@@ -25,6 +25,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
+import Link from '@mui/material/Link';
+import PreviewIcon from '@mui/icons-material/Preview';
 import { useNavigate } from 'react-router';
 
 const theme = createTheme();
@@ -196,7 +198,7 @@ const AllArticles = ({ httpClient }) => {
                                                             <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
                                                         </TableCell>
                                                         <TableCell style={{ maxWidth: '150px'}}>
-                                                            <span>{Util.ellipsis(article.slug)}</span>
+                                                            <Link href={`/article/${article.slug}`}>{Util.ellipsis(article.slug)}</Link>
                                                         </TableCell>
                                                         <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
                                                             <p className="text-center">{article.visit}</p>
@@ -209,6 +211,10 @@ const AllArticles = ({ httpClient }) => {
                                                             <Button variant="outlined" size='small' color='error'
                                                                 onClick={() => handleDelete(article.id)} 
                                                             >Delete</Button>
+                                                            {' '}
+                                                            <Link href={`/article/${article?.slug}/preview`} variant="outlined" size='small' title='preview'>
+                                                                <PreviewIcon />
+                                                            </Link>
                                                         </TableCell>
                                                     </TableRow>
                                                 )

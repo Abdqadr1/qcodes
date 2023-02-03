@@ -4,7 +4,7 @@
 <script>
     window.article = @json($article);
 </script>
-<div class="" id="preview">
+<div class="" id="view">
     
 </div>
 @endsection

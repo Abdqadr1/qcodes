@@ -206,9 +206,8 @@ const EditArticle = ({ httpClient }) => {
                     id="outlined-textarea"
                     label="Title"
                     placeholder="Blog Title..."
-                    rows={3}
-                    fullWidth 
-                    multiline
+                    rows={3} required fullWidth multiline
+                    inputProps={{ maxLength: 100 }}
                 />
                 <div className='blog-banner mb-3'>
                     <img alt='article banner' ref={bannerRef} src={banner} />

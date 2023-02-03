@@ -1,23 +1,16 @@
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import React, {  } from "react";
-import MuiAlert from '@mui/material/Alert';
+import React from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import Editor from 'ckeditor5-custom-build';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-const ArticlePreview = ({ }) => {
+function ArticleView() {
     const article = window?.article;
 
     return (
-        <div className='body'>
-            <p className='preview'>Preview</p>
-            <Row className='mx-0'>
-                <Col sm={12} className='px-1'>
+        <>
+            <Row className='mx-0 justify-content-center'>
+                <Col sm={10} className='px-1'>
                     <div className='blog-banner'>
                         <img alt={article?.title} src={article?.banner ?? ""} />
                         <div className='title'>
@@ -27,7 +20,7 @@ const ArticlePreview = ({ }) => {
                     <CKEditor
                         config={{}}
                         editor={Editor}
-                        data={article?.content ?? ""}
+                        data={article.content ?? ""}
                         disabled={true}
                         onReady={ editor => {
                             // You can store the "editor" and use when it is needed.
@@ -42,8 +35,9 @@ const ArticlePreview = ({ }) => {
                     />
                 </Col>
             </Row>
-        </div>
-     );
+        </>
+    );
 }
- 
-export default ArticlePreview;
+
+export default ArticleView;
+

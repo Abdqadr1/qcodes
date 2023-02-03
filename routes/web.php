@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,23 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Auth::routes();
+Route::get('/admin', [HomeController::class, 'admin'])->name('admin');
+Route::get('/admin/{path?}', [HomeController::class, 'admin'])->where('path', '.*');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/article/{slug}/preview', [ArticleController::class, 'previewArticle']);
 
-Route::get('/admin', function () {
-    return view('admin.home', ['title' => 'Admin']);
-});
+Route::get('/article/{slug}', [ArticleController::class, 'viewArticle'])->name('viewArticle');
 
-
-Route::get('/admin/{path?}', function () {
-    return view('admin.home', ['title' => 'Admin']);
-})->where('path', '.*');
-
-Route::get('/article/{title}/preview', function () {
-    return view('article.preview', ['title' => 'Preview']);
-});
+Route::post('/newsletter/signup', [HomeController::class, 'newsletterSignup'])->name('newsletter-signup');

@@ -20,6 +20,31 @@ class ArticleController extends Controller
         $this->articleRepo = $articleRepo;
     }
 
+    public function viewArticle(Request $request)
+    {
+        $slug = $request->route('slug');
+        $article = Article::where(function ($query) use ($slug) {
+            $query->where('slug', $slug);
+            $query->where('is_published', 1);
+        })->first();
+
+        return view('article.view', ['title' => $article->title, 'article' => $article]);
+    }
+
+    public function previewArticle(Request $request)
+    {
+        $slug = $request->route('slug');
+        $article = Article::where(function ($query) use ($slug) {
+            $query->where('slug', $slug);
+        })->first();
+
+        return view('article.preview', ['title' => $article->title, 'article' => $article]);
+    }
+
+
+
+
+
     public function getArticleById(Request $request)
     {
         return $this->articleRepo->getArticleById($request->route('id'));
@@ -61,13 +86,13 @@ class ArticleController extends Controller
         if ($publish) {
             $request->validate([
                 'title' => ['required', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
-                'meta_title' => 'required|max:160',
+                'meta_title' => 'required|size:160',
                 'content' => 'required|max:10000',
                 'parent_id' => [
                     'nullable', 'numeric', 'exists:articles,id', Rule::notIn([$id])
                 ],
 
-                'summary' => 'required|max:160',
+                'summary' => 'required|size:160',
                 'banner' => 'nullable|max:200',
 
                 'tags' => 'required|array',
@@ -78,12 +103,12 @@ class ArticleController extends Controller
         } else {
             $request->validate([
                 'title' => ['nullable', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
-                'meta_title' => 'nullable|max:160',
+                'meta_title' => 'nullable|size:160',
                 'content' => 'required|max:10000',
                 'parent_id' => [
                     'nullable', 'numeric', 'exists:articles,id'
                 ],
-                'summary' => 'nullable|max:160',
+                'summary' => 'nullable|size:160',
                 'banner' => 'nullable|max:200',
 
                 'tags' => 'nullable|array',
