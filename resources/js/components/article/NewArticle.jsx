@@ -24,6 +24,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const NewArticle = ({ httpClient }) => {
+    const [lastSaved, setLastSaved] = useState(null);
     const [categories, setCategories] = useState({isError: false, data:[], errorMessage: ""});
     const [tags, setTags] = useState({ isError: false, data: [], errorMessage: "" });
     const [parent, setParent] = useState({ isError: false, data: null, errorMessage: "" });
@@ -44,7 +45,8 @@ const NewArticle = ({ httpClient }) => {
             onSuccess: (data) => {
                 setToast(s => ({ ...s, show: true, message: "Saved!", severity: 'success' }));
                 window.history.replaceState({ articleId: data.data }, '', `/admin/article/edit/${data.data}`); 
-                setBackdropOpen(false);          
+                setBackdropOpen(false); 
+                setLastSaved(Date.now());            
             },
             onError: error => {
                 const response = error?.response;
@@ -60,7 +62,7 @@ const NewArticle = ({ httpClient }) => {
             onSuccess: () => {
                 setToast(s => ({ ...s, show: true, message: "Published!", severity: 'success' }));
                 setBackdropOpen(false);
-                navigate('/admin/articles');
+                window.location = '/admin/articles';
             },
             onError: error => {
                 const response = error?.response;
@@ -120,11 +122,14 @@ const NewArticle = ({ httpClient }) => {
     }
 
     const handleChange = c => {
-        if (c === content) return;
-        if (!form?.title) return;
-        console.log(c);
         setContent(c);
-        mutate(initFormData(c))
+        if ((Date.now() - lastSaved) >= (1000 * 60 * 3)) {
+            setToast(s => ({
+                ...s, show: true,
+                message: "You haven't saved your changes in a while.",
+                severity: 'warning'
+            }));
+        }
     }
 
      const saveChanges = () => {
@@ -174,7 +179,17 @@ const NewArticle = ({ httpClient }) => {
                     <ArticleEditor content={content} handleChange={handleChange} handleWordCount={c => setWordCount(c)} />
                 </div>
             </Col>
-            <Col sm={4} className='border-start border-secondary p-1' id='right-side'>
+            <Col sm={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
+                <Stack className='article-sticky bg-light py-2' direction="row" spacing={2}
+                    justifyContent="center"
+                    alignItems="center" my={3}>
+                    <Button disabled={isLoading || publishLoading} variant="contained"
+                        color="info" onClick={saveChanges}
+                    >Save Changes</Button>
+                    <Button disabled={isLoading || publishLoading} variant="contained"
+                        color="success" onClick={handlePublish}
+                    >Publish</Button>
+                </Stack>
                 <TextField className='mb-3 fs-4' onInput={handleInput}
                     name='title' value={form?.title ?? ''} 
                     id="outlined-textarea"
@@ -218,16 +233,6 @@ const NewArticle = ({ httpClient }) => {
                     <Autocompletion info={tags} name='Tags' httpClient={httpClient} setData={setTags} />
                     <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
                     
-                </Stack>
-                <Stack direction="row" spacing={2}
-                    justifyContent="center"
-                    alignItems="center" my={3}>
-                    <Button disabled={isLoading || publishLoading} variant="contained"
-                        color="info" onClick={saveChanges}
-                    >Save Changes</Button>
-                    <Button disabled={isLoading || publishLoading} variant="contained"
-                        color="success" onClick={handlePublish}
-                    >Publish</Button>
                 </Stack>
                 <Snackbar
                     open={toast.show}

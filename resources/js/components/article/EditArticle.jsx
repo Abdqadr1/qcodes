@@ -25,7 +25,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const EditArticle = ({ httpClient }) => {
     const { id } = useParams();
-    const [isFirstFetch, setFirstFetch] = useState(true);
+    const [lastSaved, setLastSaved] = useState(null);
 
     const [categories, setCategories] = useState({isError: false, data:[], errorMessage: ""});
     const [tags, setTags] = useState({ isError: false, data: [], errorMessage: "" });
@@ -51,8 +51,7 @@ const EditArticle = ({ httpClient }) => {
                 setCategories(s => ({ ...s, data: categories }));         
                 setTags(s => ({ ...s, data: tags }));         
                 setParent(s => ({ ...s, data: parent ?? parent?.id }));         
-                setForm(s => ({ ...s, title, meta_title, summary }));   
-                setFirstFetch(false);         
+                setForm(s => ({ ...s, title, meta_title, summary }));      
                 setPublished(is_published);
                 setBanner(banner);
             },
@@ -70,7 +69,8 @@ const EditArticle = ({ httpClient }) => {
             retry: false,
             onSuccess: (data) => {
                 setToast(s => ({ ...s, show: true, message: "Saved!", severity: 'success' }));
-                setBackdropOpen(false);          
+                setBackdropOpen(false); 
+                setLastSaved(Date.now());         
             },
             onError: error => {
                 const response = error?.response;
@@ -91,8 +91,8 @@ const EditArticle = ({ httpClient }) => {
             onSuccess: () => {
                 const message = isPublished ? "Unpublished!" : "Published!";
                 setToast(s => ({ ...s, show: true, message, severity: 'success' }));
-                setBackdropOpen(false);
-                setPublished(!isPublished);
+                setBackdropOpen(false); 
+                window.location = '/admin/articles';
             },
             onError: error => {
                 const response = error?.response;
@@ -151,11 +151,14 @@ const EditArticle = ({ httpClient }) => {
     }
 
     const handleChange = c => {
-        if (isFirstFetch) return;
-        if (c === content) return; 
-        if (!form?.title) return;
         setContent(c);
-        mutate(initFormData(c))
+        if ((Date.now() - lastSaved) >= (1000 * 60 * 3)) {
+            setToast(s => ({
+                ...s, show: true,
+                message: "You haven't saved your changes in a while.",
+                severity: 'warning'
+            }));
+        }
     }
 
     const saveChanges = () => {
@@ -174,8 +177,8 @@ const EditArticle = ({ httpClient }) => {
     }
 
     const handlePublish = e => {
-         if (wordCount < Blog.wordLimit) {
-            return setToast(s => ({ ...s, show: true, message: `Minimum word count is ${Blog.wordLimit}`, severity: 'error' }));
+         if (wordCount < Blog.WORD_LIMIT) {
+            return setToast(s => ({ ...s, show: true, message: `Minimum word count is ${Blog.WORD_LIMIT}`, severity: 'error' }));
         }
         if (!(form?.title && form?.meta_title && form?.summary)) {
             setToast(s => ({ ...s, show: true, message: 'Title and Meta title is required', severity: 'error' }));
@@ -200,14 +203,24 @@ const EditArticle = ({ httpClient }) => {
                     <ArticleEditor handleChange={handleChange} content={content} handleWordCount={c => setWordCount(c)} />
                 </div>
             </Col>
-            <Col sm={4} className='border-start border-secondary p-1' id='right-side'>
+            <Col sm={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
+                <Stack className='article-sticky bg-light py-2' direction="row" spacing={2} 
+                    justifyContent="center"
+                    alignItems="center" my={3}>
+                    <Button disabled={isLoading || publishLoading} variant="contained"
+                        color="info" onClick={saveChanges}
+                    >Save Changes</Button>
+                    <Button disabled={isLoading || publishLoading} variant="contained"
+                        color={isPublished ? "warning" : 'success'} onClick={handlePublish}
+                    >{ isPublished ? "Unpublish" : "Publish"}</Button>
+                </Stack>
+
                 <TextField className='mb-3 fs-4' onInput={handleInput}
                     name='title' value={form?.title ?? ''} 
                     id="outlined-textarea"
                     label="Title"
                     placeholder="Blog Title..."
-                    rows={3} required fullWidth multiline
-                    inputProps={{ maxLength: 100 }}
+                    rows={3} fullWidth multiline
                 />
                 <div className='blog-banner mb-3'>
                     <img alt='article banner' ref={bannerRef} src={banner} />
@@ -243,16 +256,6 @@ const EditArticle = ({ httpClient }) => {
                     <Autocompletion info={tags} name='Tags' httpClient={httpClient} setData={setTags} />
                     <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
                     
-                </Stack>
-                <Stack direction="row" spacing={2} 
-                    justifyContent="center"
-                    alignItems="center" my={3}>
-                    <Button disabled={isLoading || publishLoading} variant="contained"
-                        color="info" onClick={saveChanges}
-                    >Save Changes</Button>
-                    <Button disabled={isLoading || publishLoading} variant="contained"
-                        color={isPublished ? "warning" : 'success'} onClick={handlePublish}
-                    >{ isPublished ? "Unpublish" : "Publish"}</Button>
                 </Stack>
                 <Snackbar
                     open={toast.show}

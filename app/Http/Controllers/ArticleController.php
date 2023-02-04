@@ -103,12 +103,12 @@ class ArticleController extends Controller
         } else {
             $request->validate([
                 'title' => ['nullable', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
-                'meta_title' => 'nullable|size:160',
+                'meta_title' => 'nullable|max:160',
                 'content' => 'required|max:10000',
                 'parent_id' => [
                     'nullable', 'numeric', 'exists:articles,id'
                 ],
-                'summary' => 'nullable|size:160',
+                'summary' => 'nullable|max:160',
                 'banner' => 'nullable|max:200',
 
                 'tags' => 'nullable|array',

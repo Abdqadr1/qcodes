@@ -1,5 +1,5 @@
 export default class Blog {
-    static wordLimit = 500;
+    static WORD_LIMIT = 500;
 
     constructor(id) {
         this.id = id;

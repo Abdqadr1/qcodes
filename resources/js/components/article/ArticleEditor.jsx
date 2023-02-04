@@ -44,9 +44,9 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
                     });
                 } }
                 onChange={ ( event, editor ) => {
-                    
+                    change(editor);
                 } }
-                onBlur={ ( event, editor ) => {
+                onBlur={(event, editor) => {
                     change(editor);
                 } }
                 onFocus={ ( event, editor ) => {
