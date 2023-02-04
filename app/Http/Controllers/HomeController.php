@@ -26,10 +26,4 @@ class HomeController extends Controller
     {
         return view('admin.home', ['title' => 'Admin']);
     }
-
-    public function newsletterSignup(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
-        //TODO: send confirmation mail and save to database
-    }
 }

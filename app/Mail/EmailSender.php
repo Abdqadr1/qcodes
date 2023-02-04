@@ -51,6 +51,7 @@ class EmailSender extends Mailable
                 'bodyMessage' => $this->data['message'] ?? '',
                 'link' => $this->data['link'],
                 'first_name' => $this->data['first_name'] ?? '',
+                'title' => $this->data['title'],
             ]
         );
     }

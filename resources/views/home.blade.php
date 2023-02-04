@@ -28,8 +28,12 @@
         @method('post')
         <h3 class="my-3 text-center">Sign Up For Our Newsletter</h3>
         <div class="row">
-            <input type="email" class="form-control" id="email" placeholder="email address" required>
-            @error('email') <p class="text-danger mb-0">{{$message}}</p> @enderror
+            <input name='name' class="form-control mb-1" id="name" placeholder="Name" required>
+            @error('name') <p class="text-danger mb-2">{{$message}}</p> @enderror
+
+            <input name='email' type="email" class="form-control mb-1" id="email" placeholder="email address" required>
+            @error('email') <p class="text-danger mb-2">{{$message}}</p> @enderror
+
             <button class="btn btn-primary mt-3">Sign Up</button>
         </div>
     </form>
