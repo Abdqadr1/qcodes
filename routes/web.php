@@ -18,12 +18,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+//search
+
+Route::get('/search', [HomeController::class, 'search'])->name('search');
+
+
+// admin, writer portal react app
+
 Route::get('/admin', [HomeController::class, 'admin'])->name('admin');
 Route::get('/admin/{path?}', [HomeController::class, 'admin'])->where('path', '.*');
+
+// article view and preview
 
 Route::get('/article/{slug}/preview', [ArticleController::class, 'previewArticle']);
 
 Route::get('/article/{slug}', [ArticleController::class, 'viewArticle'])->name('viewArticle');
+
+// newsletter
 
 Route::post('/newsletter/signup', [NewsletterController::class, 'newsletterSignup'])->name('newsletter-signup');
 Route::get('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);

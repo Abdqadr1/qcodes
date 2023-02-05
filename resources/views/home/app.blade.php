@@ -11,11 +11,17 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
+ 
     <!-- Scripts -->
-    @viteReactRefresh
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+
+    @vite(['resources/sass/app.scss'])
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -30,12 +36,20 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="#">Guides</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <form class="input-group" method="get" action="{{route('search')}}">
+                            <input required name="keyword" type="text" class="form-control" placeholder="keyword" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-outline-secondary d-flex align-items-center" type="button" id="button-addon2">
+                                <iconify-icon class="fs-5" icon="ic:outline-search"></iconify-icon>
+                            </button>
+                        </form>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
