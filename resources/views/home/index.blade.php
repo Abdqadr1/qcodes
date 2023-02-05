@@ -37,6 +37,5 @@
             <button class="btn btn-primary mt-3">Sign Up</button>
         </div>
     </form>
-    <footer>footer here...</footer>
 </div>
 @endsection

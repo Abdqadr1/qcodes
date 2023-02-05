@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -44,6 +46,48 @@ class HomeController extends Controller
             ->withQueryString();
 
         return view('home.search', ['results' => $results, 'title' => $keyword]);
+    }
+
+    public function categoriesSearch(Request $request)
+    {
+        $keyword = $request->keyword;
+        $results = null;
+        if ($keyword) {
+            $results = Category::without('parent', 'children', 'articles')
+                ->where(function ($query) use ($keyword) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                    $query->orWhere('content', 'like', '%' . $keyword . '%');
+                    $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
+                });
+        } else {
+            $results = Category::without('parent', 'children', 'articles');
+        }
+
+        $results = $results->paginate($perPage = 10, $columns = ['name', 'content', 'slug'])
+            ->withQueryString();
+
+        return view('home.categories', ['results' => $results, 'title' => $keyword]);
+    }
+
+    public function tagsSearch(Request $request)
+    {
+        $keyword = $request->keyword;
+        $results = null;
+        if ($keyword) {
+            $results = Tag::without('articles')
+                ->where(function ($query) use ($keyword) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                    $query->orWhere('content', 'like', '%' . $keyword . '%');
+                    $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
+                });
+        } else {
+            $results = Tag::without('articles');
+        }
+
+        $results = $results->paginate($perPage = 10, $columns = ['name', 'content', 'slug'])
+            ->withQueryString();
+
+        return view('home.tags', ['results' => $results, 'title' => $keyword]);
     }
 
     public function admin(Request $request)

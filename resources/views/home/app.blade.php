@@ -15,7 +15,7 @@
     <!-- Scripts -->
     <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
 
-    @vite(['resources/sass/app.scss'])
+    @vite(['resources/sass/app.scss', 'resources/js/bootstrap.js'])
 
     <style>
         body {
@@ -38,15 +38,18 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" href="#">Guides</a>
+                            <a class="nav-link fw-bold" href="/categories">Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="/tags">Tags</a>
                         </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <form class="input-group" method="get" action="{{route('search')}}">
-                            <input required name="keyword" type="text" class="form-control" placeholder="keyword" aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <button class="btn btn-outline-secondary d-flex align-items-center" type="button" id="button-addon2">
+                            <input required name="keyword" type="text" class="form-control" placeholder="search articles" aria-describedby="button-addon2">
+                            <button title="search article" class="btn btn-outline-secondary d-flex align-items-center" type="button" id="button-addon2">
                                 <iconify-icon class="fs-5" icon="ic:outline-search"></iconify-icon>
                             </button>
                         </form>
@@ -90,6 +93,9 @@
         <main class="py-4">
             @yield('content')
         </main>
+        <footer>
+            footer here...
+        </footer>
     </div>
 </body>
 </html>

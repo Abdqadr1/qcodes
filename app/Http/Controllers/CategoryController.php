@@ -39,7 +39,7 @@ class CategoryController extends Controller
             'parent_id' => ['nullable', 'numeric', 'exists:categories,id'],
         ]);
 
-        $validated['slug'] = Str::slug($validated['name'], '_');
+        $validated['slug'] = Str::slug($validated['name'], '-');
 
         return $this->categoryRepo->createCategory($validated);
     }
@@ -63,7 +63,7 @@ class CategoryController extends Controller
             return new JsonResponse(['message' => 'Category parent causes cycle.'], 400);
         }
 
-        $validated['slug'] = Str::slug($validated['name'], '_');
+        $validated['slug'] = Str::slug($validated['name'], '-');
 
         return $this->categoryRepo->updateCategory($id, $validated);
     }

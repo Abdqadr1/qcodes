@@ -36,7 +36,7 @@ class TagController extends Controller
             'meta_title' => 'required|max:160',
             'content' => 'required|max:500',
         ]);
-        $validated['slug'] = Str::slug($validated['name'], '_');
+        $validated['slug'] = Str::slug($validated['name'], '-');
 
         return $this->repo->createTag($validated);
     }
@@ -52,7 +52,7 @@ class TagController extends Controller
             'content' => 'required|max:500',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name'], '_');
+        $validated['slug'] = Str::slug($validated['name'], '-');
 
         return $this->repo->updateTag($id, $validated);
     }
