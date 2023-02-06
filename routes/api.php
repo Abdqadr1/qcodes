@@ -87,4 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/admin/my-notification', [NotificationController::class, 'getUserNotifications']);
     Route::get('/admin/notification/type', [NotificationController::class, 'getNotificationsType']);
+
+    Route::get('/admin/messages', [AdminController::class, 'getAllMessages']);
+    Route::delete('/admin/message/delete/{id}', [AdminController::class, 'getAllMessages']);
 });

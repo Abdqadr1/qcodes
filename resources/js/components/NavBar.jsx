@@ -47,6 +47,7 @@ const NavBar = ({ httpClient }) => {
 
   const { isLoading, mutate } =
       useMutation(() => httpClient.post('/api/admin/logout'), {
+      retry: false,
       onSuccess: () => {
           queryClient.removeQueries('userData');
           window.location = '/admin/login';
@@ -117,6 +118,7 @@ const NavBar = ({ httpClient }) => {
                               <Nav.Link href="/admin">Admins</Nav.Link>
                               <Nav.Link href="/admin/article/all">All Articles</Nav.Link>
                               <Nav.Link href="/admin/notification">Notifications</Nav.Link>
+                              <Nav.Link href="/admin/messages">Messages</Nav.Link>
                             </>
                            : ''
                         }

@@ -94,7 +94,7 @@ const AdminRegistration = ({ httpClient }) => {
                                 alignItems="center"
                             >
                                 <h4 className='mb-3'>Admin Registration</h4>
-                                <Link color={'warning'} href="/admin/login" underline="none">LogIn</Link>
+                                <Link className='fw-bold text-success' color={'warning'} href="/admin/login" underline="none">LogIn</Link>
                             </Stack>
                             {
                                 (alert.show)
@@ -154,7 +154,7 @@ const AdminRegistration = ({ httpClient }) => {
                                     <TextField
                                         sx={{ width: '100%' }}                       
                                         multiline
-                                        rows={2} maxRows={2}
+                                        rows={2}
                                         required name='street_address'
                                         id="outlined-required"
                                         minLength={150}
@@ -215,9 +215,6 @@ const AdminRegistration = ({ httpClient }) => {
                                     type='submit' variant="contained" color='success'
                                     sx={{width: 150}}
                                 >Sign Up</Button>
-                                <Link href="#" underline="none">
-                                    Forgot Password?
-                                </Link>
                             </Stack>
                         </Paper>  
                     </Box>

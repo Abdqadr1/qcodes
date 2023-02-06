@@ -60,6 +60,7 @@ const Admin = ({ httpClient }) => {
     const {data, refetch, isFetching } = useQuery('adminData', () =>
         httpClient.get(`/api/admin/all?keyword=${keyword}`),{ 
             refetchOnWindowFocus: false,
+            retry: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
                 setError({ ...error });
@@ -71,6 +72,7 @@ const Admin = ({ httpClient }) => {
     const { isLoading:roleLoading, data:roleData } = useQuery('roleData', () =>
         httpClient.get('/api/admin/roles'),{ 
             refetchOnWindowFocus: false,
+            retry: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
                 setError({ ...error });

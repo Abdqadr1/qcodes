@@ -20,7 +20,6 @@ class AdminController extends Controller
         $this->adminRepo = $adminRepo;
     }
 
-
     public function getAllAdmin(Request $request)
     {
         $this->authorize('viewAll', Admin::class);
@@ -117,5 +116,10 @@ class AdminController extends Controller
     public function getAllRoles()
     {
         return $this->adminRepo->getAllRoles();
+    }
+
+    public function getAllMessages()
+    {
+        return DB::table('contact')->paginate(8);
     }
 }

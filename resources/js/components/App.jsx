@@ -18,6 +18,7 @@ import ForgotPassword from './auth/ForgotPassword';
 import ChangePassword from './auth/ChangePassword';
 import ConfirmEmailAddress from './auth/ConfirmEmailAddress';
 import Notification from './notification/Notification';
+import Messages from './messages/Messages';
 
 function App() {
 
@@ -56,6 +57,7 @@ function App() {
                         <Route path='/admin/changepassword/:token' element={<ChangePassword httpClient={http} />} />
                         <Route path='/admin/confirm' element={<ConfirmEmailAddress httpClient={http} />} />
                         <Route path='/admin/notification' element={<Notification httpClient={http} />} />
+                        <Route path='/admin/messages' element={<Messages httpClient={http} />} />
                         <Route path='*' element={<h4>404: Not Found</h4>} />
                     </Routes>
                 </QueryClientProvider>
