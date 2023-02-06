@@ -47,3 +47,15 @@ Route::get('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe
 Route::view('/newsletter/confirm', 'newsletter.confirm', ['title' => 'Confirm your email'])->name('newsletter-confirm');
 Route::view('/newsletter/sub', 'newsletter.subscribe')->name('newsletter-subscribe');
 Route::view('/newsletter/unsub', 'newsletter.unsubscribe')->name('newsletter-unsubscribe');
+
+// Route::view('/mail', 'mail.newsletter.confirm', ['first_name' => 'QD', 'link' => 'hgiagidhg.com']);
+
+//static
+function getTitle($name)
+{
+    return $name . ' ' . env('APP_NAME') . ' | ' . env('APP_NAME');
+}
+Route::view('/about', 'home.about', ['title' =>  getTitle('About')]);
+Route::view('/privacy', 'home.privacy', ['title' => getTitle('Privacy')]);
+Route::view('/terms', 'home.terms', ['title' => getTitle('Terms')]);
+Route::view('/contact', 'home.contact', ['title' => getTitle('Contact')]);

@@ -26,7 +26,7 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
@@ -43,6 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link fw-bold" href="/tags">Tags</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="/about">About</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -53,6 +56,7 @@
                                 <iconify-icon class="fs-5" icon="ic:outline-search"></iconify-icon>
                             </button>
                         </form>
+                        <a class="btn btn-success w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin">Become a writer</a>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -93,8 +97,18 @@
         <main class="py-4">
             @yield('content')
         </main>
-        <footer>
-            footer here...
+        <footer class="row py-md-3 px-md-4 mx-0 bg-dark bg-gradient text-light">
+            <div class="col-md-2">
+                <img src="" alt="{{ env('APP_NAME') }}">
+            </div>
+            <div class="col-md-10">
+                <div class="d-flex justify-content-center text-uppercase">
+                    <a class="ms-md-2" href="/about">about</a>
+                    <a class="ms-md-2" href="/terms">Terms Of Service</a>
+                    <a class="ms-md-2" href="/privacy">privacy policy</a>
+                    <a class="ms-md-2" href="/contact">Contact</a>
+                </div>
+            </div>
         </footer>
     </div>
 </body>

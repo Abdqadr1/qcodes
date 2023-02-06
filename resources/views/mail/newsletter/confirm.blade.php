@@ -35,9 +35,9 @@
                 <p>Or copy the following link to your browser address bar:</p>
                 <a class="mb-3 d-block"  href="{{ $link }}">{{ $link }}</a>
 
-                <p class="fs-4">If you don't know why you received this email, please contact us so we can help you.</p>
-                <p class="fs-4">Thanks, </p>
-                <p class="fs-4">The {{ env('APP_NAME') }} Team</p>
+                <p class="fs-6">If you don't know why you received this email, please contact us so we can help you.</p>
+                <p class="fs-6 mb-1">Thanks, </p>
+                <p class="fs-6">The {{ env('APP_NAME') }} Team</p>
             </div>
         </div>
     </div>

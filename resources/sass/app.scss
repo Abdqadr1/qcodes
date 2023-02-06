@@ -8,3 +8,23 @@
 @import 'bootstrap/scss/bootstrap';
 
 @import 'part';
+
+.w-200p {
+    width: 200px !important;
+}
+.w-220p {
+    width: 220px !important;
+}
+
+footer a{
+    text-decoration: none;
+    color: rgba(255, 255, 255, .5);
+}
+footer a:hover{
+    text-decoration: underline;
+    color: rgba(255, 255, 255, 1);
+}
+
+.thebody{
+    min-height: calc(100vh - 60px - 3rem);
+}

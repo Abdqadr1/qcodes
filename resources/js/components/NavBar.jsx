@@ -29,14 +29,11 @@ const NavBar = ({ httpClient }) => {
             retry: false,
             onSuccess: data => {
               queryClient.setQueryData('userData', data.data);
-            },
-            onError: error => {
-              Util.checkAuthError(error?.response?.status, navigate);
             } 
         }
     );
 
-  const {isLoading:notificationLoading } = useQuery('myNotificationData', () =>
+  const {isLoading:notificationLoading, mutate:notMutate } = useMutation( () =>
         httpClient.get('/api/admin/my-notification'),{ 
             refetchOnWindowFocus: false,
             onSuccess: data => setNotifications([...data.data]),
@@ -80,6 +77,9 @@ const NavBar = ({ httpClient }) => {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    if (!notifications) {
+      notMutate();
+    }
   };
   const handleClose = () => setAnchorEl(null);
   const handleRead = (not) => {

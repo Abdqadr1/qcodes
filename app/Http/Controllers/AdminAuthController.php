@@ -103,6 +103,7 @@ class AdminAuthController extends Controller
         if ($reset) {
             MailService::send([
                 'subject' => "Forgot your password?",
+                'title' => "Forgot your password?",
                 'from' => "account@qcodes.com",
                 'view' => "mail.admin.forgotpassword",
                 'to' => $request->email,

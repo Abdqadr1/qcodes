@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  
 
     <style>
         body {
@@ -19,14 +22,14 @@
     <p>Forgot your password, huh? No big deal.</p>
     <p>To create a new password, just follow this link:</p>
 
-    <a  style="margin-block: 2em;" href="{{ $link }}">Create a new password</a>
+    <a  class="mb-2" href="{{ $link }}">Create a new password</a>
 
     <p>Link doesn't work? Copy the following link to your browser address bar:</p>
-    <a  style="margin-bottom: 3em;" href="{{ $link }}">{{ $link }}</a>
+    <a  class="mb-3" href="{{ $link }}">{{ $link }}</a>
 
-    <p  style="margin-bottom: 3em;">You received this email, because it was requested by a <a href="{{ url('') }}">{{ env('APP_NAME') }}</a> user. This is part of the procedure to create a new password on the system. If you DID NOT request a new password then please ignore this email and your password will remain the same.</p>
+    <p  class="mb-3">You received this email, because it was requested by a <a class="fw-bold" href="{{ url('') }}">{{ env('APP_NAME') }}</a> user. This is part of the procedure to create a new password on the system. If you DID NOT request a new password then please ignore this email and your password will remain the same.</p>
 
-    <p style="margin-bottom: 2em;">Thanks,</p>
+    <p class="mb-1">Thanks,</p>
     <p>The {{ env('APP_NAME') }} Team</p>
 </body>
 </html>
