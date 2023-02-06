@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -93,5 +94,25 @@ class HomeController extends Controller
     public function admin(Request $request)
     {
         return view('admin.home', ['title' => 'Admin']);
+    }
+
+    public function postContact(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|min:5|max:60',
+            'email' => 'required|email|max:255',
+            'about' => 'required|max:60',
+            'message' => 'required|min:50|max:1000',
+        ]);
+
+        DB::table('contact')->insert([
+            'name' => $request->name,
+            'email' => $request->email,
+            'about' => $request->about,
+            'message' => $request->message,
+            'created_at' => now(),
+        ]);
+
+        return view('home.contact', ['title' => 'Contact', 'msg' => 'Your message has been sent.']);
     }
 }
