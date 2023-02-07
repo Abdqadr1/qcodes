@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useMutation, useQueryClient } from 'react-query';
 import Autocompletion from '../article/Autocompletion';
@@ -23,6 +23,10 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
     const handleClose = () => setEdit(s => ({ ...s, show: false }));
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     setParent(s => ({...s, data: data?.parent}))
+    // }, [data]);
 
     const { mutate, isLoading, } = useMutation(
         (inputs) => httpClient.post(`/api/category/edit/${inputs[0]}`, inputs[1]), {
@@ -116,6 +120,10 @@ const CategoryEditModal = ({ edit, setEdit, httpClient }) => {
                             <Autocompletion defaultValue={data?.parent}
                                 info={parent} name='Parent Category'
                                 httpClient={httpClient} setData={setParent} />
+
+                                {
+                                (errors?.parent_id) ? <span className='text-danger'>{ errors?.parent_id }</span> : ''
+                                }
                         </Stack>
                         
                         <Button disabled={isLoading} variant="contained" color='primary' type="submit">

@@ -122,4 +122,10 @@ class AdminController extends Controller
     {
         return DB::table('contact')->paginate(8);
     }
+
+    public function deleteMessages(Request $request)
+    {
+        $id = $request->route('id');
+        return DB::table('contact')->delete($id);
+    }
 }

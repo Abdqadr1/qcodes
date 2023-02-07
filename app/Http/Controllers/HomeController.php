@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = Article::select(['id', 'slug', 'title', 'summary', 'banner'])
+        $articles = Article::select(['id', 'slug', 'title', 'summary'])
             ->where(function ($query) {
                 $query->where('is_published', 1);
             })->paginate(4);
@@ -114,5 +114,43 @@ class HomeController extends Controller
         ]);
 
         return view('home.contact', ['title' => 'Contact', 'msg' => 'Your message has been sent.']);
+    }
+
+    public function getCategoryArticles(Request $request)
+    {
+        $slug = $request->route('slug');
+        $category = Category::where('slug', $slug)->first();
+        if (!$category) abort(404);
+
+        $parents = array();
+        $parent = $category->parent;
+        while ($parent != null) {
+            array_unshift($parents, $parent);
+            $parent = $parent->parent;
+        }
+
+        $category->parent = null;
+
+        $articles = $category->articles()
+            ->where('is_published', 1)
+            ->paginate(10)->withQueryString();
+
+        return view('home.category', [
+            'category' => $category, 'title' => $slug,
+            'articles' => $articles, 'parents' => $parents
+        ]);
+    }
+
+    public function getTagArticles(Request $request)
+    {
+        $slug = $request->route('slug');
+        $tag = Tag::where('slug', $slug)->first();
+        if (!$tag) abort(404);
+
+        $articles = $tag->articles()
+            ->where('is_published', 1)
+            ->paginate(10)->withQueryString();
+
+        return view('home.tag', ['tag' => $tag, 'title' => $slug, 'articles' => $articles]);
     }
 }

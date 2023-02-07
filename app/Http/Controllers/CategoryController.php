@@ -59,7 +59,7 @@ class CategoryController extends Controller
             ],
         ]);
 
-        if ($validated['parent_id'] && $this->checkForCycle($id, $validated['parent_id'])) {
+        if ($request->has('parent_id') && $this->checkForCycle($id, $request->parent_id)) {
             return new JsonResponse(['message' => 'Category parent causes cycle.'], 400);
         }
 

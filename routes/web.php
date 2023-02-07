@@ -28,7 +28,8 @@ Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/categories', [HomeController::class, 'categoriesSearch'])->name('cat-search');
 Route::get('/tags', [HomeController::class, 'tagsSearch'])->name('tag-search');
 
-Route::get('/categories/{slug}', [HomeController::class, 'categoriesSearch'])->name('cat-search');
+Route::get('/categories/{slug}', [HomeController::class, 'getCategoryArticles'])->name('cat-page');
+Route::get('/tags/{slug}', [HomeController::class, 'getTagArticles'])->name('tag-page');
 
 
 // admin, writer portal react app

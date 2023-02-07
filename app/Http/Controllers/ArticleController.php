@@ -93,7 +93,6 @@ class ArticleController extends Controller
                 ],
 
                 'summary' => 'required|size:160',
-                'banner' => 'nullable|max:200',
 
                 'tags' => 'required|array',
                 'tags.*' => 'required|numeric|exists:tags,id',
@@ -109,7 +108,6 @@ class ArticleController extends Controller
                     'nullable', 'numeric', 'exists:articles,id'
                 ],
                 'summary' => 'nullable|max:160',
-                'banner' => 'nullable|max:200',
 
                 'tags' => 'nullable|array',
                 'tags.*' => 'nullable|numeric|exists:tags,id',
@@ -123,7 +121,6 @@ class ArticleController extends Controller
             'content' => $request->input('content') ?? '',
             'parent_id' => $request->input('parent_id') ?? null,
             'summary' => $request->input('summary') ?? '',
-            'banner' => $request->input('banner') ?? '',
         ];
     }
 

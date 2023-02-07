@@ -36,8 +36,6 @@ const EditArticle = ({ httpClient }) => {
     const [wordCount, setWordCount] = useState(0);
     const [backdropOpen, setBackdropOpen] = useState(false);
     const [isPublished, setPublished] = useState(false);
-    const [banner, setBanner] = useState('');
-    const bannerRef = useRef();
 
     const navigate = useNavigate();
 
@@ -46,14 +44,14 @@ const EditArticle = ({ httpClient }) => {
         {
             refetchOnWindowFocus: false ,
             onSuccess: (data) => {
-                const { categories, tags, parent, title, meta_title, content, summary, is_published, banner } = data.data;    
+                const { categories, tags, parent, title, meta_title, content, summary, is_published } = data.data;    
                 setContent(content);  
                 setCategories(s => ({ ...s, data: categories }));         
                 setTags(s => ({ ...s, data: tags }));         
                 setParent(s => ({ ...s, data: parent ?? parent?.id }));         
                 setForm(s => ({ ...s, title, meta_title, summary }));      
                 setPublished(is_published);
-                setBanner(banner);
+                setLastSaved(Date.now());
             },
             onError: error => {
                 const response = error?.response;
@@ -103,21 +101,6 @@ const EditArticle = ({ httpClient }) => {
             }
         });
 
-    const { isLoading:bannerLoading, mutate: bannerMutate } =
-        useMutation((formData) => httpClient.post('/api/article/upload/banner', formData),
-         {
-            onSuccess: data => {
-                 setBanner(data.data.url);
-            },
-            onError: error => {
-                const response = error?.response;
-                Util.checkAuthError(response?.status, navigate);
-                const message = response?.data?.message ?? "An error occurred";
-                setToast(s => ({ ...s, show: true, message, severity: 'error' }));
-                setBanner('');
-            }
-        });
-
 
     const handleInput = e => {
         const target = e.target;
@@ -132,7 +115,6 @@ const EditArticle = ({ httpClient }) => {
         formData.set('content', c);
 
         formData.set('id', id);
-        formData.set('banner', banner);
 
         if (tags.data.length > 0) {
             tags.data.forEach(data => formData.append('tags[]', data.id));
@@ -152,7 +134,10 @@ const EditArticle = ({ httpClient }) => {
 
     const handleChange = c => {
         setContent(c);
-        if ((Date.now() - lastSaved) >= (1000 * 60 * 3)) {
+        if (
+            (Date.now() - lastSaved) >= (1000 * 60 * 3) && 
+            c !== content
+        ) {
             setToast(s => ({
                 ...s, show: true,
                 message: "You haven't saved your changes in a while.",
@@ -166,15 +151,6 @@ const EditArticle = ({ httpClient }) => {
         mutate(initFormData());
     }
     
-    const uploadBanner = event => {
-        const input = event.target;
-        const file = input.files[0];
-        const show = e => bannerRef.current.src = e;
-        const formData = new FormData();
-        formData.set('upload', file);
-        const mutate = () => bannerMutate(formData);
-        Util.showImage(file, show, setToast, mutate);
-    }
 
     const handlePublish = e => {
          if (wordCount < Blog.WORD_LIMIT) {
@@ -222,15 +198,6 @@ const EditArticle = ({ httpClient }) => {
                     placeholder="Blog Title..."
                     rows={3} fullWidth multiline
                 />
-                <div className='blog-banner mb-3'>
-                    <img alt='article banner' ref={bannerRef} src={banner} />
-                    {(bannerLoading) ? <CircularProgress className='loading' color="inherit" /> : ''}
-                    
-                    <IconButton color="primary" aria-label="upload picture" component="label">
-                        <input hidden accept="image/*" type="file" onChange={uploadBanner} />
-                        <PhotoCamera />
-                    </IconButton>
-                </div>
                 <TextField className='mb-3 fs-4' onInput={handleInput}
                     name='meta_title' value={form?.meta_title ?? ''} 
                     id="outlined-textarea"
@@ -259,7 +226,7 @@ const EditArticle = ({ httpClient }) => {
                 </Stack>
                 <Snackbar
                     open={toast.show}
-                    autoHideDuration={3000}
+                    autoHideDuration={5000}
                     onClose={() => setToast(s=> ({...s, show:false}) )}
                     anchorOrigin={
                         {

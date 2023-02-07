@@ -17,10 +17,11 @@ class ArticleFactory extends Factory
      */
     public function definition()
     {
+        $title = fake()->text(100);
         return [
-            "title" => fake()->text(100),
+            "title" => $title,
             "meta_title" => fake()->text(100),
-            "slug" => Str::slug(fake()->text(100)),
+            "slug" => Str::slug($title),
             "summary" => fake()->text(150),
             "author_id" => fake()->numberBetween(1, 39),
             "parent_id" => fake()->numberBetween(1, 50),

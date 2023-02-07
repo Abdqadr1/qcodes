@@ -55,7 +55,7 @@ const Categories = ({ httpClient }) => {
 
     const { isFetching, data, refetch } = useQuery('categoryData', () =>
         httpClient.get(`/api/category/all?keyword=${keyword}`),{
-            refetchOnWindowFocus: false ,
+            refetchOnWindowFocus: false, retry: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
                 setError({ ...error });

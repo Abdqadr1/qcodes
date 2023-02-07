@@ -42,7 +42,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/article/upload/image', [ArticleController::class, 'uploadImage']);
-    Route::post('/article/upload/banner', [ArticleController::class, 'uploadBanner']);
 
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 
@@ -89,5 +88,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/admin/notification/type', [NotificationController::class, 'getNotificationsType']);
 
     Route::get('/admin/messages', [AdminController::class, 'getAllMessages']);
-    Route::delete('/admin/message/delete/{id}', [AdminController::class, 'getAllMessages']);
+    Route::delete('/admin/message/delete/{id}', [AdminController::class, 'deleteMessages']);
 });

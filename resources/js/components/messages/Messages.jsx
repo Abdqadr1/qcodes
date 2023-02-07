@@ -19,6 +19,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router';
+import ViewMessageModal from './ViewMessage';
 
 const theme = createTheme();
 
@@ -40,13 +41,14 @@ const Messages = ({ httpClient }) => {
     const [keyword, setKeyword] = useState('');
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [error, setError] = useState({});
+    const [view, setView] = useState({ show: false, data: {} });
     
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { isFetching, data, refetch } = useQuery('articleData', () =>
+    const { isFetching, data, refetch } = useQuery('MessageData', () =>
         httpClient.get(`/api/admin/messages`),{ 
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: false, retry: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
                 setError({ ...error });
@@ -58,7 +60,7 @@ const Messages = ({ httpClient }) => {
     const { isLoading: pageFetching, mutate: pageMutate } =
         useMutation(url => httpClient.get(url), {
         onSuccess: data => {
-            queryClient.setQueryData('articleData', data);
+            queryClient.setQueryData('MessageData', data);
         },
         onError: error => {
             const response = error?.response;
@@ -71,7 +73,7 @@ const Messages = ({ httpClient }) => {
     const { isLoading: deleteFetching, mutate: deleteMutate } =
         useMutation(id => httpClient.delete(`/api/admin/message/delete/${id}`), {
         onSuccess: (data, id) => {
-            queryClient.setQueryData('articleData', oldData => {
+            queryClient.setQueryData('MessageData', oldData => {
                 const list = oldData.data.data;
                 const index = list.findIndex(l => l.id === id);
                 list.splice(index, 1);
@@ -146,7 +148,7 @@ const Messages = ({ httpClient }) => {
                                                             {message.message}
                                                         </TableCell>
                                                         <TableCell className="align-top">
-                                                            <Button size='small' variant="outlined">View</Button>
+                                                            <Button onClick={() => setView(s => ({ ...s, show: true, data: message }))} size='small' variant="outlined">View</Button>
                                                             {' '}
                                                             <Button variant="outlined" size='small' color='error'
                                                                 onClick={() => handleDelete(message.id)} 
@@ -166,7 +168,7 @@ const Messages = ({ httpClient }) => {
                                     />
                                 </CardContent>
                                 : <CardContent className="pb-2">
-                                    No Article found
+                                    No Message found
                                 </CardContent>
                         }
                     </Card>
@@ -188,6 +190,7 @@ const Messages = ({ httpClient }) => {
                     {error?.response?.data?.message ?? "An error occurred. Try again"}
                 </Alert>
             </Snackbar>
+            <ViewMessageModal view={view} setView={setView} />
         </div>
      );
 }

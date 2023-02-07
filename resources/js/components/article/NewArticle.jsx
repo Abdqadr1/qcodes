@@ -33,8 +33,6 @@ const NewArticle = ({ httpClient }) => {
     const [content, setContent] = useState("");
     const [wordCount, setWordCount] = useState(0);
     const [backdropOpen, setBackdropOpen] = useState(false);
-    const [banner, setBanner] = useState('');
-    const bannerRef = useRef();
 
     const navigate = useNavigate();
     
@@ -57,7 +55,7 @@ const NewArticle = ({ httpClient }) => {
             }
         });
 
-    const { isLoading:publishLoading, mutate: publishMutate, data: publishData } =
+    const { isLoading:publishLoading, mutate: publishMutate } =
         useMutation((formData) => httpClient.post(`/api/article/publish`, formData), {
             onSuccess: () => {
                 setToast(s => ({ ...s, show: true, message: "Published!", severity: 'success' }));
@@ -73,23 +71,6 @@ const NewArticle = ({ httpClient }) => {
             }
         });
 
-    const { isLoading:bannerLoading, mutate: bannerMutate } =
-        useMutation((formData) => httpClient.post('/api/article/upload/banner', formData),
-            {
-            onSuccess: data => {
-                    setBanner(data.data.url);
-            },
-            onError: error => {
-                const response = error?.response;
-                Util.checkAuthError(response?.status, navigate);
-                const message = response?.data?.message ?? "An error occurred";
-                setToast(s => ({ ...s, show: true, message, severity: 'error' }));
-                setBanner('');
-            }
-        });
-
-
-
     const handleInput = e => {
         const target = e.target;
         const name = target.name;
@@ -101,7 +82,6 @@ const NewArticle = ({ httpClient }) => {
         c = c ? c : content;
         const formData = new FormData();
         formData.set('content', c);
-        formData.set('banner', banner);
 
         if (response?.data) formData.set('id', response.data);
 
@@ -123,7 +103,10 @@ const NewArticle = ({ httpClient }) => {
 
     const handleChange = c => {
         setContent(c);
-        if ((Date.now() - lastSaved) >= (1000 * 60 * 3)) {
+        if ((
+            Date.now() - lastSaved) >= (1000 * 60 * 3) && 
+            c !== content
+        ) {
             setToast(s => ({
                 ...s, show: true,
                 message: "You haven't saved your changes in a while.",
@@ -137,15 +120,6 @@ const NewArticle = ({ httpClient }) => {
         mutate(initFormData());
     }
     
-    const uploadBanner = event => {
-        const input = event.target;
-        const file = input.files[0];
-        const show = e => bannerRef.current.src = e;
-        const formData = new FormData();
-        formData.set('upload', file);
-        const mutate = () => bannerMutate(formData);
-        Util.showImage(file, show, setToast, mutate);
-    }
 
     const handlePublish = e => {
         if (wordCount < Blog.wordLimit) {
@@ -199,15 +173,6 @@ const NewArticle = ({ httpClient }) => {
                     fullWidth 
                     multiline
                 />
-                <div className='blog-banner mb-3'>
-                    <img alt='article banner' ref={bannerRef} src={banner} />
-                    {(bannerLoading) ? <CircularProgress className='loading' color="inherit" /> : ''}
-
-                    <IconButton color="primary" aria-label="upload picture" component="label">
-                        <input hidden accept="image/*" type="file" onChange={uploadBanner} />
-                        <PhotoCamera />
-                    </IconButton>
-                </div>
                 <TextField className='mb-3 fs-4' onInput={handleInput}
                     name='meta_title' value={form?.meta_title ?? ''} 
                     id="outlined-textarea"

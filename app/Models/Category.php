@@ -13,6 +13,8 @@ class Category extends Model
 
     protected $fillable = ['name', 'meta_title', 'content', 'slug', 'parent_id'];
 
+    protected $with = ['parent'];
+
     public function articles()
     {
         return $this->belongsToMany(Article::class, 'article_category', 'category_id', 'article_id');

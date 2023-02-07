@@ -17,10 +17,11 @@ class TagFactory extends Factory
      */
     public function definition()
     {
+        $name = fake()->name();
         return [
-            'name' => fake()->name(),
+            'name' => $name,
             'meta_title' => fake()->text(100),
-            'slug' => Str::slug(fake()->text(100)),
+            'slug' => Str::slug($name),
             'content' => fake()->text(100)
         ];
     }
