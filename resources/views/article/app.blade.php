@@ -7,6 +7,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta name="description" content="{{ $article?->meta_title ?? '' }}">
+
     <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->

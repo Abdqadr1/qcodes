@@ -11,12 +11,24 @@ function ArticleView() {
         <>
             <Row className='mx-0 justify-content-center'>
                 <Col sm={10} className='px-1'>
-                    <div className='blog-banner'>
-                        <img alt={article?.title} src={article?.banner ?? ""} />
-                        <div className='title'>
-                            <h1 className='title'>{article?.title ?? ""}</h1>
+                    <div className='blog-banner'></div>
+                    <div className='title mb-5'>
+                        <h1 className='title mb-5'>{article?.title ?? ""}</h1>
+                        <div className='mb-3'>
+                            Last Modified: {new Date(article?.updated_at).toDateString()}
+                        </div>
+                        <div className='border-start border-secondary d-flex p-2 border-3 justify-content-between align-items-center'>
+                            <span>by <em className='text-success'>{`${article?.author.first_name} ${article?.author?.last_name}`}</em></span>
+                            <div>
+                                {
+                                    article?.tags.map(tag => (
+                                        <a key={tag.id} href={`/tags/${tag.slug}`} className='btn btn-success text-light fw-bold'>{ tag.name }</a>
+                                    ))
+                                }
+                            </div>
                         </div>
                     </div>
+                    <hr/>
                     <CKEditor
                         config={{}}
                         editor={Editor}

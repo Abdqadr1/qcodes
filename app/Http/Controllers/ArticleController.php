@@ -23,10 +23,11 @@ class ArticleController extends Controller
     public function viewArticle(Request $request)
     {
         $slug = $request->route('slug');
-        $article = Article::where(function ($query) use ($slug) {
-            $query->where('slug', $slug);
-            $query->where('is_published', 1);
-        })->first();
+        $article = Article::with(['author:id,first_name,last_name', 'tags', 'categories'])
+            ->where(function ($query) use ($slug) {
+                $query->where('slug', $slug);
+                $query->where('is_published', 1);
+            })->first();
 
         return view('article.view', ['title' => $article->title, 'article' => $article]);
     }
@@ -34,14 +35,13 @@ class ArticleController extends Controller
     public function previewArticle(Request $request)
     {
         $slug = $request->route('slug');
-        $article = Article::where(function ($query) use ($slug) {
-            $query->where('slug', $slug);
-        })->first();
+        $article = Article::with(['author:id,first_name,last_name', 'tags', 'categories'])
+            ->where(function ($query) use ($slug) {
+                $query->where('slug', $slug);
+            })->first();
 
         return view('article.preview', ['title' => $article->title, 'article' => $article]);
     }
-
-
 
 
 
