@@ -1,4 +1,7 @@
 @extends('home.app')
+@section('title', 'Terms | ' . env('APP_NAME'))
+@section('meta_description', 'Terms of service ' . env('APP_NAME'))
+@section('meta_keywords', 'Terms of service ' . env('APP_NAME'))
 
 @section('content')
 <div class="container-lg thebody">

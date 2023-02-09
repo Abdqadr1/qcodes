@@ -7,9 +7,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <meta name="description" content="{{ $article?->meta_title ?? '' }}">
-
     <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
+    <meta name="keywords" content="@yield('meta_keywords', env('APP_NAME') . ' keywords')">
+    <meta name="description" content="@yield('meta_description', env('APP_NAME') . ' description')">
+    <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Fonts -->
     <link

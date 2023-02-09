@@ -1,4 +1,7 @@
 @extends('home.app')
+@section('title', 'About | ' . env('APP_NAME'))
+@section('meta_description', 'About ' . env('APP_NAME'))
+@section('meta_keywords', 'About ' . env('APP_NAME'))
 
 @section('content')
 <style>

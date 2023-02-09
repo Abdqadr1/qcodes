@@ -21,7 +21,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 //contact 
 Route::post('/contact', [HomeController::class, 'postContact'])->name('post-contact');
 
-
 //search
 
 Route::get('/search', [HomeController::class, 'search'])->name('search');
@@ -55,12 +54,7 @@ Route::view('/newsletter/unsub', 'newsletter.unsubscribe')->name('newsletter-uns
 
 // Route::view('/mail', 'mail.newsletter.confirm', ['first_name' => 'QD', 'link' => 'hgiagidhg.com']);
 
-//static
-function getTitle($name)
-{
-    return $name . ' ' . env('APP_NAME') . ' | ' . env('APP_NAME');
-}
-Route::view('/about', 'home.about', ['title' =>  getTitle('About')]);
-Route::view('/privacy', 'home.privacy', ['title' => getTitle('Privacy')]);
-Route::view('/terms', 'home.terms', ['title' => getTitle('Terms')]);
-Route::view('/contact', 'home.contact', ['title' => getTitle('Contact')]);
+Route::view('/about', 'home.about');
+Route::view('/privacy', 'home.privacy');
+Route::view('/terms', 'home.terms');
+Route::view('/contact', 'home.contact');

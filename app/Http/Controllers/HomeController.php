@@ -46,7 +46,7 @@ class HomeController extends Controller
         $results = $results->paginate($perPage = 10, $columns = ['title', 'summary', 'slug'])
             ->withQueryString();
 
-        return view('home.search', ['results' => $results, 'title' => $keyword]);
+        return view('home.search', ['results' => $results, 'keyword' => $keyword]);
     }
 
     public function categoriesSearch(Request $request)
@@ -67,7 +67,7 @@ class HomeController extends Controller
         $results = $results->paginate($perPage = 10, $columns = ['name', 'content', 'slug'])
             ->withQueryString();
 
-        return view('home.categories', ['results' => $results, 'title' => $keyword]);
+        return view('home.categories', ['results' => $results, 'keyword' => $keyword]);
     }
 
     public function tagsSearch(Request $request)
@@ -88,7 +88,7 @@ class HomeController extends Controller
         $results = $results->paginate($perPage = 10, $columns = ['name', 'content', 'slug'])
             ->withQueryString();
 
-        return view('home.tags', ['results' => $results, 'title' => $keyword]);
+        return view('home.tags', ['results' => $results, 'keyword' => $keyword]);
     }
 
     public function admin(Request $request)

@@ -1,4 +1,7 @@
 @extends('home.app')
+@section('title', 'Privacy Policy | ' . env('APP_NAME'))
+@section('meta_description', 'Privacy Policy of ' . env('APP_NAME'))
+@section('meta_keywords', 'Privacy Policy of ' . env('APP_NAME'))
 
 @section('content')
 <div class="container-lg thebody">

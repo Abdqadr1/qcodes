@@ -7,7 +7,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
+    <title> @yield('title', $title ?? config('app.name', 'Laravel'))</title>
+    <meta name="keywords" content="@yield('meta_keywords', env('APP_NAME') . ' keywords')">
+    <meta name="description" content="@yield('meta_description', env('APP_NAME') . ' description')">
+    <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -52,7 +55,7 @@
                     <ul class="navbar-nav ms-auto">
                         <form class="input-group" method="get" action="{{route('search')}}">
                             <input required name="keyword" type="text" class="form-control" placeholder="search articles" aria-describedby="button-addon2">
-                            <button title="search article" class="btn btn-outline-secondary d-flex align-items-center" type="button" id="button-addon2">
+                            <button title="search article" class="btn btn-outline-secondary d-flex align-items-center" type="submit" id="button-addon2">
                                 <iconify-icon class="fs-5" icon="ic:outline-search"></iconify-icon>
                             </button>
                         </form>

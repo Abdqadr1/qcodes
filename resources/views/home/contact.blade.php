@@ -1,5 +1,9 @@
 @extends('home.app')
 
+@section('title', 'Contact | ' . env('APP_NAME'))
+@section('meta_description', 'Contact us at ' . env('APP_NAME'))
+@section('meta_keywords', 'Contact us at ' . env('APP_NAME'))
+
 @section('content')
 <style>
     textarea#msg{

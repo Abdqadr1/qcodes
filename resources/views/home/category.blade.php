@@ -1,4 +1,7 @@
 @extends('home.app')
+@section('title', $category->name)
+@section('meta_description', $category->meta_title)
+@section('meta_keywords', $category->name)
 
 @section('content')
 <div class="container-lg thebody">
