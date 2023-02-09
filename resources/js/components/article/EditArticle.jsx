@@ -135,7 +135,7 @@ const EditArticle = ({ httpClient }) => {
     const handleChange = c => {
         setContent(c);
         if (
-            (Date.now() - lastSaved) >= (1000 * 60 * 3) && 
+            (Date.now() - lastSaved) >= (1000 * 60 * 3) && content !== "" && 
             c !== content
         ) {
             setToast(s => ({
@@ -180,7 +180,7 @@ const EditArticle = ({ httpClient }) => {
                 </div>
             </Col>
             <Col sm={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
-                <Stack className='article-sticky bg-light py-2' direction="row" spacing={2} 
+                <Stack className='article-sticky bgColor shadow-sm py-2' direction="row" spacing={2} 
                     justifyContent="center"
                     alignItems="center" my={3}>
                     <Button disabled={isLoading || publishLoading} variant="contained"
@@ -196,14 +196,14 @@ const EditArticle = ({ httpClient }) => {
                     id="outlined-textarea"
                     label="Title"
                     placeholder="Blog Title..."
-                    rows={3} fullWidth multiline
+                    minRows={2} fullWidth multiline
                 />
                 <TextField className='mb-3 fs-4' onInput={handleInput}
                     name='meta_title' value={form?.meta_title ?? ''} 
                     id="outlined-textarea"
                     label="Meta Title"
                     placeholder="Meta Title..."
-                    rows={3}
+                    minRows={2}
                     fullWidth 
                     multiline
                 />
@@ -213,15 +213,24 @@ const EditArticle = ({ httpClient }) => {
                     id="outlined-textarea"
                     label="Summary"
                     placeholder="Summary..."
-                    rows={3}
+                    minRows={2}
+                    fullWidth 
+                    multiline
+                />
+                <TextField className='mb-3 fs-4' onInput={handleInput}
+                    name='meta_keywords' value={form?.meta_keywords ?? ''} 
+                    id="outlined-textarea"
+                    label="Keywords, comma separated"
+                    placeholder="Keywords, comma separated"
+                    minRows={2}
                     fullWidth 
                     multiline
                 />
 
                 <Stack spacing={3} className='mb-3'>
+                    <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
                     <Autocompletion info={categories} name='Categories' httpClient={httpClient} setData={setCategories} />
                     <Autocompletion info={tags} name='Tags' httpClient={httpClient} setData={setTags} />
-                    <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
                     
                 </Stack>
                 <Snackbar

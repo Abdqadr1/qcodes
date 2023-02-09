@@ -9,9 +9,8 @@ function ArticleView() {
 
     return (
         <>
-            <Row className='mx-0 justify-content-center'>
+            <Row className='mx-0 justify-content-center mt-5'>
                 <Col sm={10} className='px-1'>
-                    <div className='blog-banner'></div>
                     <div className='title mb-5'>
                         <h1 className='title mb-5'>{article?.title ?? ""}</h1>
                         <div className='mb-3'>

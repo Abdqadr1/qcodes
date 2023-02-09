@@ -9,6 +9,11 @@
 
 @import 'part';
 
+body {
+    // overflow: hidden;
+    background-color: $bgColor !important;
+}
+
 .w-200p {
     width: 200px !important;
 }
@@ -27,4 +32,11 @@ footer a:hover{
 
 .thebody{
     min-height: calc(100vh - 60px - 3rem);
+}
+
+.admin-navbar{
+    background-color: $bgColor !important;
+}
+.bgColor{
+    background-color: $bgColor !important;
 }

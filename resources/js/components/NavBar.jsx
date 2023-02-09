@@ -91,7 +91,7 @@ const NavBar = ({ httpClient }) => {
 
   return (
       <>
-        <Navbar bg="dark" expand="lg" sticky="top" variant="dark" className="mb-0">
+        <Navbar expand="lg" sticky="top" variant="light" className="mb-0 shadow-sm admin-navbar">
           <Container fluid>
             <Navbar.Brand href="/admin">QCodes</Navbar.Brand>
             <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" />

@@ -1,24 +1,6 @@
-@import url('https://fonts.bunny.net/css?family=Nunito');
 
-// Variables
-@import 'variables';
+@import 'app';
 
-// Bootstrap
-@import 'bootstrap/scss/bootstrap';
-
-$bgColor: #DED0B3;
-$bgLtColor: #F9F8F6;
-$imgBgColor: #0F0E0F;
-$grColor: #61595F;
-$col: #C7B8A4;
-$deepColor: #998B79;
-$darkColor: #61595F;
-$dangerColor: #DA2E20;
-
-body{
-    overflow: hidden;
-    background-color: $bgColor !important;
-}
 
 .body{
     position: relative;

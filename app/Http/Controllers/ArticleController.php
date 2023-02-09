@@ -87,6 +87,7 @@ class ArticleController extends Controller
             $request->validate([
                 'title' => ['required', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'required|size:160',
+                'meta_keywords' => 'required|max:160',
                 'content' => 'required|max:10000',
                 'parent_id' => [
                     'nullable', 'numeric', 'exists:articles,id', Rule::notIn([$id])
@@ -103,6 +104,7 @@ class ArticleController extends Controller
             $request->validate([
                 'title' => ['nullable', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'nullable|max:160',
+                'meta_keywords' => 'nullable|max:160',
                 'content' => 'required|max:10000',
                 'parent_id' => [
                     'nullable', 'numeric', 'exists:articles,id'
