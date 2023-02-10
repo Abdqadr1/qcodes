@@ -48,7 +48,7 @@ const EditArticle = ({ httpClient }) => {
                 setContent(content);  
                 setCategories(s => ({ ...s, data: categories }));         
                 setTags(s => ({ ...s, data: tags }));         
-                setParent(s => ({ ...s, data: parent ?? parent?.id }));         
+                setParent(s => ({ ...s, data: parent }));         
                 setForm(s => ({ ...s, title, meta_title, summary }));      
                 setPublished(is_published);
                 setLastSaved(Date.now());
@@ -134,8 +134,8 @@ const EditArticle = ({ httpClient }) => {
 
     const handleChange = c => {
         setContent(c);
-        if (
-            (Date.now() - lastSaved) >= (1000 * 60 * 3) && content !== "" && 
+        if ( lastSaved && 
+            (Date.now() - lastSaved) >= (1000 * 60 * 3) && 
             c !== content
         ) {
             setToast(s => ({

@@ -103,8 +103,7 @@ const NewArticle = ({ httpClient }) => {
 
     const handleChange = c => {
         setContent(c);
-        if ((
-            Date.now() - lastSaved) >= (1000 * 60 * 3) && 
+        if (lastSaved && (Date.now() - lastSaved) >= (1000 * 60 * 3) && 
             c !== content
         ) {
             setToast(s => ({

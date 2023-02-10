@@ -9,6 +9,10 @@
 
 @import 'part';
 
+.react-body{
+    min-height: calc(100vh - 60px);
+}
+
 body {
     // overflow: hidden;
     background-color: $bgColor !important;

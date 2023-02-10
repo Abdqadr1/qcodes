@@ -25,7 +25,10 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
   const url = links[name.toLowerCase()];
 
   React.useEffect(() => {
-    setDefValue(defaultValue ? defaultValue : info?.data)
+    if (defaultValue || info?.data) {
+      setDefValue(defaultValue ? defaultValue : info?.data)
+    }
+    
   }, [info]);
 
   const { isLoading, mutate } =
