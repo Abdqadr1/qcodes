@@ -41,7 +41,7 @@ const AdminLogin = ({ httpClient }) => {
         useMutation(formData => httpClient.post('/api/admin/login', formData), {
         onSuccess: data => {
             queryClient.setQueryData('userData', data.data);
-            window.location = '/admin/profile';
+            window.location = '/admin/dashboard';
         },
         onError: error => {
             const response = error?.response;

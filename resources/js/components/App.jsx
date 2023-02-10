@@ -21,6 +21,8 @@ import Notification from './notification/Notification';
 import Messages from './messages/Messages';
 import MaterialNavbar from './MaterialNavbar';
 import { Toolbar } from '@mui/material';
+import AdminDashboard from './auth/Dashboard';
+import AdminLogout from './auth/Logout';
 
 function App() {
 
@@ -62,6 +64,8 @@ function App() {
                             <Route path='/admin/confirm' element={<ConfirmEmailAddress httpClient={http} />} />
                             <Route path='/admin/notification' element={<Notification httpClient={http} />} />
                             <Route path='/admin/messages' element={<Messages httpClient={http} />} />
+                            <Route path='/admin/dashboard' element={<AdminDashboard httpClient={http} />} />
+                            <Route path='/admin/logout' element={<AdminLogout httpClient={http} />} />
                             <Route path='*' element={<h4>404: Not Found</h4>} />
                         </Routes>
                     </div>
