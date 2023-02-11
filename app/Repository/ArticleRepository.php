@@ -36,12 +36,12 @@ class ArticleRepository implements ArticleRepositoryInterface
                     $query->orWhere('content', 'like', '%' . $keyword . '%');
                     $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
                 })
-                ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+                ->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
                 ->paginate(5);
         }
         return Article::orderBy('updated_at', 'DESC')
             ->where('author_id', $id)
-            ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+            ->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
             ->paginate(5);
     }
 
@@ -57,11 +57,11 @@ class ArticleRepository implements ArticleRepositoryInterface
                     $query->orWhere('content', 'like', '%' . $keyword . '%');
                     $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
                 })
-                ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+                ->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
                 ->paginate(5);
         }
         return Article::orderBy('updated_at', 'DESC')
-            ->select(['id', 'title', 'is_published', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+            ->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
             ->paginate(5);
     }
 

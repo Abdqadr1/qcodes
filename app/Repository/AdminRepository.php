@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Interfaces\AdminRepositoryInterface;
 use App\Models\Admin;
 use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class AdminRepository implements AdminRepositoryInterface
 {
@@ -44,7 +45,9 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function createAdmin(array $details)
     {
-        return Admin::create($details);
+        $admin =  Admin::create($details);
+        $admin->roles()->attach(3, ['created_at' => now(), 'updated_at' => now()]);
+        return $admin;
     }
 
     public function updateAdmin($id, array $details)
@@ -64,7 +67,11 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function deleteAdmin($id)
     {
-        return Admin::destroy($id);
+        return DB::transaction(function () use ($id) {
+            $admin = Admin::findOrFail($id);
+            $admin->roles()->detach();
+            return $admin->delete();
+        });
     }
 
     public function getAllRoles()

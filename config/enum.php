@@ -8,5 +8,8 @@ return [
     ],
     'notification_type' => [
         'GENERAL', 'ADMIN', 'USER'
+    ],
+    'article_status' => [
+        'In Review', 'Published', 'Unpublished', 'Needs Attention'
     ]
 ];

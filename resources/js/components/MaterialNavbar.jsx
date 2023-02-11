@@ -137,7 +137,7 @@ function MaterialNavbar(props) {
         {Object.keys(navs).map((item) => (
           <ListItem key={item} disablePadding>
             <ListItemButton sx={{ textAlign: 'start' }}>
-              <ListItemText primary={item} />
+              <Link className='text-decoration-none text-secondary' href={navs[item]}>{item}</Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -157,14 +157,14 @@ function MaterialNavbar(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1, display: { xs: 'none', md: 'block' } }}
           >
             {window.siteName}
           </Typography>
@@ -172,7 +172,7 @@ function MaterialNavbar(props) {
                 adminLoading ? '' : 
                 ((adminData?.data) 
                 ? <>
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                         { Object.keys(navs).map((item) => (
                         <Button href={navs[item]} className='text-dark' key={item} sx={{ color: '#fff' }}>
                             {item}
@@ -295,7 +295,7 @@ function MaterialNavbar(props) {
                 : <>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {Object.keys(auth).map((item) => (
-                        <Button className='text-dark' key={item} sx={{ color: '#fff' }}>
+                        <Button href={auth[item]} className='text-dark' key={item} sx={{ color: '#fff' }}>
                             {item}
                         </Button>
                         ))}
@@ -315,7 +315,7 @@ function MaterialNavbar(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
+            display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
         >

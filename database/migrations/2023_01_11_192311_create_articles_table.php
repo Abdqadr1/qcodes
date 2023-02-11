@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('meta_keywords', 160)->default('');
             $table->string('slug')->default('');
             $table->tinyText('summary')->default('');
-            $table->boolean('is_published')->default(false);
+            $table->enum('status', config('enum.article_status'))->default('In Review');
             $table->timestamp('published_at')->nullable();
             $table->bigInteger('visit')->default(0);
             $table->timestamp('last_visited')->nullable();

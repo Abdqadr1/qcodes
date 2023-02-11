@@ -48,9 +48,11 @@ class AdminAuthController extends Controller
         $admin =  $this->adminRepo->createAdmin($validated);
 
         if ($admin) {
+            $subject = env('APP_NAME') . " Confirmation Email";
             MailService::send([
                 'first_name' => $admin->first_name,
-                'subject' => env('APP_NAME') . " Confirmation Email",
+                'subject' => $subject,
+                'title' => $subject,
                 'from' => "registration@employee.com",
                 'view' => "mail.admin.registration",
                 'to' => $admin->email,

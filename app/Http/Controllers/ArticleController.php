@@ -15,9 +15,12 @@ class ArticleController extends Controller
 {
     public ArticleRepositoryInterface $articleRepo;
 
+    private array $status;
+
     public function __construct(ArticleRepositoryInterface $articleRepo)
     {
         $this->articleRepo = $articleRepo;
+        $this->status = config('enum.article_status');
     }
 
     public function viewArticle(Request $request)
@@ -26,7 +29,7 @@ class ArticleController extends Controller
         $article = Article::with(['author:id,first_name,last_name', 'tags', 'categories'])
             ->where(function ($query) use ($slug) {
                 $query->where('slug', $slug);
-                $query->where('is_published', 1);
+                $query->where('status', 'Published');
             })->first();
 
         return view('article.view', ['title' => $article->title, 'article' => $article]);
@@ -42,7 +45,6 @@ class ArticleController extends Controller
 
         return view('article.preview', ['title' => $article->title, 'article' => $article]);
     }
-
 
 
     public function getArticleById(Request $request)
@@ -102,7 +104,7 @@ class ArticleController extends Controller
             ]);
         } else {
             $request->validate([
-                'title' => ['nullable', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
+                'title' => ['required', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'nullable|max:160',
                 'meta_keywords' => 'nullable|max:160',
                 'content' => 'required|max:10000',
@@ -140,7 +142,11 @@ class ArticleController extends Controller
             $validated['author_id'] = $request->user('admin')->id;
 
 
-            if ($publish) $validated['is_published'] = true;
+            if ($publish) {
+                $validated['status'] = $request->user('admin')->hasAnyRole('editor', 'admin')
+                    ? $this->status[1]
+                    : $this->status[0];
+            }
 
             if ($id) {
                 unset($validated['author_id']);
@@ -183,7 +189,7 @@ class ArticleController extends Controller
         $this->authorize('update', Article::findOrFail($id));
 
         $array = [
-            'is_published' => false,
+            'status' => $this->status[2],
         ];
 
         return $this->articleRepo->updateArticle($id, $array);
@@ -211,5 +217,10 @@ class ArticleController extends Controller
         $name = $request->user('admin')->id . '_' . Str::random(30) . '.' . $file->extension();
         $path = $file->storePubliclyAs('banners', $name);
         return new JsonResponse(['url' => '/' . $path]);
+    }
+
+    public function getArticleStatusType()
+    {
+        return config('enum.article_status');
     }
 }

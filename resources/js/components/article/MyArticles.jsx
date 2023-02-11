@@ -171,7 +171,7 @@ const MyArticles = ({ httpClient }) => {
                                                 <TableCell>Banner</TableCell>
                                                 <TableCell>Title</TableCell>
                                                 <TableCell>Summary</TableCell>
-                                                <TableCell>Published</TableCell>
+                                                <TableCell>Status</TableCell>
                                                 <TableCell>Slug</TableCell>
                                                 <TableCell>Visit</TableCell>
                                                 <TableCell>Actions</TableCell>
@@ -195,7 +195,7 @@ const MyArticles = ({ httpClient }) => {
                                                             <span className="text-secondary text-xs font-weight-bold">{Util.ellipsis(article.summary)}</span>
                                                         </TableCell>
                                                         <TableCell>
-                                                            <span className="">{article.is_published ? "Published" : "Unpublished"}</span>
+                                                            <span className="">{article.status}</span>
                                                         </TableCell>
                                                         <TableCell style={{ maxWidth: '150px'}}>
                                                             <span>{Util.ellipsis(article.slug)}</span>

@@ -26,9 +26,9 @@ class ArticleFactory extends Factory
             "author_id" => fake()->numberBetween(1, 39),
             "parent_id" => fake()->numberBetween(1, 50),
             "content" => fake()->text(100),
-            'is_published' => fake()->boolean(),
             'published_at' => fake()->date(),
             'visit' => fake()->numberBetween(10, 1000),
+            'status' => config('enum.article_status')[rand(0, 3)],
         ];
     }
 }

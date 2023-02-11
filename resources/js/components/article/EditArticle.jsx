@@ -174,23 +174,12 @@ const EditArticle = ({ httpClient }) => {
 
     return ( 
         <Row className='mx-0'>
-            <Col sm={8} className='px-1 blog-side pt-5'>
+            <Col lg={8} className='px-1 blog-side pt-5'>
                 <div>
                     <ArticleEditor handleChange={handleChange} content={content} handleWordCount={c => setWordCount(c)} />
                 </div>
             </Col>
-            <Col sm={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
-                <Stack className='article-sticky bgColor shadow-sm py-2' direction="row" spacing={2} 
-                    justifyContent="center"
-                    alignItems="center" my={3}>
-                    <Button disabled={isLoading || publishLoading} variant="contained"
-                        color="info" onClick={saveChanges}
-                    >Save Changes</Button>
-                    <Button disabled={isLoading || publishLoading} variant="contained"
-                        color={isPublished ? "warning" : 'success'} onClick={handlePublish}
-                    >{ isPublished ? "Unpublish" : "Publish"}</Button>
-                </Stack>
-
+            <Col lg={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
                 <TextField className='mb-3 fs-4' onInput={handleInput}
                     name='title' value={form?.title ?? ''} 
                     id="outlined-textarea"
@@ -233,6 +222,17 @@ const EditArticle = ({ httpClient }) => {
                     <Autocompletion info={tags} name='Tags' httpClient={httpClient} setData={setTags} />
                     
                 </Stack>
+                <Stack className='article-sticky bgColor shadow-sm py-2' direction="row" spacing={2} 
+                    justifyContent="center"
+                    alignItems="center" my={3}>
+                    <Button disabled={isLoading || publishLoading} variant="contained"
+                        color="info" onClick={saveChanges}
+                    >Save Changes</Button>
+                    <Button disabled={isLoading || publishLoading} variant="contained"
+                        color={isPublished ? "warning" : 'success'} onClick={handlePublish}
+                    >{ isPublished ? "Unpublish" : "Publish"}</Button>
+                </Stack>
+
                 <Snackbar
                     open={toast.show}
                     autoHideDuration={5000}
