@@ -20,6 +20,8 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router';
 import ViewMessageModal from './ViewMessage';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const theme = createTheme();
 
@@ -47,7 +49,7 @@ const Messages = ({ httpClient }) => {
     const navigate = useNavigate();
 
     const { isFetching, data, refetch } = useQuery('MessageData', () =>
-        httpClient.get(`/api/admin/messages`),{ 
+        httpClient.get(`/api/admin/messages?keyword=${keyword}`),{ 
             refetchOnWindowFocus: false, retry: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
@@ -94,6 +96,19 @@ const Messages = ({ httpClient }) => {
         }
     }
 
+     const handleSearch = e => {
+        e?.preventDefault();
+        refetch({ throwOnError: true, cancelRefetch: true });
+    }
+
+    const handleClearSearch = e => {
+        e.preventDefault();
+        setKeyword(s => {
+            if(s === '') handleSearch();
+            return '';
+        });
+    }
+
      
     if (isFetching || pageFetching || deleteFetching) return (
         <Backdrop
@@ -110,6 +125,22 @@ const Messages = ({ httpClient }) => {
          <div className='p-4'>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
+                <div className="row mx-0 justify-content-center align-items-center g-2 mt-3 mb-5">
+                        <div className="col-md-7">
+                            <form className="input-group" onSubmit={handleSearch} >
+                                <button title="clear Search" className="btn btn-outline-secondary d-flex align-items-center" type="button" id="clear-btn" onClick={handleClearSearch}>
+                                    <ClearIcon />
+                                </button>
+                                <input required className="form-control bg-transparent border border-secondary" placeholder="search messages" aria-describedby="search-btn"
+                                    value={keyword}
+                                    onChange={e => setKeyword(e.target.value)}
+                                />
+                                <button title="search messages" className="btn btn-outline-secondary d-flex align-items-center" type="submit" id="search-btn">
+                                    <SearchIcon />
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                     <Card className="mb-4">
                         <CardHeader className="px-4"
                             title="Messages table"

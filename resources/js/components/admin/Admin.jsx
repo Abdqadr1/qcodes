@@ -151,15 +151,15 @@ const Admin = ({ httpClient }) => {
                 <Grid item xs={12}>
                     <div className="row mx-0 justify-content-center align-items-center g-2 mt-3 mb-5">
                         <div className="col-md-7">
-                            <form class="input-group" onSubmit={handleSearch} >
-                                <button title="clear Search" class="btn btn-outline-secondary d-flex align-items-center" type="button" id="clear-btn" onClick={handleClearSearch}>
+                            <form className="input-group" onSubmit={handleSearch} >
+                                <button title="clear Search" className="btn btn-outline-secondary d-flex align-items-center" type="button" id="clear-btn" onClick={handleClearSearch}>
                                     <ClearIcon />
                                 </button>
-                                <input required class="form-control bg-transparent border border-secondary" placeholder="search admin" aria-describedby="search-btn"
+                                <input required className="form-control bg-transparent border border-secondary" placeholder="search admin" aria-describedby="search-btn"
                                     value={keyword}
                                     onChange={e => setKeyword(e.target.value)}
                                 />
-                                <button title="search admin" class="btn btn-outline-secondary d-flex align-items-center" type="submit" id="search-btn">
+                                <button title="search admin" className="btn btn-outline-secondary d-flex align-items-center" type="submit" id="search-btn">
                                     <SearchIcon />
                                 </button>
                             </form>

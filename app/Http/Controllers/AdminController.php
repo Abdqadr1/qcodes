@@ -118,9 +118,20 @@ class AdminController extends Controller
         return $this->adminRepo->getAllRoles();
     }
 
-    public function getAllMessages()
+    public function getAllMessages(Request $request)
     {
-        return DB::table('contact')->paginate(8);
+        $perPage = 8;
+        $this->authorize('getMessages', Admin::class);
+        $keyword = $request->input('keyword', '');
+        if (empty($keyword)) {
+            return DB::table('contact')->paginate($perPage);
+        }
+        return DB::table('contact')->where(function ($q) use ($keyword) {
+            $q->where('name', 'like', '%' . $keyword . '%');
+            $q->orWhere('about', 'like', '%' . $keyword . '%');
+            $q->orWhere('email', 'like', '%' . $keyword . '%');
+            $q->orWhere('message', 'like', '%' . $keyword . '%');
+        })->paginate($perPage);
     }
 
     public function deleteMessages(Request $request)

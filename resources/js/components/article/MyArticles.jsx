@@ -102,8 +102,17 @@ const MyArticles = ({ httpClient }) => {
         }
     }
 
-     const handleSearch = e => {
+      const handleSearch = e => {
+        e?.preventDefault();
         refetch({ throwOnError: true, cancelRefetch: true });
+    }
+
+    const handleClearSearch = e => {
+        e.preventDefault();
+        setKeyword(s => {
+            if(s === '') handleSearch();
+            return '';
+        });
     }
 
      
@@ -122,32 +131,22 @@ const MyArticles = ({ httpClient }) => {
          <div className='p-4'>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{ width: '100%' }}
-                        mt={3} mb={5}
-                    >
-                        <ThemeProvider theme={theme}>
-                            <Typography variant="h3">Search Articles: </Typography>
-                        </ThemeProvider>
-                        <TextField
-                            id="outlined-name"
-                            label="Keyword"
-                            value={keyword}
-                            onChange={e => setKeyword(e.target.value)}
-                            size="small"
-                        />
-                        <Button variant="outlined" color='primary' 
-                            endIcon={<SearchIcon />} onClick={handleSearch}
-                            >Search</Button>
-                        <Button variant="outlined" color="error" 
-                            endIcon={<ClearIcon />} onClick={e=>setKeyword('')}
-                            >Clear</Button>
-
-                    </Stack>
+                    <div className="row mx-0 justify-content-center align-items-center g-2 mt-3 mb-5">
+                        <div className="col-md-7">
+                            <form className="input-group" onSubmit={handleSearch} >
+                                <button title="clear Search" className="btn btn-outline-secondary d-flex align-items-center" type="button" id="clear-btn" onClick={handleClearSearch}>
+                                    <ClearIcon />
+                                </button>
+                                <input required className="form-control bg-transparent border border-secondary" placeholder="search articles" aria-describedby="search-btn"
+                                    value={keyword}
+                                    onChange={e => setKeyword(e.target.value)}
+                                />
+                                <button title="search articles" className="btn btn-outline-secondary d-flex align-items-center" type="submit" id="search-btn">
+                                    <SearchIcon />
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                     <Card className="mb-4">
                         <CardHeader className="px-4"
                             action={

@@ -31,7 +31,7 @@ const drawerWidth = 240;
 const navItems = {
     Categories: '/admin/categories',
     Tags: '/admin/tags',
-    Articles: '/admin/articles'
+    'My Articles': '/admin/articles'
 };
 const adminNavItems = {
     ...navItems,

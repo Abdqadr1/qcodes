@@ -51,6 +51,13 @@ class AdminPolicy
             : Response::deny('You must be an administrator to perform this action');
     }
 
+    public function getMessages(Admin $user)
+    {
+        return $user->hasAnyRole('admin', 'editor')
+            ? Response::allow()
+            : Response::deny('You must be an administrator or editor to perform this action');
+    }
+
     /**
      * Determine whether the user can delete the model.
      *
