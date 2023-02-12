@@ -9,6 +9,10 @@
 
 @import 'part';
 
+.z-index100{
+    z-index: 100;
+}
+
 .react-body{
     min-height: calc(100vh - 60px);
 }

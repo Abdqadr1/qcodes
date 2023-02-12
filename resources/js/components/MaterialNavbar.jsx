@@ -150,7 +150,7 @@ function MaterialNavbar(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{zIndex: 100}} >
         <Toolbar className='shadow-sm admin-navbar text-dark justify-content-between' sx={{minHeight: '50px !important' }}>
           <IconButton
             color="inherit"
