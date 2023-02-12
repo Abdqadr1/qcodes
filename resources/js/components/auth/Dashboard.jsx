@@ -5,8 +5,19 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const AdminDashboard = ({ httpClient }) => {
+
+  const { data } = useQuery('getAdminUser', () =>
+        httpClient.get('/api/admin'),{ 
+            retry: false,
+            staleTime: Infinity,
+            onError: error => {
+                Util.checkAuthError(error?.response?.status, navigate);
+            } 
+        }
+    );
     return ( 
         <div className='p-2'>
         <Button href='/admin/article/new' className='mt-2 mb-5' variant="outlined" endIcon={<CreateIcon />}>Write article</Button>
@@ -19,7 +30,7 @@ const AdminDashboard = ({ httpClient }) => {
                         My Articles
                       </Typography>
                       <div className='rounded-pill border border-3 d-flex justify-content-center align-items-center' style={{width: '20%', aspectRatio: 1 }}>
-                        <span className='fs-4 fw-bold'>10</span>
+                        <span className='fs-4 fw-bold'>{data?.data?.articles_count}</span>
                       </div>
                     </div>
                   </CardContent>

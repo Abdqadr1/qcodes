@@ -202,4 +202,17 @@ class AdminAuthController extends Controller
             $validated
         );
     }
+
+    public function getDashboard(Request $request)
+    {
+        $id = $request->user('admin')->id;
+        return Admin::with('roles')
+            ->withCount('articles')
+            ->where('id', $id)
+            ->first([
+                'id', 'email', 'street_address', 'enabled', 'last_login_at',
+                'first_name', 'last_name', 'bio', 'mobile', 'email_verified_at',
+                'state', 'country'
+            ]);
+    }
 }

@@ -29,17 +29,7 @@ Route::post('/admin/confirm', [AdminAuthController::class, 'confirmEmail']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('/admin', function (Request $request) {
-        $admin = $request->user('admin');
-        return [
-            'id' => $admin->id, 'first_name' => $admin->first_name, 'last_name' => $admin->last_name,
-            'email' => $admin->email, 'bio' => $admin->bio, 'mobile' => $admin->mobile,
-            'street_address' => $admin->street_address, 'state' => $admin->state, 'country' => $admin->country,
-            'enabled' => $admin->enabled, 'email_verified_at' => $admin->email_verified_at,
-            'last_login_at' => $admin->last_login_at,
-            'roles' => $admin->roles,
-        ];
-    });
+    Route::get('/admin', [AdminAuthController::class, 'getDashboard']);
 
     Route::post('/article/upload/image', [ArticleController::class, 'uploadImage']);
 
