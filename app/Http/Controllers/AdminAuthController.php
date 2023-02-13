@@ -106,7 +106,7 @@ class AdminAuthController extends Controller
             MailService::send([
                 'subject' => "Forgot your password?",
                 'title' => "Forgot your password?",
-                'from' => "account@qcodes.com",
+                'from' => "account@" . env('APP_NAME') . ".com",
                 'view' => "mail.admin.forgotpassword",
                 'to' => $request->email,
                 'link' => URL::to('/admin/changepassword/' . $token . '?email=' . $request->email),
