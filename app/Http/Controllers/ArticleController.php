@@ -36,7 +36,10 @@ class ArticleController extends Controller
                 $query->where('status', $this->status[1]);
             })->first();
 
-        $children = $article->children()->paginate(3);
+        $children = $article->children()
+            ->where('status', $this->status[1])
+            ->orderBy('visit', 'desc')
+            ->limit(3)->get();
 
         return view('article.view', ['title' => $article->title, 'article' => $article, 'children' => $children]);
     }
@@ -99,7 +102,7 @@ class ArticleController extends Controller
 
         if ($publish) {
             $request->validate([
-                'title' => ['required', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
+                'title' => ['required', 'min:20', 'max:70', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'required|size:160',
                 'meta_keywords' => 'required|max:160',
                 'content' => 'required|max:10000',
@@ -116,7 +119,7 @@ class ArticleController extends Controller
             ]);
         } else {
             $request->validate([
-                'title' => ['required', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
+                'title' => ['required', 'min:20', 'max:70', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'nullable|max:160',
                 'meta_keywords' => 'nullable|max:160',
                 'content' => 'required|max:10000',

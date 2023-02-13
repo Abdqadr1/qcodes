@@ -9,9 +9,15 @@
 
 @import 'part';
 
+.ellipsis{
+    height: 120px;
+    // white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+}
+
 .nav-link.active{
-    background-color: var(--bs-danger);
-    color: var(--bs-light) !important;
+    border-bottom: .2em solid var(--bs-danger);
 }
 
 .z-index100{

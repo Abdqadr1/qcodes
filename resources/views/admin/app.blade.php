@@ -21,6 +21,27 @@
     <link rel="icon" type="image/png" href="/images/qluecodes-icon-180.png" sizes="180x180">
     <link rel="icon" type="image/png" href="/images/qluecodes-icon-192.png" sizes="192x192">
 
+     {{-- OG --}}
+    <meta name="theme-color" content="#000000"/>
+    <link rel="apple-touch-icon" href="/images/qluecodes-icon-32.png" sizes="32x32"/>
+
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="@yield('title', $title ?? config('app.name', 'Laravel'))"/>
+    <meta property="og:image" content="{{url('/images/qluecodes-icon-180.png')}}"/>
+    <meta name="og:description" content="@yield('meta_description', env('APP_NAME') . ' description')"/>
+    <meta property="og:url" content="{{ url()->current() }}"/>
+    <meta property="og:locale" content="en-us"/>
+    <meta property="og:site_name" content="{{env('APP_NAME')}}"/>
+
+    <meta name="twitter:title" content="@yield('title', $title ?? config('app.name', 'Laravel'))"/>
+    <meta name="twitter:description" content="@yield('meta_description', env('APP_NAME') . ' description')"/>
+    <meta name="twitter:card" content="/images/qluecodes-icon-72.png"/>
+    <meta name="twitter:site" content="{{env('APP_NAME')}}"/>
+    <meta name="twitter:image:src" content="{{url('/images/qluecodes-icon-180.png')}}"/>
+    <meta name="twitter:creator" content="{{env('APP_NAME')}}">
+    <meta property="twitter:url" content="{{ url()->current() }}"/>
+
+
     <!-- Fonts -->
     <link
         rel="stylesheet"

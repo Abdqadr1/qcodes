@@ -9,7 +9,7 @@
                     {{-- <img src="{{ $article->banner }}" class="card-img-top" alt="{{ $article->title }}"> --}}
                     <div class="card-body pb-0">
                         <h5 class="card-title fw-bold">{{ $article->title }}</h5>
-                        <p class="card-text">{{ $article->summary }}</p>
+                        <p class="card-text ellipsis">{{ $article->summary }}</p>
                         <p class="text-end">
                             <a href="{{ route('viewArticle', $article->slug) }}" class="text-end btn btn-danger btn-sm">Read more</a>
                         </p>
@@ -18,9 +18,6 @@
             </div>
         @endforeach
         
-    </div>
-    <div class="d-flex justify-content-end mt-3">
-        {{ $articles->links() }} 
     </div>
 
     <hr class="my-4"/>

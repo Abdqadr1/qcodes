@@ -24,7 +24,8 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = Article::select(['id', 'slug', 'title', 'summary'])
+        $articles = Article::orderBy('visit', 'desc')
+            ->select(['id', 'slug', 'title', 'summary'])
             ->where(function ($query) {
                 $query->where('status', $this->articleStatus[1]);
             })->paginate(10);

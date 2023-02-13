@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-transparent shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}">
-            <img src="/images/qluecodes.png" alt="{{ config('app.name', 'Laravel') }}" width="80" height="30">
+            <img src="/images/qluecodes.png" title="logo" loading='eager' alt="{{ config('app.name', 'Laravel') }}" width="80" height="30">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -24,8 +24,8 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link fw-bold @yield('search-nav', '') d-md-flex" href="{{route('search')}}">
-                        <iconify-icon class="fs-3" icon="ic:outline-search"></iconify-icon>
+                    <a class="nav-link fw-bold @yield('search-nav', '') d-md-flex" title="search" href="{{route('search')}}">
+                        <iconify-icon class="fs-3" icon="ic:outline-search">search</iconify-icon>
                     </a>
                 </li>
                 <a class="btn btn-danger w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin">Become a writer</a>
