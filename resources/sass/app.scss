@@ -9,11 +9,9 @@
 
 @import 'part';
 
-.nav-item.active{
-    background-color: red;
-}
-.nav-item.active a{
-    color: var(--bs-light);
+.nav-link.active{
+    background-color: var(--bs-danger);
+    color: var(--bs-light) !important;
 }
 
 .z-index100{

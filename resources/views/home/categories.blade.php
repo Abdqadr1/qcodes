@@ -8,7 +8,7 @@
 <style>
     .card-title a {
         text-decoration: none;
-        color: #267438;
+        color: var(--bs-danger);
     }
     .card-title a:hover {
         text-decoration: underline;
@@ -18,9 +18,9 @@
     <div class="row justify-content-start gy-3">
             <div class="col-md-9">
                 <form class="input-group mb-4" method="get" action="">
-                    <input required name="keyword" type="text" class="form-control" placeholder="Search categories" 
+                    <input required name="keyword" class="form-control border border-secondary bg-transparent" placeholder="Search categories" 
                      aria-describedby="button-addon2">
-                    <button title="search categories" class="btn btn-success d-flex align-items-center" type="submit" id="button-addon2">
+                    <button title="search categories" class="btn btn-danger d-flex align-items-center" type="submit" id="button-addon2">
                         <iconify-icon class="fs-5" icon="ic:outline-search"></iconify-icon>
                     </button>
                 </form>

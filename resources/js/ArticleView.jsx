@@ -16,9 +16,9 @@ function ArticleView() {
                         <div className='mb-3'>
                             Last Modified: {new Date(article?.updated_at).toDateString()}
                         </div>
-                        <div className='border-start border-secondary d-flex p-2 border-3 justify-content-between align-items-center'>
+                        <div className='border-start border-secondary d-flex p-2 border-3 justify-content-md-between align-items-md-center flex-column flex-md-row'>
                             <span>by <em className='text-success'>{`${article?.author.first_name} ${article?.author?.last_name}`}</em></span>
-                            <div>
+                            <div className='mt-3 mt-md-0'>
                                 {
                                     article?.tags.map(tag => (
                                         <a key={tag.id} href={`/tags/${tag.slug}`} className='btn btn-secondary text-light fw-bold rounded-0'>{ tag.name }</a>

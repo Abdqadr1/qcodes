@@ -42,6 +42,9 @@ Route::get('/article/{slug}/preview', [ArticleController::class, 'previewArticle
 
 Route::get('/article/{slug}', [ArticleController::class, 'viewArticle'])->name('viewArticle');
 
+// update article last visited
+Route::get('/article/{id}/visited', [ArticleController::class, 'lastVisited']);
+
 // newsletter
 
 Route::post('/newsletter/signup', [NewsletterController::class, 'newsletterSignup'])->name('newsletter-signup');

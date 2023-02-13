@@ -10,25 +10,24 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item @yield('cat-nav', '')">
-                    <a class="nav-link fw-bold" href="/categories">Categories</a>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold @yield('cat-nav', '')" href="/categories">Categories</a>
                 </li>
-                <li class="nav-item @yield('tag-nav', '')">
-                    <a class="nav-link fw-bold" href="/tags">Tags</a>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold @yield('tag-nav', '')" href="/tags">Tags</a>
                 </li>
-                <li class="nav-item @yield('about-nav', '')">
-                    <a class="nav-link fw-bold" href="/about">About</a>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold @yield('about-nav', '')" href="/about">About</a>
                 </li>
             </ul>
 
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ms-auto">
-                <form class="input-group" method="get" action="{{route('search')}}">
-                    <input required name="keyword" type="text" class="form-control bg-transparent border border-secondary" placeholder="search articles" aria-describedby="button-addon2">
-                    <button title="search article" class="btn btn-outline-secondary d-flex align-items-center" type="submit" id="button-addon2">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link fw-bold @yield('search-nav', '') d-md-flex" href="{{route('search')}}">
                         <iconify-icon class="fs-5" icon="ic:outline-search"></iconify-icon>
-                    </button>
-                </form>
+                    </a>
+                </li>
                 <a class="btn btn-danger w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin">Become a writer</a>
                 <!-- Authentication Links -->
                 @guest

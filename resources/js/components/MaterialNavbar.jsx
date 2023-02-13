@@ -159,13 +159,13 @@ function MaterialNavbar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
+          <Link href='/admin'
             variant="h6"
-            component="div"
+            component="a"
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'block' } }}
           >
             <img src="/images/qcodes.png" className='' alt={window.siteName} width="80" height="30"/>
-          </Typography>
+          </Link>
             {
                 adminLoading ? '' : 
                 ((adminData?.data) 
