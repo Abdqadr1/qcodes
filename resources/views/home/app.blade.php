@@ -12,6 +12,18 @@
     <meta name="description" content="@yield('meta_description', env('APP_NAME') . ' description')">
     <link rel="canonical" href="{{ url()->current() }}">
 
+    
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-48.png" sizes="48x48">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-60.png" sizes="60x60">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-72.png" sizes="72x72">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-114.png" sizes="114x114">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-152.png" sizes="152x152">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-180.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="/images/qluecodes-icon-192.png" sizes="192x192">
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
  

@@ -55,7 +55,7 @@ Route::view('/newsletter/confirm', 'newsletter.confirm', ['title' => 'Confirm yo
 Route::view('/newsletter/sub', 'newsletter.subscribe')->name('newsletter-subscribe');
 Route::view('/newsletter/unsub', 'newsletter.unsubscribe')->name('newsletter-unsubscribe');
 
-// Route::view('/mail', 'mail.newsletter.confirm', ['first_name' => 'QD', 'link' => 'hgiagidhg.com']);
+Route::view('/mail', 'mail.newsletter.confirm', ['first_name' => 'QD', 'link' => 'hgiagidhg.com']);
 
 Route::view('/about', 'home.about');
 Route::view('/privacy', 'home.privacy');

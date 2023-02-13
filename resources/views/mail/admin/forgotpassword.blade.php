@@ -18,18 +18,26 @@
     <title>Admin Forgot Password</title>
 </head>
 <body>
-    <h2>Create a new password</h2>
-    <p>Forgot your password, huh? No big deal.</p>
-    <p>To create a new password, just follow this link:</p>
+    <div class="container">
+        <div class="row justify-content-center px-4 py-2">
+            <div class="p-3 bg-light border my-3">
+                <img class="mx-auto d-block" src="{{url('/images/qluecodes.png')}}" alt="{{env('APP_NAME')}}" height="80">
+            </div>
+            <h2>Create a new password</h2>
+            <p>Forgot your password, huh? No big deal.</p>
+            <p>To create a new password, just follow this link:</p>
 
-    <a  class="mb-2" href="{{ $link }}">Create a new password</a>
+            <a  class="mb-2" href="{{ $link }}">Create a new password</a>
 
-    <p>Link doesn't work? Copy the following link to your browser address bar:</p>
-    <a  class="mb-3" href="{{ $link }}">{{ $link }}</a>
+            <p>Link doesn't work? Copy the following link to your browser address bar:</p>
+            <a  class="mb-3" href="{{ $link }}">{{ $link }}</a>
 
-    <p  class="mb-3">You received this email, because it was requested by a <a class="fw-bold" href="{{ url('') }}">{{ env('APP_NAME') }}</a> user. This is part of the procedure to create a new password on the system. If you DID NOT request a new password then please ignore this email and your password will remain the same.</p>
+            <p  class="mb-3">You received this email, because it was requested by a <a class="fw-bold" href="{{ url('') }}">{{ env('APP_NAME') }}</a> user. This is part of the procedure to create a new password on the system. If you DID NOT request a new password then please ignore this email and your password will remain the same.</p>
 
-    <p class="mb-1">Thanks,</p>
-    <p>The {{ env('APP_NAME') }} Team</p>
+            <p class="mb-1">Thanks,</p>
+            <p>The {{ env('APP_NAME') }} Team</p>
+        </div>
+    </div>
+    
 </body>
 </html>

@@ -20,11 +20,11 @@
 </head>
 <body>
     <div class="container">
-        <div class="text-center bg-success" style="height: 80px">
-            {{ env('APP_NAME') }}
-        </div>
         <div class="row justify-content-center px-4 py-2">
             <div class="col-12 px-2">
+                <div class="p-3 bg-light border my-3">
+                    <img class="mx-auto d-block" src="{{url('/images/qluecodes.png')}}" alt="{{env('APP_NAME')}}" height="80">
+                </div>
                 <p class="">Hi {{ $first_name }},</p>
                 <p class="">Thank you for signing up for our newsletter.</p>
                 <p class="fs-4">Please confirm your email address to start receiving our newsletter.</p>
