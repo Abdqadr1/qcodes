@@ -1,3 +1,5 @@
+import { array } from "prop-types";
+
 export default class Util {
     static ellipsis(text, len = 50) {
         if (text.length <= len) return text;
@@ -69,5 +71,20 @@ export default class Util {
 
     static hasRole(roles, roleName) {
         return roles.some(role => role.name == roleName);
+    }
+
+    static checkImagesInArticle() {
+        const content = document.querySelector("#articleContent");
+        if (content) {
+            const images = content.querySelectorAll('img');
+            for (let i = 0; i < images.length; i++) {
+                const element = images[i];
+                if (element.alt === '') {
+                    return false
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

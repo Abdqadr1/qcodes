@@ -114,19 +114,37 @@ const NewArticle = ({ httpClient }) => {
         }
     }
 
-     const saveChanges = () => {
+    const saveChanges = () => {
+        if (!Util.checkImagesInArticle()) {
+            setToast(s => ({
+                ...s,
+                show: true,
+                message: 'At least one of the image(s) in your article does not have a alt attribute',
+                severity: 'warning',
+            }));
+            return;
+        }
         setBackdropOpen(true);
         mutate(initFormData());
     }
     
 
     const handlePublish = e => {
+        setCategories(s => ({ ...s, isError: false}));
+        setTags(s => ({ ...s, isError: false}));
+        if (!Util.checkImagesInArticle()) {
+            setToast(s => ({
+                ...s,
+                show: true,
+                message: 'At least one of the image(s) in your article does not have a alt attribute',
+                severity: 'warning',
+            }));
+            return;
+        }
+
         if (wordCount < Blog.wordLimit) {
             return setToast(s => ({ ...s, show: true, message: `Minimum word count is ${Blog.wordLimit}`, severity: 'error' }));
         }
-
-        setCategories(s => ({ ...s, isError: false}));
-        setTags(s => ({ ...s, isError: false}));
 
         if (!(form?.title && form?.meta_title)) {
             setToast(s => ({ ...s, show: true, message: 'Title and Meta title is required', severity: 'error' }));
@@ -148,7 +166,7 @@ const NewArticle = ({ httpClient }) => {
     return ( 
         <Row className='mx-0'>
             <Col lg={8} className='px-1 blog-side pt-5'>
-                <div>
+                <div id='articleContent'>
                     <ArticleEditor content={content} handleChange={handleChange} handleWordCount={c => setWordCount(c)} />
                 </div>
             </Col>

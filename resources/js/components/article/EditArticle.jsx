@@ -147,12 +147,32 @@ const EditArticle = ({ httpClient }) => {
     }
 
     const saveChanges = () => {
+        if (!Util.checkImagesInArticle()) {
+            setToast(s => ({
+                ...s,
+                show: true,
+                message: 'At least one of the image(s) in your article does not have a alt attribute',
+                severity: 'warning',
+            }));
+            return;
+        }
         setBackdropOpen(true);
         mutate(initFormData());
     }
     
 
     const handlePublish = e => {
+        setCategories(s => ({ ...s, isError: false}));
+        setTags(s => ({ ...s, isError: false}));
+        if (!Util.checkImagesInArticle()) {
+            setToast(s => ({
+                ...s,
+                show: true,
+                message: 'At least one of the image(s) in your article does not have a alt attribute',
+                severity: 'warning',
+            }));
+            return;
+        }
          if (wordCount < Blog.WORD_LIMIT) {
             return setToast(s => ({ ...s, show: true, message: `Minimum word count is ${Blog.WORD_LIMIT}`, severity: 'error' }));
         }
@@ -175,7 +195,7 @@ const EditArticle = ({ httpClient }) => {
     return ( 
         <Row className='mx-0'>
             <Col lg={8} className='px-1 blog-side pt-5'>
-                <div>
+                <div id='articleContent'>
                     <ArticleEditor handleChange={handleChange} content={content} handleWordCount={c => setWordCount(c)} />
                 </div>
             </Col>
