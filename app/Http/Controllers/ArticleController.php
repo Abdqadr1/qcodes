@@ -26,13 +26,19 @@ class ArticleController extends Controller
     public function viewArticle(Request $request)
     {
         $slug = $request->route('slug');
-        $article = Article::with(['author:id,first_name,last_name', 'tags', 'categories'])
+        $article = Article::with([
+            'author:id,first_name,last_name',
+            'tags',
+            'categories'
+        ])
             ->where(function ($query) use ($slug) {
                 $query->where('slug', $slug);
                 $query->where('status', $this->status[1]);
             })->first();
 
-        return view('article.view', ['title' => $article->title, 'article' => $article]);
+        $children = $article->children()->paginate(3);
+
+        return view('article.view', ['title' => $article->title, 'article' => $article, 'children' => $children]);
     }
 
     public function lastVisited(Request $request)

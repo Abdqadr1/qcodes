@@ -1,4 +1,4 @@
- <footer class="row py-3 px-md-4 mx-0 bg-dark bg-gradient text-light">
+ <footer class="row py-3 px-md-4 mx-0 text-light">
     <div class="col-md-2 mb-3 mb-md-0">
         <img src="/images/qluecodes.png" alt="{{ env('APP_NAME') }}" width="80" height="30">
     </div>
@@ -10,4 +10,7 @@
             <a class="ms-md-2 text-center" href="/contact">Contact</a>
         </div>
     </div>
+    {{-- <div class="col-12 text-center mt-3 text-danger">
+        {{env('APP_NAME')}} @ {{date('Y')}}, All rights reserved.
+    </div> --}}
 </footer>

@@ -25,7 +25,7 @@
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
                     <a class="nav-link fw-bold @yield('search-nav', '') d-md-flex" href="{{route('search')}}">
-                        <iconify-icon class="fs-5" icon="ic:outline-search"></iconify-icon>
+                        <iconify-icon class="fs-3" icon="ic:outline-search"></iconify-icon>
                     </a>
                 </li>
                 <a class="btn btn-danger w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin">Become a writer</a>

@@ -8,10 +8,10 @@
                 <div class="card" style="width: 100%;">
                     {{-- <img src="{{ $article->banner }}" class="card-img-top" alt="{{ $article->title }}"> --}}
                     <div class="card-body pb-0">
-                        <h5 class="card-title">{{ $article->title }}</h5>
+                        <h5 class="card-title fw-bold">{{ $article->title }}</h5>
                         <p class="card-text">{{ $article->summary }}</p>
                         <p class="text-end">
-                            <a href="{{ route('viewArticle', $article->slug) }}" class="text-end btn btn-primary btn-sm">Read more</a>
+                            <a href="{{ route('viewArticle', $article->slug) }}" class="text-end btn btn-danger btn-sm">Read more</a>
                         </p>
                     </div>
                 </div>
@@ -23,8 +23,10 @@
         {{ $articles->links() }} 
     </div>
 
+    <hr class="my-4"/>
+
     <div class="row justify-content-center mx-0">
-        <div class="col col-md-7">
+        <div class="col col-md-7 col-lg-5">
             <form class="" method="POST" action="{{ route('newsletter-signup') }}">
                 @csrf
                 @method('post')
@@ -36,7 +38,7 @@
                     <input name='email' type="email" class="form-control mb-1 bg-transparent border border-secondary" id="email" placeholder="email address" required>
                     @error('email') <p class="text-danger mb-2">{{$message}}</p> @enderror
 
-                    <button class="btn btn-primary mt-3">Sign Up</button>
+                    <button class="btn btn-danger mt-3">Sign Up</button>
                 </div>
             </form> 
         </div>
