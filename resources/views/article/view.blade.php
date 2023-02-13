@@ -38,7 +38,7 @@
                 {{-- <img src="{{ $article->banner }}" class="card-img-top" alt="{{ $article->title }}"> --}}
                 <div class="card-body pb-0">
                     <h5 class="card-title fw-bold">{{ $child->title }}</h5>
-                    <p class="card-text">{{ $child->summary }}</p>
+                    <p class="card-text ellipsis">{{ $child->summary }}</p>
                     <p class="text-end">
                         <a href="{{ route('viewArticle', $child->slug) }}" class="text-end btn btn-danger btn-sm">Read more</a>
                     </p>
