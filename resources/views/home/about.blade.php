@@ -2,6 +2,7 @@
 @section('title', 'About | ' . env('APP_NAME'))
 @section('meta_description', 'About ' . env('APP_NAME'))
 @section('meta_keywords', 'About ' . env('APP_NAME'))
+@section('about-nav', 'active')
 
 @section('content')
 <style>

@@ -9,6 +9,13 @@
 
 @import 'part';
 
+.nav-item.active{
+    background-color: red;
+}
+.nav-item.active a{
+    color: var(--bs-light);
+}
+
 .z-index100{
     z-index: 100;
 }

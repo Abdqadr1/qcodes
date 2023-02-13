@@ -129,9 +129,7 @@ function MaterialNavbar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        {window.siteName}
-      </Typography>
+      <img src="/images/qcodes.png" className='my-3' alt={window.siteName} width="80" height="30"/>
       <Divider />
       <List>
         {Object.keys(navs).map((item) => (
@@ -166,7 +164,7 @@ function MaterialNavbar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'block' } }}
           >
-            {window.siteName}
+            <img src="/images/qcodes.png" className='' alt={window.siteName} width="80" height="30"/>
           </Typography>
             {
                 adminLoading ? '' : 

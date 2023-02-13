@@ -7,7 +7,7 @@
 <script>
     window.article = @json($article);
 </script>
-<div class="thebody" id="view">
+<div class="thebody px-3 px-md-0" id="view">
     
 </div>
 @endsection

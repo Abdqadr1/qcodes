@@ -16,7 +16,8 @@ const NavBar = () => {
       <>
         <Navbar expand="lg" sticky="top" variant="light" className="mb-0 shadow-sm admin-navbar">
           <Container fluid>
-            <Navbar.Brand href="/admin">QCodes</Navbar.Brand>
+            <Navbar.Brand href="/admin">
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-lg`}

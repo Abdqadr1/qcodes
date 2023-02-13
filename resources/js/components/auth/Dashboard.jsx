@@ -14,7 +14,7 @@ const AdminDashboard = ({ httpClient }) => {
             retry: false,
             staleTime: Infinity,
             onError: error => {
-                Util.checkAuthError(error?.response?.status, navigate);
+                Util.checkAuthError(error?.response?.status, null);
             } 
         }
     );
@@ -30,7 +30,7 @@ const AdminDashboard = ({ httpClient }) => {
                         My Articles
                       </Typography>
                       <div className='rounded-pill border border-3 d-flex justify-content-center align-items-center' style={{width: '20%', aspectRatio: 1 }}>
-                        <span className='fs-4 fw-bold'>{data?.data?.articles_count}</span>
+                        <span className='fs-1 fw-bold'>{data?.data?.articles_count}</span>
                       </div>
                     </div>
                   </CardContent>

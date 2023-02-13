@@ -2,6 +2,7 @@
 @section('title', $keyword . ' | search results')
 @section('meta_description', 'Categories ' . env('APP_NAME'))
 @section('meta_keywords', 'Categories ' . env('APP_NAME'))
+@section('tag-nav', 'active')
 
 @section('content')
 <style>

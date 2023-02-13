@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+    private array $articleStatus;
+
+    public function __construct()
+    {
+        $this->articleStatus = config('enum.article_status');
+    }
 
     /**
      * Show the application dashboard.
@@ -20,8 +26,8 @@ class HomeController extends Controller
     {
         $articles = Article::select(['id', 'slug', 'title', 'summary'])
             ->where(function ($query) {
-                $query->where('is_published', 1);
-            })->paginate(4);
+                $query->where('status', $this->articleStatus[1]);
+            })->paginate(10);
         return view('home.index', ['articles' => $articles]);
     }
 
@@ -31,7 +37,7 @@ class HomeController extends Controller
         $results = null;
         if ($keyword) {
             $results = Article::where(function ($q) use ($keyword) {
-                $q->where('is_published', 1);
+                $q->where('status', $this->articleStatus[1]);
                 $q->where(function ($query) use ($keyword) {
                     $query->where('title', 'like', '%' . $keyword . '%');
                     $query->orWhere('summary', 'like', '%' . $keyword . '%');
@@ -39,7 +45,7 @@ class HomeController extends Controller
             });
         } else {
             $results = Article::where(function ($q) use ($keyword) {
-                $q->where('is_published', 1);
+                $q->where('status', $this->articleStatus[1]);
             });
         }
 
@@ -132,7 +138,7 @@ class HomeController extends Controller
         $category->parent = null;
 
         $articles = $category->articles()
-            ->where('is_published', 1)
+            ->where('status', $this->articleStatus[1])
             ->paginate(10)->withQueryString();
 
         return view('home.category', [
@@ -148,7 +154,7 @@ class HomeController extends Controller
         if (!$tag) abort(404);
 
         $articles = $tag->articles()
-            ->where('is_published', 1)
+            ->where('status', $this->articleStatus[1])
             ->paginate(10)->withQueryString();
 
         return view('home.tag', ['tag' => $tag, 'title' => $slug, 'articles' => $articles]);

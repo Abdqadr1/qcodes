@@ -29,7 +29,7 @@ class ArticleController extends Controller
         $article = Article::with(['author:id,first_name,last_name', 'tags', 'categories'])
             ->where(function ($query) use ($slug) {
                 $query->where('slug', $slug);
-                $query->where('status', 'Published');
+                $query->where('status', $this->status[1]);
             })->first();
 
         return view('article.view', ['title' => $article->title, 'article' => $article]);

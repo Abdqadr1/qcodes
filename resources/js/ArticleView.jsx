@@ -21,7 +21,7 @@ function ArticleView() {
                             <div>
                                 {
                                     article?.tags.map(tag => (
-                                        <a key={tag.id} href={`/tags/${tag.slug}`} className='btn btn-success text-light fw-bold'>{ tag.name }</a>
+                                        <a key={tag.id} href={`/tags/${tag.slug}`} className='btn btn-secondary text-light fw-bold rounded-0'>{ tag.name }</a>
                                     ))
                                 }
                             </div>

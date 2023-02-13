@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-md navbar-light bg-transparent shadow-none">
+<nav class="navbar navbar-expand-md navbar-light bg-transparent shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }}
+            <img src="/images/qcodes.png" alt="{{ config('app.name', 'Laravel') }}" width="80" height="30">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -10,13 +10,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
+                <li class="nav-item @yield('cat-nav', '')">
                     <a class="nav-link fw-bold" href="/categories">Categories</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item @yield('tag-nav', '')">
                     <a class="nav-link fw-bold" href="/tags">Tags</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item @yield('about-nav', '')">
                     <a class="nav-link fw-bold" href="/about">About</a>
                 </li>
             </ul>
@@ -29,7 +29,7 @@
                         <iconify-icon class="fs-5" icon="ic:outline-search"></iconify-icon>
                     </button>
                 </form>
-                <a class="btn btn-success w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin">Become a writer</a>
+                <a class="btn btn-danger w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin">Become a writer</a>
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))
