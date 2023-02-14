@@ -29,6 +29,7 @@ import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router';
 import { IconButton } from '@mui/material';
+import ArticleSearchFilter from './ArticleSearchFilter';
 
 const theme = createTheme();
 
@@ -48,6 +49,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const MyArticles = ({ httpClient }) => {
     const [keyword, setKeyword] = useState('');
+    const [filter, setFilter] = useState('');
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [error, setError] = useState({});
     
@@ -55,7 +57,7 @@ const MyArticles = ({ httpClient }) => {
     const navigate = useNavigate();
 
     const { isFetching, data, refetch } = useQuery('articleData', () =>
-        httpClient.get(`/api/my_article/all?keyword=${keyword}`),{ 
+        httpClient.get(`/api/my_article/all?keyword=${keyword}&filter=${filter}`),{ 
             refetchOnWindowFocus: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
@@ -66,7 +68,7 @@ const MyArticles = ({ httpClient }) => {
     );
 
     const { isLoading: pageFetching, mutate: pageMutate } =
-        useMutation(url => httpClient.get(`${url}&keyword=${keyword}`), {
+        useMutation(url => httpClient.get(`${url}&keyword=${keyword}&filter=${filter}`), {
         onSuccess: data => {
             queryClient.setQueryData('articleData', data);
         },
@@ -137,10 +139,11 @@ const MyArticles = ({ httpClient }) => {
                                 <button title="clear Search" className="btn btn-outline-secondary d-flex align-items-center" type="button" id="clear-btn" onClick={handleClearSearch}>
                                     <ClearIcon />
                                 </button>
-                                <input required className="form-control bg-transparent border border-secondary" placeholder="search articles" aria-describedby="search-btn"
+                                <input className="form-control bg-transparent border border-secondary" placeholder="search my articles" aria-describedby="search-btn"
                                     value={keyword}
                                     onChange={e => setKeyword(e.target.value)}
                                 />
+                                <ArticleSearchFilter filter={filter} setFilter={setFilter} />
                                 <button title="search articles" className="btn btn-outline-secondary d-flex align-items-center" type="submit" id="search-btn">
                                     <SearchIcon />
                                 </button>

@@ -34,7 +34,7 @@
             
         @endif
         <div class="col-md-4 d-flex" style="align-self: stretch;">
-            <div class="card" style="width: 100%;">
+            <div class="card article-card" style="width: 100%;">
                 {{-- <img src="{{ $article->banner }}" class="card-img-top" alt="{{ $article->title }}"> --}}
                 <div class="card-body pb-0">
                     <h5 class="card-title fw-bold">{{ $child->title }}</h5>

@@ -83,7 +83,7 @@ const AdminLogin = ({ httpClient }) => {
                         }}
                         onSubmit={handleSubmit}
                     >
-                        <Paper elevation={2} sx={{ padding: '4em 2em', textAlign: 'center', }}>
+                        <Paper className='login-paper' elevation={2} sx={{ padding: '4em 2em', textAlign: 'center' }}>
                             <h4 className='mb-3'>Admin Login</h4>
                             {
                                 (alert.show)

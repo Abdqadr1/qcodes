@@ -5,7 +5,7 @@
     <div class="row justify-content-start gy-3">
         @foreach ($articles as $article)
             <div class="col-md-4 d-flex" style="align-self: stretch;">
-                <div class="card" style="width: 100%;">
+                <div class="card article-card" style="width: 100%;">
                     {{-- <img src="{{ $article->banner }}" class="card-img-top" alt="{{ $article->title }}"> --}}
                     <div class="card-body pb-0">
                         <h5 class="card-title fw-bold">{{ $article->title }}</h5>
@@ -22,7 +22,7 @@
 
     <hr class="my-4"/>
 
-    <div class="row justify-content-center mx-0">
+    <div class="row justify-content-center mx-0 mb-5">
         <div class="col col-md-7 col-lg-5">
             <form class="" method="POST" action="{{ route('newsletter-signup') }}">
                 @csrf

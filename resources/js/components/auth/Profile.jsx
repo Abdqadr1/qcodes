@@ -94,7 +94,7 @@ const Profile = ({ httpClient }) => {
                         }}
                         onSubmit={handleSubmit}
                     >
-                        <Paper elevation={2} sx={{ padding: '4em 2em', textAlign: 'center'}}>
+                        <Paper className='profile-paper' elevation={2} sx={{ padding: '4em 2em', textAlign: 'center'}}>
                             <Stack direction="row" spacing={2} mt={3}
                                 justifyContent="space-between"
                                 alignItems="center"

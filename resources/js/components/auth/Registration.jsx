@@ -53,7 +53,7 @@ const AdminRegistration = ({ httpClient }) => {
                     alignItems="center" sx={{height: '100vh'}}
                 >
                     <Grid item xs={12} md={6} >
-                        <Paper elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
+                        <Paper className='signup-paper' elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
                             <Typography variant="h6" display="block" gutterBottom>
                                 Verify your email address, Mail has been sent. <br />
                                 <Zoom in style={{ transitionDelay: '500ms' }}>
@@ -88,13 +88,13 @@ const AdminRegistration = ({ httpClient }) => {
                         }}
                         onSubmit={handleSubmit}
                     >
-                        <Paper elevation={2} sx={{ padding: '4em 2em', textAlign: 'center'}}>
+                        <Paper className='signup-paper' elevation={2} sx={{ padding: '4em 2em', textAlign: 'center'}}>
                             <Stack direction="row" spacing={2} mt={3}
                                 justifyContent="space-between"
                                 alignItems="center"
                             >
                                 <h4 className='mb-3'>Admin Registration</h4>
-                                <Link className='fw-bold text-success' color={'warning'} href="/admin/login" underline="none">LogIn</Link>
+                                <Link className='fw-bold text-success' color={'warning'} href="/admin/login" underline="none">Log In</Link>
                             </Stack>
                             {
                                 (alert.show)

@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\DB;
 
 class ArticleRepository implements ArticleRepositoryInterface
 {
+    private array $status;
+
+    public function __construct()
+    {
+        $this->status = config('enum.article_status');
+    }
+
+
     public function getArticleById($id)
     {
         return Article::orderBy('updated_at', 'DESC')
@@ -24,44 +32,59 @@ class ArticleRepository implements ArticleRepositoryInterface
 
     public function getMyArticlesPaginate(Request $request)
     {
+        $request->validate([
+            'filter' => 'nullable|integer|max:3',
+            'keyword' => 'nullable'
+        ]);
+
         $keyword = $request->input('keyword');
+        $filter = $request->input('filter');
         $id = $request->user('admin')->id;
 
-        if ($keyword) {
-            return Article::orderBy('updated_at', 'DESC')
-                ->where('author_id', $id)
-                ->where(function ($query) use ($keyword) {
-                    $query->where('title', 'like', '%' . $keyword . '%');
-                    $query->orWhere('summary', 'like', '%' . $keyword . '%');
-                    $query->orWhere('content', 'like', '%' . $keyword . '%');
-                    $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
-                })
-                ->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
-                ->paginate(5);
+        $articles = Article::orderBy('updated_at', 'DESC')
+            ->where('author_id', $id);
+
+        if ($filter && $filter !== 'All') {
+            $articles->where('status', $this->status[$filter - 1]);
         }
-        return Article::orderBy('updated_at', 'DESC')
-            ->where('author_id', $id)
-            ->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+
+        if ($keyword) {
+            $articles->where(function ($query) use ($keyword) {
+                $query->where('title', 'like', '%' . $keyword . '%');
+                $query->orWhere('summary', 'like', '%' . $keyword . '%');
+                $query->orWhere('content', 'like', '%' . $keyword . '%');
+                $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
+            });
+        }
+        return $articles->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
             ->paginate(5);
     }
 
     public function getAllArticlesPaginate(Request $request)
     {
+        $request->validate([
+            'filter' => 'nullable|integer|max:3',
+            'keyword' => 'nullable'
+        ]);
+
         $keyword = $request->input('keyword');
+        $filter = $request->input('filter');
+
+        $articles = Article::orderBy('updated_at', 'DESC');
+
+        if ($filter && $filter !== 'All') {
+            $articles->where('status', $this->status[$filter - 1]);
+        }
 
         if ($keyword) {
-            return Article::orderBy('updated_at', 'DESC')
-                ->where(function ($query) use ($keyword) {
-                    $query->where('title', 'like', '%' . $keyword . '%');
-                    $query->orWhere('summary', 'like', '%' . $keyword . '%');
-                    $query->orWhere('content', 'like', '%' . $keyword . '%');
-                    $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
-                })
-                ->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
-                ->paginate(5);
+            $articles->where(function ($query) use ($keyword) {
+                $query->where('title', 'like', '%' . $keyword . '%');
+                $query->orWhere('summary', 'like', '%' . $keyword . '%');
+                $query->orWhere('content', 'like', '%' . $keyword . '%');
+                $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
+            });
         }
-        return Article::orderBy('updated_at', 'DESC')
-            ->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
+        return $articles->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
             ->paginate(5);
     }
 

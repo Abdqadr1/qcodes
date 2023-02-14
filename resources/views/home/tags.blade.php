@@ -29,10 +29,10 @@
                 @foreach ($results as $result)
                     <div class="card mt-3" style="width: 100%;">
                         <div class="card-body">
-                            <h4 class="card-title">
+                            <h5 class="card-title">
                                 <a href="{{ '/tags/'. $result->slug}}">{{ $result->name }}</a>
-                            </h4>
-                            <p class="card-text fs-5">{{ $result->content }}</p>
+                            </h5>
+                            <p class="card-text lh-sm">{{ $result->content }}</p>
                         </div>
                     </div>
                 @endforeach
