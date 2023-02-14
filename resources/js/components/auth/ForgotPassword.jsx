@@ -19,6 +19,7 @@ import React, {useState} from 'react';
 import { useMutation, } from 'react-query';
 
 const ForgotPassword = ({ httpClient }) => {
+    document.title = 'Forgot Password';
     const [alert, setAlert] = useState({ message: "", show: false });
     const [errors, setErrors] = useState({});
     const [registered, setRegistered] = useState(false);

@@ -18,6 +18,7 @@ import Util from '../utility';
 import { useNavigate } from 'react-router';
 
 const Profile = ({ httpClient }) => {
+    document.title = 'Profile';
     const queryClient = useQueryClient();
     const [alert, setAlert] = useState({ message: "", show: false, severity: "error" });
     const [userData, setUserData] = useState({});

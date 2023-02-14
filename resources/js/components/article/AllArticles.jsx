@@ -48,6 +48,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const AllArticles = ({ httpClient }) => {
+    document.title = 'All Articles';
     const [keyword, setKeyword] = useState('');
     const [filter, setFilter] = useState('');
     const [showSnackBar, setShowSnackBar] = useState(false);
@@ -150,7 +151,7 @@ const AllArticles = ({ httpClient }) => {
                             </form>
                         </div>
                     </div>
-                    <Card className="mb-4">
+                    <Card className="mb-4 admin-table">
                         <CardHeader className="px-4"
                             action={
                                 <Button
@@ -201,7 +202,7 @@ const AllArticles = ({ httpClient }) => {
                                                             <span className="">{article.status}</span>
                                                         </TableCell>
                                                         <TableCell style={{ maxWidth: '150px'}}>
-                                                            <Link href={`/article/${article.slug}`}>{Util.ellipsis(article.slug)}</Link>
+                                                            <Link title={article.slug} href={`/article/${article.slug}`}>{Util.ellipsis(article.slug)}</Link>
                                                         </TableCell>
                                                         <TableCell className='align-middle text-start' style={{ maxWidth: '150px' }}>
                                                             <p className="text-center">{article.visit}</p>

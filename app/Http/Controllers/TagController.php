@@ -29,7 +29,7 @@ class TagController extends Controller
 
     public function createTag(Request $request)
     {
-        $this->authorize('create', Tag::class);
+        // $this->authorize('create', Tag::class);
 
         $validated = $request->validate([
             'name' => 'required|max:100|unique:tags',

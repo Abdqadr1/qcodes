@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const AdminDashboard = ({ httpClient }) => {
+    document.title = 'Dashboard';
 
   const { data } = useQuery('getAdminUser', () =>
         httpClient.get('/api/admin'),{ 
@@ -23,7 +24,7 @@ const AdminDashboard = ({ httpClient }) => {
         <Button href='/admin/article/new' className='mt-2 mb-5' variant="outlined" endIcon={<CreateIcon />}>Write article</Button>
         <div className='row mx-0 g-2'>
             <div className='col-md-6'>
-                 <Card sx={{ minWidth: 275 }}>
+                 <Card className='admin-table' sx={{ minWidth: 275 }}>
                   <CardContent>
                     <div className='d-flex justify-content-between align-items-center'>
                       <Typography sx={{ fontSize: 24, fontWeight: 'bold' }} color="text.secondary" gutterBottom>

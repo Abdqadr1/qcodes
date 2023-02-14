@@ -65,7 +65,7 @@ const TagCreateModal = ({ httpClient, show, setCreate }) => {
                     <Box sx={{}} component='form' onSubmit={handleSubmit}>
                         {
                             (alert.show)
-                            ? <Alert severity="error" >{alert.message}</Alert>
+                            ? <Alert className='mb-3' severity="error" >{alert.message}</Alert>
                             : ''
                         }
 

@@ -30,7 +30,7 @@ class CategoryController extends Controller
 
     public function createCategory(Request $request)
     {
-        $this->authorize('create', Category::class);
+        // $this->authorize('create', Category::class);
 
         $validated = $request->validate([
             'name' => 'required|max:100|unique:categories',

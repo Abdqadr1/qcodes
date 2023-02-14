@@ -49,6 +49,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 
 const Admin = ({ httpClient }) => {
+    document.title = 'Admin';
     const [edit, setEdit] = useState({ show: false, data: {} });
     const [keyword, setKeyword] = useState('');
     const [create, setCreate] = useState(false);
@@ -166,7 +167,7 @@ const Admin = ({ httpClient }) => {
                         </div>
                     </div>
                    
-                    <Card className="mb-4">
+                    <Card className="mb-4 admin-table">
                         <CardHeader className="px-4"
                             action={
                                 <Button

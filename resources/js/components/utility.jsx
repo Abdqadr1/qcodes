@@ -73,6 +73,14 @@ export default class Util {
         return roles.some(role => role.name == roleName);
     }
 
+    static hasAnyRole(roles, rolesArray) {
+        for (let i = 0; i < rolesArray.length; i++) {
+            const role = rolesArray[i];
+            if (this.hasRole(roles, role)) return true;
+        }
+        return false;
+    }
+
     static checkImagesInArticle() {
         const content = document.querySelector("#articleContent");
         if (content) {

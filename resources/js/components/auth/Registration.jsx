@@ -15,10 +15,10 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import Zoom from '@mui/material/Zoom';
 
 const AdminRegistration = ({ httpClient }) => {
+    document.title = 'Sign Up';
     const [alert, setAlert] = useState({ message: "", show: false });
     const [errors, setErrors] = useState({});
     const [registered, setRegistered] = useState(false);
-
 
 
     const { isLoading, mutate } =

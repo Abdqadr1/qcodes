@@ -23,6 +23,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
 const ChangePassword = ({ httpClient }) => {
+    document.title = 'Change Password';
     const [showPassword, setShowPassword] = useState(false);
     const [alert, setAlert] = useState({ message: "", show: false });
     const [registered, setRegistered] = useState(false);

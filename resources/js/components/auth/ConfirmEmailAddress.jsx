@@ -20,6 +20,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const ConfirmEmailAddress = ({ httpClient }) => {
+    document.title = 'Confirm Email';
     const [confirmed, setConfirmed] = useState(false);
 
     const [urlParam,] = useSearchParams();

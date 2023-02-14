@@ -25,6 +25,7 @@ import FormGroup from '@mui/material/FormGroup';
 import { useNavigate } from 'react-router';
 
 const AdminLogin = ({ httpClient }) => {
+    document.title = 'Log in';
   const [showPassword, setShowPassword] = useState(false);
     const [alert, setAlert] = useState({ message: "", show: false });
     const [errors, setErrors] = useState({});

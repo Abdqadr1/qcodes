@@ -45,6 +45,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const Categories = ({ httpClient }) => {
+    document.title = 'Categories';
     const [edit, setEdit] = useState({ show: false, data: {} });
     const [create, setCreate] = useState(false);
     const [showSnackBar, setShowSnackBar] = useState(false);
@@ -52,6 +53,17 @@ const Categories = ({ httpClient }) => {
     const [keyword, setKeyword] = useState('');
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const [isAdminOrEditor, setAdminOrEditor] = useState(false);
+
+      const { data:adminData } = useQuery('getAdminUser', () =>
+        httpClient.get('/api/admin'),{ 
+         refetchOnWindowFocus: false,
+            retry: false,
+            onSuccess: data => {
+                setAdminOrEditor(Util.hasAnyRole(data.data.roles, ['Admin', 'Editor']));
+            } 
+        }
+    );
 
     const { isFetching, data, refetch } = useQuery('categoryData', () =>
         httpClient.get(`/api/category/all?keyword=${keyword}`),{
@@ -144,7 +156,7 @@ const Categories = ({ httpClient }) => {
                             </form>
                         </div>
                     </div>
-                    <Card className="mb-4">
+                    <Card className="mb-4 admin-table">
                         <CardHeader className="px-4"
                             action={
                                 <Button onClick={showCreateModal} color='primary'
@@ -166,22 +178,27 @@ const Categories = ({ httpClient }) => {
                                                 <TableCell>Name</TableCell>
                                                 <TableCell>Meta Title</TableCell>
                                                 <TableCell>Content</TableCell>
-                                                <TableCell>Actions</TableCell>
+                                                {
+                                                    isAdminOrEditor ?
+                                                    <TableCell>Actions</TableCell> : ''
+                                                }
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                                {
-                                                    data.data.data.map(
-                                                        category => <TableRow key={category.id}>
-                                                            <TableCell>
-                                                                <p>{ category.name }</p>
-                                                            </TableCell>
-                                                            <TableCell style={{ maxWidth: '150px'}}>
-                                                                <p className="text-xs font-weight-bold mb-0">{category.meta_title}</p>
-                                                            </TableCell>
-                                                            <TableCell className="" style={{ maxWidth: '150px'}}>
-                                                                <span className="">{category.content}</span>
-                                                            </TableCell>
+                                            {
+                                                data.data.data.map(
+                                                    category => <TableRow key={category.id}>
+                                                        <TableCell>
+                                                            <p>{ category.name }</p>
+                                                        </TableCell>
+                                                        <TableCell style={{ maxWidth: '150px'}}>
+                                                            <p className="text-xs font-weight-bold mb-0">{category.meta_title}</p>
+                                                        </TableCell>
+                                                        <TableCell className="" style={{ maxWidth: '150px'}}>
+                                                            <span className="">{category.content}</span>
+                                                        </TableCell>
+                                                        {
+                                                            isAdminOrEditor ? 
                                                             <TableCell className="align-top">
                                                                 <Button size="small" color='primary'
                                                                     onClick={() => setEdit(s => ({ ...s, show: true, data: category }))}
@@ -190,10 +207,11 @@ const Categories = ({ httpClient }) => {
                                                                 <Button color='error'
                                                                     onClick={() => handleDelete(category.id)}
                                                                     variant="outlined" size="small">Delete</Button>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    )
-                                                }
+                                                            </TableCell> : ''
+                                                        }
+                                                    </TableRow>
+                                                )
+                                            }
                                         </TableBody>
                                         </Table>
                                     </TableContainer>

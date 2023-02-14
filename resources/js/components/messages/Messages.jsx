@@ -40,6 +40,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const Messages = ({ httpClient }) => {
+    document.title = 'Messages';
     const [keyword, setKeyword] = useState('');
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [error, setError] = useState({});
@@ -141,7 +142,7 @@ const Messages = ({ httpClient }) => {
                             </form>
                         </div>
                     </div>
-                    <Card className="mb-4">
+                    <Card className="mb-4 admin-table">
                         <CardHeader className="px-4"
                             title="Messages table"
                             subheader=""

@@ -48,6 +48,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 
 const Notification = ({ httpClient }) => {
+    document.title = 'Notifications';
     const [keyword, setKeyword] = useState('');
     const [create, setCreate] = useState(false);
     const [showSnackBar, setShowSnackBar] = useState(false);
@@ -161,7 +162,7 @@ const Notification = ({ httpClient }) => {
                             </form>
                         </div>
                     </div>
-                    <Card className="mb-4">
+                    <Card className="mb-4 admin-table">
                         <CardHeader className="px-4"
                             action={
                                 <Button

@@ -36,7 +36,11 @@ class ArticleController extends Controller
                 $query->where('status', $this->status[1]);
             })->first();
 
-        $children = $article->children()
+        if (!$article) {
+            abort(404, "Could not found article or it's not published yet");
+        }
+
+        $children = $article?->children()
             ->where('status', $this->status[1])
             ->orderBy('visit', 'desc')
             ->limit(3)->get();
@@ -57,6 +61,10 @@ class ArticleController extends Controller
             ->where(function ($query) use ($slug) {
                 $query->where('slug', $slug);
             })->first();
+
+        if (!$article) {
+            abort(404, "Could not found article or it's not published yet");
+        }
 
         return view('article.preview', ['title' => $article->title, 'article' => $article]);
     }

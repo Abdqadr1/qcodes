@@ -45,6 +45,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const Tags = ({ httpClient }) => {
+    document.title = 'Tags';
     const [edit, setEdit] = useState({ show: false, data: {} });
     const [create, setCreate] = useState(false);
     const [showSnackBar, setShowSnackBar] = useState(false);
@@ -52,6 +53,17 @@ const Tags = ({ httpClient }) => {
     const [keyword, setKeyword] = useState('');
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const [isAdminOrEditor, setAdminOrEditor] = useState(false);
+
+      const { data:adminData } = useQuery('getAdminUser', () =>
+        httpClient.get('/api/admin'),{ 
+         refetchOnWindowFocus: false,
+            retry: false,
+            onSuccess: data => {
+                setAdminOrEditor(Util.hasAnyRole(data.data.roles, ['Admin', 'Editor']));
+            } 
+        }
+    );
 
     const { isFetching, data, refetch } = useQuery('tagData', () =>
         httpClient.get(`/api/tag/all?keyword=${keyword}`),{ 
@@ -143,7 +155,7 @@ const Tags = ({ httpClient }) => {
                             </form>
                         </div>
                     </div>
-                    <Card className="mb-4">
+                    <Card className="mb-4 admin-table">
                         <CardHeader className="px-4"
                             action={
                                 <Button
@@ -165,22 +177,27 @@ const Tags = ({ httpClient }) => {
                                                 <TableCell>Name</TableCell>
                                                 <TableCell>Meta Title</TableCell>
                                                 <TableCell>Content</TableCell>
-                                                <TableCell>Actions</TableCell>
+                                                {
+                                                    isAdminOrEditor ?
+                                                    <TableCell>Actions</TableCell> : ''
+                                                }
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                                {
-                                                    data.data.data.map(
-                                                        tag => <TableRow key={tag.id}>
-                                                            <TableCell>
-                                                                <p>{ tag.name }</p>
-                                                            </TableCell>
-                                                            <TableCell style={{ maxWidth: '150px'}}>
-                                                                <p className="text-xs font-weight-bold mb-0">{tag.meta_title}</p>
-                                                            </TableCell>
-                                                            <TableCell className="" style={{ maxWidth: '150px'}}>
-                                                                <span className="">{tag.content}</span>
-                                                            </TableCell>
+                                            {
+                                                data.data.data.map(
+                                                    tag => <TableRow key={tag.id}>
+                                                        <TableCell>
+                                                            <p>{ tag.name }</p>
+                                                        </TableCell>
+                                                        <TableCell style={{ maxWidth: '150px'}}>
+                                                            <p className="text-xs font-weight-bold mb-0">{tag.meta_title}</p>
+                                                        </TableCell>
+                                                        <TableCell className="" style={{ maxWidth: '150px'}}>
+                                                            <span className="">{tag.content}</span>
+                                                        </TableCell>
+                                                        {
+                                                            isAdminOrEditor ?
                                                             <TableCell className="align-top">
                                                                 <Button
                                                                     color='primary' size="small"
@@ -190,10 +207,12 @@ const Tags = ({ httpClient }) => {
                                                                 <Button
                                                                     color='error' onClick={() => handleDelete(tag.id)}
                                                                     variant="outlined" size="small">Delete</Button>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    )
-                                                }
+                                                            </TableCell> : ''
+                                                        }
+                                                        
+                                                    </TableRow>
+                                                )
+                                            }
                                         </TableBody>
                                         </Table>
                                     </TableContainer>
