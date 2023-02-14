@@ -62,10 +62,13 @@ function MaterialNavbar(props) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  const pathName = window.location.pathname;
+
   const { isLoading:adminLoading, error, data:adminData } = useQuery('getAdminUser', () =>
         httpClient.get('/api/admin'),{ 
          refetchOnWindowFocus: false,
-            retry: false,
+          retry: false,
+          enabled: pathName !== '/admin/login' && pathName !== '/admin/signup',
             onSuccess: data => {
               queryClient.setQueryData('userData', data.data);
             } 

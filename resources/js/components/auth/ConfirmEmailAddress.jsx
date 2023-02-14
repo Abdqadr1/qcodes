@@ -63,7 +63,7 @@ const ConfirmEmailAddress = ({ httpClient }) => {
                     alignItems="center" sx={{height: '100vh'}}
                 >
                     <Grid item xs={12} md={6} >
-                        <Paper elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
+                        <Paper className='admin-table' elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
                             <Typography variant="h6" display="block" gutterBottom>
                                 Your email address has been confirmed. <br/> <Link href='/admin/login'>Log in</Link> to your account <br />
                                 <Zoom in style={{ transitionDelay: '500ms' }}>

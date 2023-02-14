@@ -74,7 +74,7 @@ const ChangePassword = ({ httpClient }) => {
                     alignItems="center" sx={{height: '100vh'}}
                 >
                     <Grid item xs={12} md={6} >
-                        <Paper elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
+                        <Paper className='admin-table' elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
                             <Typography variant="h5" display="block" gutterBottom>
                                 Your password has been changed. <Link href='/admin/login'>Log in</Link> to your account <br />
                                 <Zoom in style={{ transitionDelay: '500ms' }}>

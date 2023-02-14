@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Admin from './admin/Admin';
 import NavBar from './NavBar';
 import axios from 'axios';
@@ -45,26 +45,36 @@ function App() {
         <BrowserRouter>
             <div>
                 <QueryClientProvider client={queryClient}>
-                    <MaterialNavbar httpClient={http} />
+                    
                     <div className="react-body" >
-                        <Toolbar />
                         <Routes>
-                            <Route path='/admin' element={<Admin httpClient={http} />} />
-                            <Route path='/admin/login' element={<AdminLogin httpClient={http} />} />
-                            <Route path='/admin/signup' element={<AdminRegistration httpClient={http} />} />
-                            <Route path='/admin/profile' element={<Profile httpClient={http} />} />
-                            <Route path='/admin/categories' element={<Categories httpClient={http} />} />
-                            <Route path='/admin/tags' element={<Tags httpClient={http} />} />
-                            <Route path='/admin/article/all' element={<AllArticles httpClient={http} />} />
-                            <Route path='/admin/articles' element={<MyArticles httpClient={http} />} />
-                            <Route path='/admin/article/new' element={<NewArticle httpClient={http} />} />
-                            <Route path='/admin/article/edit/:id' element={<EditArticle httpClient={http} />} />
+                            <Route
+                                element={(<>
+                                    <MaterialNavbar httpClient={http} />
+                                    <Toolbar />
+                                    <Outlet />
+                                </>)} 
+                            >
+                                <Route path='/admin' element={<Admin httpClient={http} />} />
+                                <Route path='/admin/profile' element={<Profile httpClient={http} />} />
+                                <Route path='/admin/categories' element={<Categories httpClient={http} />} />
+                                <Route path='/admin/tags' element={<Tags httpClient={http} />} />
+                                <Route path='/admin/article/all' element={<AllArticles httpClient={http} />} />
+                                <Route path='/admin/articles' element={<MyArticles httpClient={http} />} />
+                                <Route path='/admin/article/new' element={<NewArticle httpClient={http} />} />
+                                <Route path='/admin/article/edit/:id' element={<EditArticle httpClient={http} />} />
+                                <Route path='/admin/notification' element={<Notification httpClient={http} />} />
+                                <Route path='/admin/messages' element={<Messages httpClient={http} />} />
+                                <Route path='/admin/dashboard' element={<AdminDashboard httpClient={http} />} />
+
+                                <Route path='/admin/login' element={<AdminLogin httpClient={http} />} />
+                                <Route path='/admin/signup' element={<AdminRegistration httpClient={http} />} />
+
+
+                            </Route>
                             <Route path='/admin/forgotpassword' element={<ForgotPassword httpClient={http} />} />
                             <Route path='/admin/changepassword/:token' element={<ChangePassword httpClient={http} />} />
                             <Route path='/admin/confirm' element={<ConfirmEmailAddress httpClient={http} />} />
-                            <Route path='/admin/notification' element={<Notification httpClient={http} />} />
-                            <Route path='/admin/messages' element={<Messages httpClient={http} />} />
-                            <Route path='/admin/dashboard' element={<AdminDashboard httpClient={http} />} />
                             <Route path='/admin/logout' element={<AdminLogout httpClient={http} />} />
                             <Route path='*' element={<h4>404: Not Found</h4>} />
                         </Routes>

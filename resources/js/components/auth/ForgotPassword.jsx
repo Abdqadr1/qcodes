@@ -57,7 +57,7 @@ const ForgotPassword = ({ httpClient }) => {
                     alignItems="center" sx={{height: '100vh'}}
                 >
                     <Grid item xs={12} md={6} >
-                        <Paper elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
+                        <Paper className='admin-table' elevation={3} sx={{ padding: '2em', textAlign: 'center', borderRadius:5 }}>
                             <Typography variant="h5" display="block" gutterBottom>
                                 Check your mail for further instructions. <br />
                                 <Zoom in style={{ transitionDelay: '500ms' }}>
@@ -92,7 +92,7 @@ const ForgotPassword = ({ httpClient }) => {
                         }}
                         onSubmit={handleSubmit}
                     >
-                        <Paper elevation={2} sx={{ padding: '4em 2em', textAlign: 'center', }}>
+                        <Paper className='admin-table' elevation={2} sx={{ padding: '4em 2em', textAlign: 'center', }}>
                             <h4 className='mb-3'>Reset Password</h4>
                             {
                                 (alert.show)
