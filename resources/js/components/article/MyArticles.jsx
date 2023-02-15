@@ -59,7 +59,7 @@ const MyArticles = ({ httpClient }) => {
 
     const { isFetching, data, refetch } = useQuery('articleData', () =>
         httpClient.get(`/api/my_article/all?keyword=${keyword}&filter=${filter}`),{ 
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: false, retry: false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
                 setError({ ...error });
@@ -164,7 +164,7 @@ const MyArticles = ({ httpClient }) => {
                             subheader=""
                         />
                         {
-                            (data.data.data.length > 0)
+                            (data?.data.data.length > 0)
                                 ?
                                 <CardContent className="pb-2">
                                     <TableContainer>
@@ -182,7 +182,7 @@ const MyArticles = ({ httpClient }) => {
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                data.data.data.map(
+                                                data?.data.data.map(
                                                     article => <TableRow key={article.id}>
                                                         <TableCell style={{ maxWidth: '150px', paddingLeft: 0  }}>
                                                             <Avatar variant='square'

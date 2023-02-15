@@ -10,6 +10,9 @@ const AdminLogout = ({ httpClient }) => {
         onSuccess: () => {
             queryClient.removeQueries('userData');
             window.location = '/admin/login';
+        },
+        onError: () => {
+          window.location = '/admin/login';
         }
       });
 

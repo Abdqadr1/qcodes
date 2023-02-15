@@ -67,7 +67,7 @@ const Tags = ({ httpClient }) => {
 
     const { isFetching, data, refetch } = useQuery('tagData', () =>
         httpClient.get(`/api/tag/all?keyword=${keyword}`),{ 
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: false, retry:false,
             onError: error => {
                 Util.checkAuthError(error?.response?.status, navigate);
                 setError({ ...error });
@@ -167,7 +167,7 @@ const Tags = ({ httpClient }) => {
                             subheader=""
                         />
                         {
-                            (data.data.data.length > 0)
+                            (data?.data.data.length > 0)
                                 ? 
                                 <CardContent className="pb-2">
                                     <TableContainer>

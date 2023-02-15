@@ -27,9 +27,7 @@ Route::post('/admin/changepassword', [AdminAuthController::class, 'changePasswor
 Route::post('/admin/confirm', [AdminAuthController::class, 'confirmEmail']);
 
 
-Route::middleware('auth:sanctum')->group(function () {
-
-    Route::get('/admin', [AdminAuthController::class, 'getDashboard']);
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 
     Route::post('/article/upload/image', [ArticleController::class, 'uploadImage']);
 
@@ -79,4 +77,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/admin/messages', [AdminController::class, 'getAllMessages']);
     Route::delete('/admin/message/delete/{id}', [AdminController::class, 'deleteMessages']);
+
+    Route::get('/admin', [AdminAuthController::class, 'getDashboard'])->withoutMiddleware(['throttle:api']);
 });

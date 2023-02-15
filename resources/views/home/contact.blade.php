@@ -25,21 +25,21 @@
                 @endisset
                 <div class="mb-3">
                     <label for="name" class="form-label fw-bold fs-5">Name*</label>
-                    <input required name="name" class="form-control form-control-lg" id="name">
+                    <input required name="name" class="form-control form-control-lg bg-transparent border border-secondary" id="name">
                     @error('name')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label fw-bold fs-5">Email*</label>
-                    <input type="email" name="email" required class="form-control form-control-lg" id="name">
+                    <input type="email" name="email" required class="form-control form-control-lg bg-transparent border border-secondary" id="name">
                     @error('email')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label for="about" class="form-label fw-bold fs-5">What is your question about?*</label>
-                    <select class="form-select form-select-lg" required name="about" id="about">
+                    <select class="form-select form-select-lg bg-transparent border border-secondary" required name="about" id="about">
                         <option value="The article on the site" selected>The article on the site</option>
                         <option value="Site functionality and other questions">Site functionality and other questions</option>
                         <option value="Partnership inquiries">Partnership inquiries</option>
@@ -51,7 +51,7 @@
                 <div class="mb-3">
                     <label for="msg" class="form-label fw-bold fs-5">Message*</label>
                     <div class="form-floating">
-                        <textarea minlength="50" name="message" required class="form-control msg" id="msg"></textarea>
+                        <textarea minlength="50" name="message" required class="form-control msg bg-transparent border border-secondary" id="msg"></textarea>
                         <label for="msg">Message</label>
                     </div>
                     @error('message')

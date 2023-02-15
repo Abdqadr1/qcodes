@@ -16,48 +16,50 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::middleware(['throttle:web'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-//contact 
-Route::post('/contact', [HomeController::class, 'postContact'])->name('post-contact');
+    //contact 
+    Route::post('/contact', [HomeController::class, 'postContact'])->name('post-contact');
 
-//search
+    //search
 
-Route::get('/search', [HomeController::class, 'search'])->name('search');
-Route::get('/categories', [HomeController::class, 'categoriesSearch'])->name('cat-search');
-Route::get('/tags', [HomeController::class, 'tagsSearch'])->name('tag-search');
+    Route::get('/search', [HomeController::class, 'search'])->name('search');
+    Route::get('/categories', [HomeController::class, 'categoriesSearch'])->name('cat-search');
+    Route::get('/tags', [HomeController::class, 'tagsSearch'])->name('tag-search');
 
-Route::get('/categories/{slug}', [HomeController::class, 'getCategoryArticles'])->name('cat-page');
-Route::get('/tags/{slug}', [HomeController::class, 'getTagArticles'])->name('tag-page');
+    Route::get('/categories/{slug}', [HomeController::class, 'getCategoryArticles'])->name('cat-page');
+    Route::get('/tags/{slug}', [HomeController::class, 'getTagArticles'])->name('tag-page');
 
 
-// admin, writer portal react app
+    // admin, writer portal react app
 
-Route::get('/admin', [HomeController::class, 'admin'])->name('admin');
-Route::get('/admin/{path?}', [HomeController::class, 'admin'])->where('path', '.*');
+    Route::get('/admin', [HomeController::class, 'admin'])->name('admin');
+    Route::get('/admin/{path?}', [HomeController::class, 'admin'])->where('path', '.*');
 
-// article view and preview
+    // article view and preview
 
-Route::get('/article/{slug}/preview', [ArticleController::class, 'previewArticle']);
+    Route::get('/article/{slug}/preview', [ArticleController::class, 'previewArticle']);
 
-Route::get('/article/{slug}', [ArticleController::class, 'viewArticle'])->name('viewArticle');
+    Route::get('/article/{slug}', [ArticleController::class, 'viewArticle'])->name('viewArticle');
 
-// update article last visited
-Route::get('/article/{id}/visited', [ArticleController::class, 'lastVisited']);
+    // update article last visited
+    Route::get('/article/{id}/visited', [ArticleController::class, 'lastVisited']);
 
-// newsletter
+    // newsletter
 
-Route::post('/newsletter/signup', [NewsletterController::class, 'newsletterSignup'])->name('newsletter-signup');
-Route::get('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
-Route::get('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe']);
+    Route::post('/newsletter/signup', [NewsletterController::class, 'newsletterSignup'])->name('newsletter-signup');
+    Route::get('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
+    Route::get('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe']);
 
-Route::view('/newsletter/confirm', 'newsletter.confirm', ['title' => 'Confirm your email'])->name('newsletter-confirm');
-Route::view('/newsletter/sub', 'newsletter.subscribe')->name('newsletter-subscribe');
-Route::view('/newsletter/unsub', 'newsletter.unsubscribe')->name('newsletter-unsubscribe');
+    Route::view('/newsletter/confirm', 'newsletter.confirm', ['title' => 'Confirm your email'])->name('newsletter-confirm');
+    Route::view('/newsletter/sub', 'newsletter.subscribe')->name('newsletter-subscribe');
+    Route::view('/newsletter/unsub', 'newsletter.unsubscribe')->name('newsletter-unsubscribe');
 
-// Route::view('/mail', 'mail.newsletter.confirm', ['first_name' => 'QD', 'link' => 'hgiagidhg.com']);
+    // Route::view('/mail', 'mail.newsletter.confirm', ['first_name' => 'QD', 'link' => 'hgiagidhg.com']);
 
-Route::view('/about', 'home.about');
-Route::view('/privacy', 'home.privacy');
-Route::view('/terms', 'home.terms');
-Route::view('/contact', 'home.contact');
+    Route::view('/about', 'home.about');
+    Route::view('/privacy', 'home.privacy');
+    Route::view('/terms', 'home.terms');
+    Route::view('/contact', 'home.contact');
+});
