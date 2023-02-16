@@ -23,10 +23,10 @@
 
     <ul class="fs-5 mb-3">
         <li class="list-group-item">
-            <a class="socials" href="">Youtube</a>
+            <a class="socials" href="" target="_blank">Youtube</a>
         </li>
         <li class="list-group-item">
-            <a class="socials" href="">Twitter</a>
+            <a class="socials" href="https://twitter.com/QlueCodes" target="_blank" >Twitter</a>
         </li>
     </ul>
     <p>

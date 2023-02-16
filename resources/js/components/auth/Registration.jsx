@@ -74,7 +74,7 @@ const AdminRegistration = ({ httpClient }) => {
                 justifyContent="center"
                 alignItems="center" sx={{height: '90vh'}}
             >
-                <Grid item xs={12} md={7} >
+                <Grid item xs={12} lg={7} >
                     <Box
                         component="form"
                          sx={{
@@ -108,7 +108,7 @@ const AdminRegistration = ({ httpClient }) => {
                                 alignItems="center"
                                 sx={{ padding: 0, m: 0}}
                             >
-                                <Grid item xs={6}> 
+                                <Grid item xs={12} sm={6}> 
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name='first_name'
@@ -118,7 +118,7 @@ const AdminRegistration = ({ httpClient }) => {
                                         error={(errors?.first_name)}
                                     />
                                 </Grid>
-                                <Grid item xs={6}> 
+                                <Grid item xs={12} sm={6}> 
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name='last_name'
@@ -128,7 +128,7 @@ const AdminRegistration = ({ httpClient }) => {
                                         error={(errors?.last_name)}
                                     />
                                 </Grid>
-                                <Grid item xs={6}> 
+                                <Grid item xs={12} sm={6}> 
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name='email'
@@ -139,7 +139,7 @@ const AdminRegistration = ({ httpClient }) => {
                                         error={(errors?.email)}
                                     />
                                 </Grid>
-                                <Grid item xs={6}> 
+                                <Grid item xs={12} sm={6}> 
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name='mobile' type={'tel'}
@@ -163,7 +163,7 @@ const AdminRegistration = ({ httpClient }) => {
                                         error={(errors?.street_address)}
                                     />
                                 </Grid>
-                                <Grid item xs={6}> 
+                                <Grid item xs={12} sm={6}> 
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name='state'
@@ -173,7 +173,7 @@ const AdminRegistration = ({ httpClient }) => {
                                         error={(errors?.state)}
                                     />
                                 </Grid>
-                                <Grid item xs={6}> 
+                                <Grid item xs={12} sm={6}> 
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name='country'
@@ -183,7 +183,7 @@ const AdminRegistration = ({ httpClient }) => {
                                         error={(errors?.country)}
                                     />
                                 </Grid>
-                                <Grid item xs={6}> 
+                                <Grid item xs={12} sm={6}> 
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name="password"
@@ -193,7 +193,7 @@ const AdminRegistration = ({ httpClient }) => {
                                         error={(errors?.password)}
                                     />
                                 </Grid>
-                                <Grid item xs={6}> 
+                                <Grid item xs={12} sm={6}> 
                                     <TextField
                                         sx={{width: '100%'}}
                                         required name="password_confirmation"

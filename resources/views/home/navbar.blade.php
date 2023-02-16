@@ -28,7 +28,7 @@
                         <iconify-icon class="fs-3" icon="ic:outline-search">search</iconify-icon>
                     </a>
                 </li>
-                <a class="btn btn-danger w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin">Become a writer</a>
+                <a class="btn btn-danger w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin/dashboard">Become a writer</a>
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))
