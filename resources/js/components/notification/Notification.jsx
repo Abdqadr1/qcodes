@@ -20,6 +20,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -177,7 +178,30 @@ const Notification = ({ httpClient }) => {
                             (data.data.data.length > 0)
                                 ?
                                 <CardContent className="pb-2">
-                                    <TableContainer>
+                                    <div className='d-md-none' id='mobileView'>
+                                        {
+                                            data?.data.data.map(notification => (
+                                                <Card key={notification.id} className='mobile-item' sx={{ my: 2}}>
+                                                    <CardContent>
+                                                        <Typography gutterBottom variant="h6" component="div">
+                                                            {notification.title}
+                                                        </Typography>
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            {notification.content}
+                                                        </Typography>
+                                                    </CardContent>
+                                                    <CardActions sx={{ mb: 1, px: 2, display: 'flex', justifyContent: 'space-between' }}>
+                                                        <div className='my-1'>
+                                                            <span className="">{notification.read ? "Read" : "Unread"}</span> - {notification.type}
+                                                        </div>
+                                                            <IconButton onClick={() => handleDelete(notification.id)} color='error'
+                                                                size="small"><DeleteIcon /></IconButton>
+                                                    </CardActions>
+                                                </Card>)
+                                            )
+                                        }
+                                    </div>
+                                    <TableContainer className='d-none d-md-block' id="desktopView">
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>

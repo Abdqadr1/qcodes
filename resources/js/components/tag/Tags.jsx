@@ -18,6 +18,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -170,7 +171,38 @@ const Tags = ({ httpClient }) => {
                             (data?.data.data.length > 0)
                                 ? 
                                 <CardContent className="pb-2">
-                                    <TableContainer>
+                                    <div className='d-md-none' id='mobileView'>
+                                        {
+                                            data?.data.data.map(tag => (
+                                                <Card key={tag.id} className='mobile-item' sx={{ my: 2}}>
+                                                    <CardContent>
+                                                        <Typography gutterBottom variant="h6" component="div">
+                                                            {tag.name}
+                                                        </Typography>
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            {tag.content}
+                                                        </Typography>
+                                                    </CardContent>
+                                                    {
+                                                        isAdminOrEditor
+                                                        ? <CardActions sx={{mb:1, px:2}}>
+                                                             <Button
+                                                                    color='primary' size="small"
+                                                                    onClick={() => setEdit(s => ({ ...s, show: true, data: tag }))}
+                                                                    variant="contained">Edit</Button>
+                                                                {' '}
+                                                                <Button
+                                                                    color='error' onClick={() => handleDelete(tag.id)}
+                                                                    variant="contained" size="small">Delete</Button>
+                                                        </CardActions>
+                                                        : ''
+                                                    }
+                                                    
+                                                </Card>)
+                                            )
+                                        }
+                                    </div>
+                                    <TableContainer className='d-none d-md-block' id="desktopView">
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
