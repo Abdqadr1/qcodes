@@ -15,6 +15,10 @@
                     <li class="breadcrumb-item active" aria-current="page">{{$category->name}}</li>
                 </ol>
             </nav>
+            <div class="my-4">
+                {{$category->content}}
+            </div>
+            <hr>
             @forelse ($articles as $article)
                 <div class="col-md-4">
                     <div class="card article-card" style="width: 100%;">

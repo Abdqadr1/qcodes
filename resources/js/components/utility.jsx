@@ -14,10 +14,10 @@ export default class Util {
         }
     }
 
-    static checkAuthError(status, navigate) {
+    static checkAuthError(status, navigate=null) {
         const pathName = window.location.pathname;
         if (
-            status && navigate && (status === 401 || status === 419)
+            status && (status === 401 || status === 419)
             && pathName !== '/admin/login' && pathName !== '/admin/signup'
         )
             window.location='/admin/login';

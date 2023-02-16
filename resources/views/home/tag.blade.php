@@ -5,6 +5,10 @@
 
 @section('content')
 <div class="container-lg thebody">
+    <div class="my-4">
+        {{$tag->content}}
+    </div>
+    <hr>
     <div class="row justify-content-start gy-3">
         @forelse ($articles as $article)
             <div class="col-md-4">
