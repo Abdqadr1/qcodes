@@ -195,7 +195,7 @@ const Admin = ({ httpClient }) => {
                                                         <Typography gutterBottom variant="body2" color="text.secondary">
                                                             {admin?.email}
                                                         </Typography>
-                                                        <Typography sx={{mt:1}} variant="body2" color="text.secondary">
+                                                        <Typography sx={{mt:1}} variant="body2" color="text.secondary" component='div'>
                                                             <span className="">{admin.enabled ? "Enabled" : "Disabled"}</span> - {
                                                                 admin?.roles?.map(role => <Chip key={ role.id } label={role.name} />)
                                                             }

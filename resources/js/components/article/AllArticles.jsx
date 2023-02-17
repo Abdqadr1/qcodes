@@ -17,6 +17,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -168,7 +169,38 @@ const AllArticles = ({ httpClient }) => {
                             (data?.data.data.length > 0)
                                 ?
                                 <CardContent className="pb-2">
-                                    <TableContainer>
+                                    <div className='d-md-none' id='mobileView'>
+                                        {
+                                            data?.data.data.map(article => (
+                                                <Card key={article.id} className='mobile-item' sx={{ my: 2}}>
+                                                    <CardContent>
+                                                        <Typography sx={{lineHeight: 1.2}} gutterBottom variant="h6" component="div">
+                                                            {article.title}
+                                                        </Typography>
+                                                        <Typography gutterBottom variant="body2" color="text.secondary">
+                                                            {article.summary}
+                                                        </Typography>
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            {article.status} - {article.visit}
+                                                        </Typography>
+                                                    </CardContent>
+                                                    <CardActions sx={{mb:1, px:2}}>
+                                                        <Button sx={{mr: 1}} size='small' variant="contained"
+                                                                href={`/admin/article/edit/${article.id}`}
+                                                                >Edit</Button>
+                                                        <Button sx={{mr: 1}} variant="contained" size='small' color='error'
+                                                            onClick={() => handleDelete(article.id)} 
+                                                        >Delete</Button>
+                                                        <Link href={`/article/${article?.slug}/preview`} size='small' title='preview'>
+                                                            <PreviewIcon />
+                                                        </Link>
+                                                    </CardActions>
+                                                    
+                                                </Card>)
+                                            )
+                                        }
+                                    </div>
+                                    <TableContainer className='d-none d-md-block' id="desktopView">
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
