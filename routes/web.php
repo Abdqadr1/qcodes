@@ -62,4 +62,12 @@ Route::middleware(['throttle:web'])->group(function () {
     Route::view('/privacy', 'home.privacy');
     Route::view('/terms', 'home.terms');
     Route::view('/contact', 'home.contact');
+
+    //article images
+    Route::get('/photos/{folder}/{name}', [ArticleController::class, 'getArticleImages']);
+
+    // generate sitemap
+    Route::get('/generate-sitemap', function () {
+        return 'sitemap.xml';
+    })->middleware('auth:admin');
 });

@@ -94,7 +94,7 @@ const AdminLogin = ({ httpClient }) => {
                             <FormControl sx={{ my: 1, width: '100%' }}  variant="outlined">
                                 <InputLabel htmlFor="input-with-icon-adornment">Email</InputLabel>
                                 <OutlinedInput
-                                    required name='email'
+                                    required name='email' type='email'
                                     id="input-with-icon-adornment"
                                     startAdornment={
                                         <InputAdornment position="start">

@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Admin from './admin/Admin';
-import NavBar from './NavBar';
 import axios from 'axios';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import MyArticles from './article/MyArticles';

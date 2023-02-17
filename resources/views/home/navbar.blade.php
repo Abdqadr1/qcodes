@@ -11,13 +11,13 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link fw-bold @yield('cat-nav', '')" href="/categories">Categories</a>
+                    <a class="nav-link fw-bold @yield('cat-nav', '') text-uppercase" href="/categories">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-bold @yield('tag-nav', '')" href="/tags">Tags</a>
+                    <a class="nav-link fw-bold @yield('tag-nav', '') text-uppercase" href="/tags">Tags</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-bold @yield('about-nav', '')" href="/about">About</a>
+                    <a class="nav-link fw-bold @yield('about-nav', '') text-uppercase" href="/about">About</a>
                 </li>
             </ul>
 

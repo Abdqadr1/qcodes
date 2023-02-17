@@ -38,7 +38,8 @@ const adminNavItems = {
     Admin: '/admin',
     'All Articles': '/admin/article/all',
     Notifications: '/admin/notification',
-    Messages: '/admin/messages'
+    Messages: '/admin/messages',
+    Sitemap: '/generate-sitemap',
 }
 const auth = {
     LogIn: '/admin/login',

@@ -2,11 +2,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Modal from 'react-bootstrap/Modal';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import React, { useRef, useState } from "react";
 import Blog from '../Blog';
@@ -20,7 +16,6 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import MuiAlert from '@mui/material/Alert';
 import { useNavigate } from 'react-router';
-
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -168,22 +163,24 @@ const NewArticle = ({ httpClient }) => {
 
     return ( 
         <>
-            <div>
-                <Dialog className='d-md-none'
-                    open={true}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
+            <div className='d-md-none'>
+                <div
+                className="modal show"
+                style={{ display: 'block', position: 'initial', opacity: 0.6 }}
                 >
-                    <DialogTitle id="alert-dialog-title">
-                        {"Unsupported device"}
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            This page does not support mobile view
-                        </DialogContentText>
-                    </DialogContent>
-                </Dialog>
+                    <Modal.Dialog>
+                        <Modal.Header>
+                            <Modal.Title>{"Unsupported device"}</Modal.Title>
+                        </Modal.Header>
+
+                        <Modal.Body>
+                            <p>This page does not support mobile view</p>
+                        </Modal.Body>
+                    </Modal.Dialog>
+                </div>
             </div>
+           
+                
             <Row className='d-none d-md-flex mx-0' id="desktopView">
                 <Col lg={8} className='px-1 blog-side pt-5'>
                     <div id='articleContent'>
