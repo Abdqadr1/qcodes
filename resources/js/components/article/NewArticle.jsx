@@ -2,6 +2,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import React, { useRef, useState } from "react";
 import Blog from '../Blog';
@@ -9,8 +14,6 @@ import Util from '../utility';
 import ArticleEditor from './ArticleEditor';
 import Autocompletion from './Autocompletion';
 import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField';
 import Backdrop from '@mui/material/Backdrop';
@@ -164,92 +167,111 @@ const NewArticle = ({ httpClient }) => {
     }
 
     return ( 
-        <Row className='mx-0'>
-            <Col lg={8} className='px-1 blog-side pt-5'>
-                <div id='articleContent'>
-                    <ArticleEditor content={content} handleChange={handleChange} handleWordCount={c => setWordCount(c)} />
-                </div>
-            </Col>
-            <Col lg={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
-                <TextField className='mb-3 fs-4' onInput={handleInput}
-                    name='title' value={form?.title ?? ''} 
-                    id="outlined-textarea"
-                    label="Title"
-                    placeholder="Blog Title..."
-                    minRows={2}
-                    fullWidth 
-                    multiline
-                />
-                <TextField className='mb-3 fs-4' onInput={handleInput}
-                    name='meta_title' value={form?.meta_title ?? ''} 
-                    id="outlined-textarea"
-                    label="Meta Title"
-                    placeholder="Meta Title..."
-                    minRows={2}
-                    fullWidth 
-                    multiline
-                />
-
-                <TextField className='mb-3 fs-4' onInput={handleInput}
-                    name='summary' value={form?.summary ?? ''} 
-                    id="outlined-textarea"
-                    label="Summary"
-                    placeholder="Summary..."
-                    minRows={2}
-                    fullWidth 
-                    multiline
-                />
-                <TextField className='mb-3 fs-4' onInput={handleInput}
-                    name='meta_keywords' value={form?.meta_keywords ?? ''} 
-                    id="outlined-textarea"
-                    label="Keywords, comma separated"
-                    placeholder="Keywords, comma separated"
-                    minRows={2}
-                    fullWidth 
-                    multiline
-                />
-
-                <Stack spacing={3} className='mb-3'>
-                    <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
-                    <Autocompletion info={categories} name='Categories' httpClient={httpClient} setData={setCategories} />
-                    <Autocompletion info={tags} name='Tags' httpClient={httpClient} setData={setTags} />
-                    
-                </Stack>
-                <Stack className='article-sticky bgColor shadow-sm py-2' direction="row" spacing={2}
-                    justifyContent="center"
-                    alignItems="center" my={3}>
-                    <Button disabled={isLoading || publishLoading} variant="contained"
-                        color="info" onClick={saveChanges}
-                    >Save Changes</Button>
-                    <Button disabled={isLoading || publishLoading} variant="contained"
-                        color="success" onClick={handlePublish}
-                    >Publish</Button>
-                </Stack>
-                <Snackbar
-                    open={toast.show}
-                    autoHideDuration={2000}
-                    onClose={() => setToast(s=> ({...s, show:false}) )}
-                    anchorOrigin={
-                        {
-                            vertical: toast?.severity ==='success' ? 'bottom' : 'top',
-                            horizontal: toast?.severity ==='success' ? 'left' : 'center',
-                        }}
+        <>
+            <div>
+                <Dialog className='d-md-none'
+                    open={true}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
                 >
-                    <Alert
+                    <DialogTitle id="alert-dialog-title">
+                        {"Unsupported device"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            This page does not support mobile view
+                        </DialogContentText>
+                    </DialogContent>
+                </Dialog>
+            </div>
+            <Row className='d-none d-md-flex mx-0' id="desktopView">
+                <Col lg={8} className='px-1 blog-side pt-5'>
+                    <div id='articleContent'>
+                        <ArticleEditor content={content} handleChange={handleChange} handleWordCount={c => setWordCount(c)} />
+                    </div>
+                </Col>
+                <Col lg={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
+                    <TextField className='mb-3 fs-4' onInput={handleInput}
+                        name='title' value={form?.title ?? ''} 
+                        id="outlined-textarea"
+                        label="Title"
+                        placeholder="Blog Title..."
+                        minRows={2}
+                        fullWidth 
+                        multiline
+                    />
+                    <TextField className='mb-3 fs-4' onInput={handleInput}
+                        name='meta_title' value={form?.meta_title ?? ''} 
+                        id="outlined-textarea"
+                        label="Meta Title"
+                        placeholder="Meta Title..."
+                        minRows={2}
+                        fullWidth 
+                        multiline
+                    />
+
+                    <TextField className='mb-3 fs-4' onInput={handleInput}
+                        name='summary' value={form?.summary ?? ''} 
+                        id="outlined-textarea"
+                        label="Summary"
+                        placeholder="Summary..."
+                        minRows={2}
+                        fullWidth 
+                        multiline
+                    />
+                    <TextField className='mb-3 fs-4' onInput={handleInput}
+                        name='meta_keywords' value={form?.meta_keywords ?? ''} 
+                        id="outlined-textarea"
+                        label="Keywords, comma separated"
+                        placeholder="Keywords, comma separated"
+                        minRows={2}
+                        fullWidth 
+                        multiline
+                    />
+
+                    <Stack spacing={3} className='mb-3'>
+                        <Autocompletion info={parent} name='Parent' httpClient={httpClient} setData={setParent} />
+                        <Autocompletion info={categories} name='Categories' httpClient={httpClient} setData={setCategories} />
+                        <Autocompletion info={tags} name='Tags' httpClient={httpClient} setData={setTags} />
+                        
+                    </Stack>
+                    <Stack className='article-sticky bgColor shadow-sm py-2' direction="row" spacing={2}
+                        justifyContent="center"
+                        alignItems="center" my={3}>
+                        <Button disabled={isLoading || publishLoading} variant="contained"
+                            color="info" onClick={saveChanges}
+                        >Save Changes</Button>
+                        <Button disabled={isLoading || publishLoading} variant="contained"
+                            color="success" onClick={handlePublish}
+                        >Publish</Button>
+                    </Stack>
+                    <Snackbar
+                        open={toast.show}
+                        autoHideDuration={2000}
                         onClose={() => setToast(s=> ({...s, show:false}) )}
-                        severity={toast?.severity} sx={{ width: '100%' }}
+                        anchorOrigin={
+                            {
+                                vertical: toast?.severity ==='success' ? 'bottom' : 'top',
+                                horizontal: toast?.severity ==='success' ? 'left' : 'center',
+                            }}
                     >
-                        {toast.message}
-                    </Alert>
-                </Snackbar>
-                <Backdrop
-                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={backdropOpen}
-                >
-                    <CircularProgress color="inherit" />
-                </Backdrop>
-            </Col>
-        </Row>
+                        <Alert
+                            onClose={() => setToast(s=> ({...s, show:false}) )}
+                            severity={toast?.severity} sx={{ width: '100%' }}
+                        >
+                            {toast.message}
+                        </Alert>
+                    </Snackbar>
+                    <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={backdropOpen}
+                    >
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
+                </Col>
+            </Row>  
+        </>
+        
      );
 }
  

@@ -28,7 +28,7 @@
                 <h2>Search results for categories: {{ $keyword }}</h2>
                 @foreach ($results as $result)
                     <div class="card mt-3" style="width: 100%;">
-                        <div class="card-body">
+                        <div class="card-body bg-light">
                             <h5 class="card-title">
                                 <a href="{{ '/categories/'. $result->slug}}">{{ $result->name }}</a>
                             </h5>

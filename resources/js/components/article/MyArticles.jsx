@@ -162,7 +162,7 @@ const MyArticles = ({ httpClient }) => {
                                     endIcon={<AddIcon />}
                                     >New Article</Button>
                                 }
-                            title="Articles table"
+                            title="My Articles"
                             subheader=""
                         />
                         {
@@ -241,14 +241,12 @@ const MyArticles = ({ httpClient }) => {
                                                             <p className='text-center'>{article.visit}</p>
                                                         </TableCell>
                                                         <TableCell className="align-top">
-                                                            <Button size='small' variant="outlined"
+                                                            <Button sx={{m: 1}} size='small' variant="outlined"
                                                                 href={`/admin/article/edit/${article.id}`}
                                                                 >Edit</Button>
-                                                            {' '}
-                                                            <Button variant="outlined" size='small' color='error'
+                                                            <Button sx={{m: 1}} variant="outlined" size='small' color='error'
                                                                 onClick={() => handleDelete(article.id)} 
                                                             >Delete</Button>
-                                                            {' '}
                                                             <Link href={`/article/${article?.slug}/preview`} variant="outlined" size='small' title='preview'>
                                                                 <PreviewIcon />
                                                             </Link>

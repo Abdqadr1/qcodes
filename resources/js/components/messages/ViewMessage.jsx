@@ -16,7 +16,7 @@ const ViewMessageModal = ({ view, setView }) => {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>View Message (ID: { data?.id })</Modal.Title>
+                    <Modal.Title>View Message</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Box sx={{}}>

@@ -81,7 +81,7 @@ const Profile = ({ httpClient }) => {
                 justifyContent="center"
                 alignItems="center" sx={{height: '90vh'}}
             >
-                <Grid item xs={12} lg={7} >
+                <Grid item xs={12} md={10} lg={7} >
                     <Box
                         component="form"
                          sx={{
