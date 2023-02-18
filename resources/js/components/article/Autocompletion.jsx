@@ -99,10 +99,11 @@ export default function Autocompletion({ name, httpClient, setData, info, defaul
             error={info.isError}
             helperText={info.isError ? info.errorMessage : ""}
             {...params}
+            InputLabelProps={{style: {fontSize: 14}}}
             label={name}
             placeholder={name}
             InputProps={{
-              ...params.InputProps,
+              ...params.InputProps,style: {fontSize: 14, paddingBlock: '1em'},
               endAdornment: (
                 <React.Fragment>
                   {isLoading ? <CircularProgress color="inherit" size={20} /> : null}

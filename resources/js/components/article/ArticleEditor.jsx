@@ -36,11 +36,11 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
                 onReady={ editor => {
                     // You can store the "editor" and use when it is needed.
                      editor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "85vh",
-                            editor.editing.view.document.getRoot()
-                        );
+                         writer.setStyle("height", "85vh", editor.editing.view.document.getRoot());
+                        
+                         writer.setStyle("font-size", "14px", editor.editing.view.document.getRoot());
+                         
+                         writer.setStyle("font-family", "Nunito",  editor.editing.view.document.getRoot());
                     });
                 } }
                 onChange={ ( event, editor ) => {

@@ -196,8 +196,8 @@ const EditArticle = ({ httpClient }) => {
         <>
             <div className='d-md-none'>
                 <div
-                className="modal show"
-                style={{ display: 'block', position: 'initial', opacity: 0.6 }}
+                    className="modal show"
+                    style={{ display: 'block', position: 'initial', opacity: 0.6 }}
                 >
                     <Modal.Dialog>
                         <Modal.Header>
@@ -211,21 +211,25 @@ const EditArticle = ({ httpClient }) => {
                 </div>
             </div>
            
-            <Row className='d-none d-md-block mx-0' id="desktopView">
+            <Row className='d-none d-md-flex mx-0' id="desktopView">
                 <Col lg={8} className='px-1 blog-side pt-5'>
                     <div id='articleContent'>
                         <ArticleEditor handleChange={handleChange} content={content} handleWordCount={c => setWordCount(c)} />
                     </div>
                 </Col>
                 <Col lg={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
-                    <TextField className='mb-3 fs-4' onInput={handleInput}
+                    <TextField className='mb-3 fs-6' onInput={handleInput}
+                        inputProps={{style: {fontSize: 14}}} // font size of input text
+                        InputLabelProps={{style: {fontSize: 14}}}
                         name='title' value={form?.title ?? ''} 
                         id="outlined-textarea"
                         label="Title"
                         placeholder="Blog Title..."
                         minRows={2} fullWidth multiline
                     />
-                    <TextField className='mb-3 fs-4' onInput={handleInput}
+                    <TextField className='mb-3' onInput={handleInput}
+                        inputProps={{style: {fontSize: 14}}} // font size of input text
+                        InputLabelProps={{style: {fontSize: 14}}}
                         name='meta_title' value={form?.meta_title ?? ''} 
                         id="outlined-textarea"
                         label="Meta Title"
@@ -236,6 +240,8 @@ const EditArticle = ({ httpClient }) => {
                     />
 
                     <TextField className='mb-3 fs-4' onInput={handleInput}
+                        inputProps={{style: {fontSize: 14}}} // font size of input text
+                        InputLabelProps={{style: {fontSize: 14}}}
                         name='summary' value={form?.summary ?? ''} 
                         id="outlined-textarea"
                         label="Summary"
@@ -245,6 +251,8 @@ const EditArticle = ({ httpClient }) => {
                         multiline
                     />
                     <TextField className='mb-3 fs-4' onInput={handleInput}
+                        inputProps={{style: {fontSize: 14}}} // font size of input text
+                        InputLabelProps={{style: {fontSize: 14}}}
                         name='meta_keywords' value={form?.meta_keywords ?? ''} 
                         id="outlined-textarea"
                         label="Keywords, comma separated"
