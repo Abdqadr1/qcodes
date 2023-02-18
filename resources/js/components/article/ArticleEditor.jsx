@@ -29,6 +29,20 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
                             'X-Requested-With' : 'XMLHttpRequest',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         }
+                    },
+                    style: {
+                        definitions: [
+                            {
+                                name: 'Code(light)',
+                                element: 'pre',
+                                classes: ['.ck-content pre', 'shadow bg-body-tertiary rounded p-3 mx-3 text-danger fw-bold']
+                            },
+                            {
+                                name: 'Code(dark)',
+                                element: 'pre',
+                                classes: ['ck-content pre', 'dark', 'rounded p-3 mx-3 text-danger fw-bold']
+                            }
+                        ]
                     }
                 } }
                 editor={Editor}
@@ -36,7 +50,7 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
                 onReady={ editor => {
                     // You can store the "editor" and use when it is needed.
                      editor.editing.view.change((writer) => {
-                         writer.setStyle("height", "85vh", editor.editing.view.document.getRoot());
+                         writer.setStyle("min-height", "85vh", editor.editing.view.document.getRoot());
                         
                          writer.setStyle("font-size", "14px", editor.editing.view.document.getRoot());
                          
