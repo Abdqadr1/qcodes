@@ -22,6 +22,17 @@ import MaterialNavbar from './MaterialNavbar';
 import { Toolbar } from '@mui/material';
 import AdminDashboard from './auth/Dashboard';
 import AdminLogout from './auth/Logout';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+    typography: {
+        allVariants: {
+            fontFamily: 'Nunito',
+            textTransform: 'none',
+            fontSize: 16,
+        }
+    }
+})
 
 function App() {
 
@@ -42,7 +53,7 @@ function App() {
 
     return (
         <BrowserRouter>
-            <div>
+            <ThemeProvider theme={theme}>
                 <QueryClientProvider client={queryClient}>
                     
                     <div className="react-body" >
@@ -80,7 +91,7 @@ function App() {
                     </div>
                     
                 </QueryClientProvider>
-            </div>
+            </ThemeProvider>
         </BrowserRouter>
     );
 }

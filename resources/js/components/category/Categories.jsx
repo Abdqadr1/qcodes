@@ -206,12 +206,12 @@ const Categories = ({ httpClient }) => {
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>Name</TableCell>
-                                                <TableCell>Meta Title</TableCell>
-                                                <TableCell>Content</TableCell>
+                                                <TableCell className='fw-bold'>Name</TableCell>
+                                                <TableCell className='fw-bold'>Meta Title</TableCell>
+                                                <TableCell className='fw-bold'>Content</TableCell>
                                                 {
                                                     isAdminOrEditor ?
-                                                    <TableCell>Actions</TableCell> : ''
+                                                    <TableCell className='fw-bold'>Actions</TableCell> : ''
                                                 }
                                             </TableRow>
                                         </TableHead>

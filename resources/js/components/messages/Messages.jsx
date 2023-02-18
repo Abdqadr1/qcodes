@@ -181,13 +181,13 @@ const Messages = ({ httpClient }) => {
                                     </div>
                                     <TableContainer className='d-none d-md-block' id="desktopView">
                                         <Table aria-label="simple table">
-                                        <TableHead>
+                                        <TableHead> className='fw-bold'
                                             <TableRow>
-                                                <TableCell>Name</TableCell>
-                                                <TableCell>About</TableCell>
-                                                <TableCell>Email</TableCell>
-                                                <TableCell>Message</TableCell>
-                                                <TableCell>Actions</TableCell>
+                                                <TableCell className='fw-bold'>Name</TableCell>
+                                                <TableCell className='fw-bold'>About</TableCell>
+                                                <TableCell className='fw-bold'>Email</TableCell>
+                                                <TableCell className='fw-bold'>Message</TableCell>
+                                                <TableCell className='fw-bold'>Actions</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>

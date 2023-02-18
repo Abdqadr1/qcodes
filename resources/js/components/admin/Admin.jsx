@@ -217,11 +217,11 @@ const Admin = ({ httpClient }) => {
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>Name</TableCell>
-                                                <TableCell>Roles</TableCell>
-                                                <TableCell>Status</TableCell>
-                                                <TableCell>Last Login</TableCell>
-                                                <TableCell>Actions</TableCell>
+                                                <TableCell className='fw-bold'>Name</TableCell>
+                                                <TableCell className='fw-bold'>Roles</TableCell>
+                                                <TableCell className='fw-bold'>Status</TableCell>
+                                                <TableCell className='fw-bold'>Last Login</TableCell>
+                                                <TableCell className='fw-bold'>Actions</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>

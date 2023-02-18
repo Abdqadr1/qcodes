@@ -176,7 +176,7 @@ function MaterialNavbar(props) {
                 ? <>
                     <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                         { Object.keys(navs).map((item) => (
-                        <Button href={navs[item]} className='text-dark' key={item} sx={{ color: '#fff' }}>
+                        <Button href={navs[item]} className='text-dark fw-bold' key={item} sx={{ color: '#fff' }}>
                             {item}
                         </Button>
                         ))}
@@ -263,10 +263,11 @@ function MaterialNavbar(props) {
                     </Box>
                     
                     <Box sx={{ flexGrow: 0, ml: 5 }}>
-                        <Tooltip title="Open settings">
-                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                            <Avatar alt={adminData?.data.first_name} src="/static/images/avatar/2.jpg" />
-                        </IconButton>
+                        <Tooltip title={adminData?.data.first_name}>
+                          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                          <Avatar sx={{ width: 30, height: 30, background: '#998B79' }} alt={adminData?.data.first_name}
+                            src="/static/images/avatar/2.jpg" />
+                          </IconButton>
                         </Tooltip>
                         <Menu
                             sx={{ mt: '45px' }}
@@ -286,7 +287,8 @@ function MaterialNavbar(props) {
                         >
                             {Object.keys(settings).map((setting) => (
                                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Link className='text-decoration-none text-secondary'  href={settings[setting]} textAlign="center">{setting}</Link>
+                                <Link className='text-decoration-none text-secondary'
+                                  href={settings[setting]} textAlign="center">{setting}</Link>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -297,7 +299,7 @@ function MaterialNavbar(props) {
                 : <>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {Object.keys(auth).map((item) => (
-                        <Button href={auth[item]} className='text-dark' key={item} sx={{ color: '#fff' }}>
+                        <Button href={auth[item]} className='text-dark fw-bold' key={item} sx={{ color: '#fff' }}>
                             {item}
                         </Button>
                         ))}

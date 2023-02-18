@@ -204,13 +204,13 @@ const AllArticles = ({ httpClient }) => {
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>Banner</TableCell>
-                                                <TableCell>Title</TableCell>
-                                                <TableCell>Summary</TableCell>
-                                                <TableCell>Status</TableCell>
-                                                <TableCell>Slug</TableCell>
-                                                <TableCell>Visit</TableCell>
-                                                <TableCell>Actions</TableCell>
+                                                <TableCell className='fw-bold'>Banner</TableCell>
+                                                <TableCell className='fw-bold'>Title</TableCell>
+                                                <TableCell className='fw-bold'>Summary</TableCell>
+                                                <TableCell className='fw-bold'>Status</TableCell>
+                                                <TableCell className='fw-bold'>Slug</TableCell>
+                                                <TableCell className='fw-bold'>Visit</TableCell>
+                                                <TableCell className='fw-bold'>Actions</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>

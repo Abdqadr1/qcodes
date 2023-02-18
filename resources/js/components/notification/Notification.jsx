@@ -205,12 +205,12 @@ const Notification = ({ httpClient }) => {
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>To</TableCell>
-                                                <TableCell>Title</TableCell>
-                                                <TableCell>Content</TableCell>
-                                                <TableCell>Read</TableCell>
-                                                <TableCell>Type</TableCell>
-                                                <TableCell>Actions</TableCell>
+                                                <TableCell className='fw-bold'>To</TableCell>
+                                                <TableCell className='fw-bold'>Title</TableCell>
+                                                <TableCell className='fw-bold'>Content</TableCell>
+                                                <TableCell className='fw-bold'>Read</TableCell>
+                                                <TableCell className='fw-bold'>Type</TableCell>
+                                                <TableCell className='fw-bold'>Actions</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>

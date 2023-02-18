@@ -164,7 +164,7 @@ const Tags = ({ httpClient }) => {
                                 endIcon={<AddIcon />} variant="contained"
                                 >New Tag</Button>
                             }
-                            title="Tags table"
+                            title="Tags"
                             subheader=""
                         />
                         {
@@ -206,12 +206,12 @@ const Tags = ({ httpClient }) => {
                                         <Table aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell>Name</TableCell>
-                                                <TableCell>Meta Title</TableCell>
-                                                <TableCell>Content</TableCell>
+                                                <TableCell className='fw-bold'>Name</TableCell>
+                                                <TableCell className='fw-bold'>Meta Title</TableCell>
+                                                <TableCell className='fw-bold'>Content</TableCell>
                                                 {
                                                     isAdminOrEditor ?
-                                                    <TableCell>Actions</TableCell> : ''
+                                                    <TableCell className='fw-bold'>Actions</TableCell> : ''
                                                 }
                                             </TableRow>
                                         </TableHead>

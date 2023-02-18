@@ -189,6 +189,8 @@ const NewArticle = ({ httpClient }) => {
                 </Col>
                 <Col lg={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
                     <TextField className='mb-3 fs-4' onInput={handleInput}
+                        inputProps={{style: {fontSize: 14}}} // font size of input text
+                        InputLabelProps={{style: {fontSize: 14}}}
                         name='title' value={form?.title ?? ''} 
                         id="outlined-textarea"
                         label="Title"
@@ -198,7 +200,9 @@ const NewArticle = ({ httpClient }) => {
                         multiline
                     />
                     <TextField className='mb-3 fs-4' onInput={handleInput}
-                        name='meta_title' value={form?.meta_title ?? ''} 
+                        name='meta_title' value={form?.meta_title ?? ''}
+                        inputProps={{style: {fontSize: 14}}} // font size of input text
+                        InputLabelProps={{style: {fontSize: 14}}} 
                         id="outlined-textarea"
                         label="Meta Title"
                         placeholder="Meta Title..."
@@ -208,6 +212,8 @@ const NewArticle = ({ httpClient }) => {
                     />
 
                     <TextField className='mb-3 fs-4' onInput={handleInput}
+                        inputProps={{style: {fontSize: 14}}} // font size of input text
+                        InputLabelProps={{style: {fontSize: 14}}}
                         name='summary' value={form?.summary ?? ''} 
                         id="outlined-textarea"
                         label="Summary"
@@ -217,6 +223,8 @@ const NewArticle = ({ httpClient }) => {
                         multiline
                     />
                     <TextField className='mb-3 fs-4' onInput={handleInput}
+                        inputProps={{style: {fontSize: 14}}} // font size of input text
+                        InputLabelProps={{style: {fontSize: 14}}}
                         name='meta_keywords' value={form?.meta_keywords ?? ''} 
                         id="outlined-textarea"
                         label="Keywords, comma separated"
