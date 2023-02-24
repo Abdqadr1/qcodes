@@ -111,14 +111,14 @@ class ArticleController extends Controller
         if ($publish) {
             $request->validate([
                 'title' => ['required', 'min:20', 'max:70', Rule::unique('articles', 'title')->ignore($id)],
-                'meta_title' => 'required|size:160',
-                'meta_keywords' => 'required|max:160',
+                'meta_title' => 'required|min:50|max:160',
+                'meta_keywords' => 'required|min:20|max:160',
                 'content' => 'required|max:10000',
                 'parent_id' => [
                     'nullable', 'numeric', 'exists:articles,id', Rule::notIn([$id])
                 ],
 
-                'summary' => 'required|size:160',
+                'summary' => 'required|min:60|size:160',
 
                 'tags' => 'required|array',
                 'tags.*' => 'required|numeric|exists:tags,id',
@@ -128,13 +128,13 @@ class ArticleController extends Controller
         } else {
             $request->validate([
                 'title' => ['required', 'min:20', 'max:70', Rule::unique('articles', 'title')->ignore($id)],
-                'meta_title' => 'nullable|max:160',
-                'meta_keywords' => 'nullable|max:160',
+                'meta_title' => 'nullable|min:50|max:160',
+                'meta_keywords' => 'nullable|min:20|max:160',
                 'content' => 'required|max:10000',
                 'parent_id' => [
                     'nullable', 'numeric', 'exists:articles,id'
                 ],
-                'summary' => 'nullable|max:160',
+                'summary' => 'nullable|min:60|max:160',
 
                 'tags' => 'nullable|array',
                 'tags.*' => 'nullable|numeric|exists:tags,id',

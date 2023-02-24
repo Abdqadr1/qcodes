@@ -218,6 +218,7 @@ const EditArticle = ({ httpClient }) => {
                     </div>
                 </Col>
                 <Col lg={4} className='border-start border-secondary p-1 pt-0' id='right-side'>
+                    <hr/>
                     <TextField className='mb-3 fs-6' onInput={handleInput}
                         inputProps={{style: {fontSize: 14}}} // font size of input text
                         InputLabelProps={{style: {fontSize: 14}}}

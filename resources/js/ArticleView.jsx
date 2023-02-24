@@ -3,6 +3,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import Editor from 'ckeditor5-custom-build';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import EditorStyle from './components/article/EditorStyle';
 
 function ArticleView() {
     const article = window?.article;
@@ -29,7 +30,9 @@ function ArticleView() {
                     </div>
                     <hr/>
                     <CKEditor
-                        config={{}}
+                        config={{
+                            style: EditorStyle
+                        }}
                         editor={Editor}
                         data={article.content ?? ""}
                         disabled={true}

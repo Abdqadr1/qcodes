@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('meta_title', 160)->default('');
             $table->string('meta_keywords', 160)->default('');
             $table->string('slug')->default('');
-            $table->tinyText('summary')->default('');
+            $table->tinyText('summary')->nullable();
             $table->enum('status', config('enum.article_status'))->default('In Review');
             $table->timestamp('published_at')->nullable();
             $table->bigInteger('visit')->default(0);
             $table->timestamp('last_visited')->nullable();
-            $table->text('content')->index()->default('');
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

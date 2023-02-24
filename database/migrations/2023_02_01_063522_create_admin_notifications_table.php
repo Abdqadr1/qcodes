@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('to')->nullable();
             $table->string('title');
-            $table->text('content');
+            $table->text('content')->nullable();
             $table->enum('type', config('enum.notification_type'));
             $table->boolean('read')->default(false);
             $table->timestamps();

@@ -1,5 +1,6 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import Editor from 'ckeditor5-custom-build';
+import EditorStyle from './EditorStyle';
 
 
 const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
@@ -30,20 +31,7 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         }
                     },
-                    style: {
-                        definitions: [
-                            {
-                                name: 'Code(light)',
-                                element: 'pre',
-                                classes: ['.ck-content pre', 'shadow bg-body-tertiary rounded p-3 mx-3 text-danger fw-bold']
-                            },
-                            {
-                                name: 'Code(dark)',
-                                element: 'pre',
-                                classes: ['ck-content pre', 'dark', 'rounded p-3 mx-3 text-danger fw-bold']
-                            }
-                        ]
-                    }
+                    style: EditorStyle
                 } }
                 editor={Editor}
                 data={content ?? ""}
@@ -54,7 +42,9 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
                         
                          writer.setStyle("font-size", "14px", editor.editing.view.document.getRoot());
                          
-                         writer.setStyle("font-family", "Nunito",  editor.editing.view.document.getRoot());
+                         writer.setStyle("font-family", "Nunito", editor.editing.view.document.getRoot());
+                         
+                         writer.setStyle("margin", "2em 0",  editor.editing.view.document.getRoot());
                     });
                 } }
                 onChange={ ( event, editor ) => {

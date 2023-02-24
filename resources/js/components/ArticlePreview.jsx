@@ -4,6 +4,7 @@ import React, {  } from "react";
 import MuiAlert from '@mui/material/Alert';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import Editor from 'ckeditor5-custom-build';
+import EditorStyle from './article/EditorStyle';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -37,7 +38,9 @@ const ArticlePreview = ({ }) => {
                     </div>
                     <hr/>
                     <CKEditor
-                        config={{}}
+                        config={{
+                            style: EditorStyle
+                        }}
                         editor={Editor}
                         data={article?.content ?? ""}
                         disabled={true}

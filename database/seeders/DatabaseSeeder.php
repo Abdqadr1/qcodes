@@ -21,16 +21,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Notification::factory(15)->create();
+        // Notification::factory(15)->create();
 
-        \App\Models\User::factory(10)->create();
-        Admin::factory(15)->create();
+        // \App\Models\User::factory(10)->create();
+        // Admin::factory(15)->create();
 
-        Article::factory(15)->create();
+        // Article::factory(15)->create();
 
-        Category::factory(15)->create();
+        // Category::factory(15)->create();
 
-        Tag::factory(15)->create();
+        // Tag::factory(15)->create();
 
 
         $roles = config('enum.roles');

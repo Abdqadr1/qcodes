@@ -1,9 +1,9 @@
 @extends('home.app')
 
 @section('content')
-<div class="container">
+<div class="container thebody">
     <div class="row justify-content-start gy-3">
-        @foreach ($articles as $article)
+        @forelse ($articles as $article)
             <div class="col-md-4 d-flex" style="align-self: stretch;">
                 <div class="card article-card" style="width: 100%;">
                     {{-- <img src="{{ $article->banner }}" class="card-img-top" alt="{{ $article->title }}"> --}}
@@ -16,7 +16,9 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div style="height: 200px;">No articles</div>
+        @endforelse
         
     </div>
 

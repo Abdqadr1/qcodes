@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name', 100)->unique();
             $table->string('meta_title', 160);
             $table->string('slug')->unique();
-            $table->text('content')->index();
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }
