@@ -144,7 +144,7 @@ const NotificationCreateModal = ({ httpClient, show, setCreate, types }) => {
                              }
                         </FormGroup>
                         
-                        <Button variant='contained' color="primary" type="submit">
+                        <Button disabled={isLoading} variant='contained' color="primary" type="submit">
                             { isLoading ? "Loading..." : "Submit" }
                         </Button>
                     </Box>

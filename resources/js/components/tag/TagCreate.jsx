@@ -99,7 +99,7 @@ const TagCreateModal = ({ httpClient, show, setCreate }) => {
                             error={(errors?.meta_title)}
                         />
 
-                        <Button variant='contained' color="primary" type="submit">
+                        <Button disabled={isLoading} variant='contained' color="primary" type="submit">
                             { isLoading ? "Loading" : "Submit" }
                         </Button>
                     </Box>

@@ -178,7 +178,7 @@ const AdminCreateModal = ({ httpClient, show, setCreate, roles }) => {
                              }
                         </FormGroup>
                         
-                        <Button variant='contained' color="primary" type="submit">
+                        <Button disabled={isLoading} variant='contained' color="primary" type="submit">
                             { isLoading ? "Loading..." : "Submit" }
                         </Button>
                     </Box>
