@@ -1,9 +1,9 @@
 /node_modules
 /ckeditor5
-/public/build
+# /public/build
 /public/hot
 /public/banners
-/public/images
+# /public/images
 /public/storage
 /storage/*.key
 /vendor
