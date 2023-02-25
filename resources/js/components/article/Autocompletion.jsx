@@ -2,7 +2,7 @@ import * as React from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useQuery, useMutation } from 'react-query';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import Util from '../utility';
 

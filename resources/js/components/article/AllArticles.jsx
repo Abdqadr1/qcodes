@@ -8,9 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
@@ -29,7 +27,6 @@ import Avatar from '@mui/material/Avatar';
 import Link from '@mui/material/Link';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { useNavigate } from 'react-router';
-import { filter } from 'minimatch';
 import ArticleSearchFilter from './ArticleSearchFilter';
 
 const theme = createTheme();

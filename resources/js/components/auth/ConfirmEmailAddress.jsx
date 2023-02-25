@@ -12,7 +12,6 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import Zoom from '@mui/material/Zoom';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
 const Alert = React.forwardRef(function Alert(props, ref) {

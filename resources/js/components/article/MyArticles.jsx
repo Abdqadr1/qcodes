@@ -10,9 +10,7 @@ import Link from '@mui/material/Link';
 import ClearIcon from '@mui/icons-material/Clear';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
@@ -20,7 +18,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -30,7 +27,6 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router';
-import { IconButton } from '@mui/material';
 import ArticleSearchFilter from './ArticleSearchFilter';
 
 const theme = createTheme();

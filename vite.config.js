@@ -7,7 +7,12 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/app.scss',
+                'resources/sass/preview.scss',
+                
                 'resources/js/app.js',
+                'resources/js/article-view.js',
+
+                'resources/js/bootstrap.js'
             ],
             refresh: true,
         }),
@@ -17,8 +22,11 @@ export default defineConfig({
         include: ['ckeditor5-custom-build']
     },
     build: {
+        chunkSizeWarningLimit: 2000,
         commonjsOptions: {
-            include: [/ckeditor5-custom-build/, /node_modules/],
+            // exclude: ['ckeditor5-custom-build'],
+            include: [/node_modules/, /ckeditor5/],
+            extensions: ['.js', '.cjs']
         }
     }
 });

@@ -1,5 +1,5 @@
 
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 const AdminLogout = ({ httpClient }) => {
 
     

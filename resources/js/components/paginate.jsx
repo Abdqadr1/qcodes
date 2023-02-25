@@ -1,5 +1,4 @@
 
-// import Pagination from 'react-bootstrap/Pagination';
 import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 const Pages = ({ from, total, lastPage, to, currentPage, mutate, path }) => {
