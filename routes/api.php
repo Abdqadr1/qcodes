@@ -30,6 +30,7 @@ Route::post('/admin/confirm', [AdminAuthController::class, 'confirmEmail']);
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 
     Route::post('/article/upload/image', [ArticleController::class, 'uploadImage']);
+    Route::post('/article/delete/image', [ArticleController::class, 'deleteUploadedImage']);
 
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 

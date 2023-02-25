@@ -226,8 +226,18 @@ class ArticleController extends Controller
 
         $file = $request->file('upload');
         $name = $request->user('admin')->id . '_' . Str::random(30) . '.' . $file->extension();
-        $path = $file->storePubliclyAs('articles', $name, 's3');
+        $path = $file->storeAs('articles', $name, 's3');
         return new JsonResponse(['url' => '/photos/' . $path]);
+    }
+
+    public function deleteUploadedImage(Request $request)
+    {
+        $request->validate([
+            'path' => 'required'
+        ]);
+
+        $path = $request->input('path');
+        return Storage::disk('s3')->delete($path);
     }
 
     public function getArticleImages(Request $request)
