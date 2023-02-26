@@ -25,6 +25,8 @@ const EditArticle = ({ httpClient }) => {
     const { id } = useParams();
     const [lastSaved, setLastSaved] = useState(null);
 
+    document.title = "Edit Article";
+
     const [categories, setCategories] = useState({isError: false, data:[], errorMessage: ""});
     const [tags, setTags] = useState({ isError: false, data: [], errorMessage: "" });
     const [parent, setParent] = useState({ isError: false, data: null, errorMessage: "" });

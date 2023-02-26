@@ -21,6 +21,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const NewArticle = ({ httpClient }) => {
+
+    document.title = "New Article";
+
+
+
     const [lastSaved, setLastSaved] = useState(null);
     const [categories, setCategories] = useState({isError: false, data:[], errorMessage: ""});
     const [tags, setTags] = useState({ isError: false, data: [], errorMessage: "" });

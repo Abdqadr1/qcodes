@@ -1,5 +1,5 @@
 @extends('home.app')
-@section('title', $keyword . ' | search results')
+@section('title', $keyword ?? "Tags" . ' | search results')
 @section('meta_description', 'Categories ' . env('APP_NAME'))
 @section('meta_keywords', 'Categories ' . env('APP_NAME'))
 @section('tag-nav', 'active')
