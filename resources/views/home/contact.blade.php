@@ -14,7 +14,7 @@
     <div class="row mx-0">
         <div class="col-md-9">
             <h1 class="mb-3 fw-bold">Contact</h1>
-            <p>Comments or questions are welcome. Use the form below or send an email to team@baeldung.com.</p>
+            <p>Comments or questions are welcome. Use the form below or send an email to account@qluecodes.com.</p>
             <p>If you're applying to become an author on the platform, click <a href="/admin">here.</a></p>
 
             <form method="POST" action="{{ route('post-contact') }}">
