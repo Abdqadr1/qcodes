@@ -2,7 +2,7 @@ const ArticleSearchFilter = ({filter, setFilter}) => {
     return ( 
         <>
             <select value={filter} onChange={e => setFilter(e.target.value)} required name='filter'
-                className="form-select bg-transparent border border-secondary" id="inputGroupSelect02" style={{ maxWidth: 80 }}>
+                className="form-select bg-transparent border border-secondary" id="inputGroupSelect02" style={{ maxWidth: 100 }}>
                 <option value='' hidden>Filter</option>
                 <option value='all'>All</option>
                 <option value="1">In Review</option>

@@ -23,6 +23,8 @@
     <!-- Scripts -->
     @viteReactRefresh
     @vite(['resources/sass/preview.scss', 'resources/js/article-view.js'])
+
+    <title>{{$article->title}}</title>
 </head>
 <body>
     <div id="app">
