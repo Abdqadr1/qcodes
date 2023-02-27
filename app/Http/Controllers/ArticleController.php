@@ -110,7 +110,7 @@ class ArticleController extends Controller
 
         if ($publish) {
             $request->validate([
-                'title' => ['required', 'min:20', 'max:70', Rule::unique('articles', 'title')->ignore($id)],
+                'title' => ['required', 'min:20', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'required|min:50|max:160',
                 'meta_keywords' => 'required|min:20|max:160',
                 'content' => 'required|max:20000',
@@ -127,7 +127,7 @@ class ArticleController extends Controller
             ]);
         } else {
             $request->validate([
-                'title' => ['required', 'min:20', 'max:70', Rule::unique('articles', 'title')->ignore($id)],
+                'title' => ['required', 'min:20', 'max:100', Rule::unique('articles', 'title')->ignore($id)],
                 'meta_title' => 'nullable|min:50|max:160',
                 'meta_keywords' => 'nullable|min:20|max:160',
                 'content' => 'required|max:20000',
