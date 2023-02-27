@@ -145,6 +145,7 @@ class ArticleController extends Controller
         return [
             'title' => $request->input('title') ?? '',
             'meta_title' => $request->input('meta_title') ?? '',
+            'meta_keywords' => $request->input('meta_keywords') ?? '',
             'content' => $request->input('content') ?? '',
             'parent_id' => $request->input('parent_id') ?? null,
             'summary' => $request->input('summary') ?? '',
