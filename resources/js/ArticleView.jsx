@@ -39,11 +39,8 @@ function ArticleView() {
                         onReady={ editor => {
                             // You can store the "editor" and use when it is needed.
                             editor.editing.view.change((writer) => {
-                                writer.setStyle(
-                                    "height",
-                                    "auto",
-                                    editor.editing.view.document.getRoot()
-                                );
+                                writer.setStyle("height", "auto",editor.editing.view.document.getRoot());
+                                writer.setStyle("font-size", "16px", editor.editing.view.document.getRoot());
                             });
                         } }
                     />

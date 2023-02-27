@@ -18,7 +18,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/article-view.js": {
-    "file": "assets/article-view-24433c93.js",
+    "file": "assets/article-view-67197c5a.js",
     "imports": [
       "_EditorStyle-03e04933.js",
       "_axios-1fc8c87e.js"
