@@ -32,10 +32,16 @@ class ArticleRepository implements ArticleRepositoryInterface
 
     public function getMyArticlesPaginate(Request $request)
     {
-        $request->validate([
-            'filter' => 'nullable|max:3',
-            'keyword' => 'nullable'
-        ]);
+        $rules = [
+            'keyword' => 'nullable',
+        ];
+
+        if (gettype($request->input('filter')) == 'numeric') {
+            $rules['filter'] = 'nullable|integer|max:3';
+        } else {
+            $rules['filter'] = 'nullable|string|max:3';
+        }
+        $request->validate($rules);
 
         $keyword = $request->input('keyword');
         $filter = $request->input('filter');
