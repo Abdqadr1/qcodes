@@ -6,6 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="msvalidate.01" content="82771543F1B228BD5B232A3459905162" />
 
     <title> @yield('title', $title ?? config('app.name', 'Laravel'))</title>
     <meta name="keywords" content="@yield('meta_keywords', env('APP_NAME') . ' keywords')">
