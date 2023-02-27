@@ -19,7 +19,7 @@ export default defineConfig({
         react()
     ],
     optimizeDeps: {
-        include: ['ckeditor5-custom-build']
+        include: ['ckeditor5-custom-build'],
     },
     build: {
         chunkSizeWarningLimit: 2000,
