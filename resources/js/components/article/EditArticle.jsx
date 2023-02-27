@@ -44,12 +44,12 @@ const EditArticle = ({ httpClient }) => {
         {
             refetchOnWindowFocus: false ,
             onSuccess: (data) => {
-                const { categories, tags, parent, title, meta_title, content, summary, is_published } = data.data;    
+                const { categories, tags, parent, title, meta_title, meta_keywords, content, summary, is_published } = data.data;    
                 setContent(content);  
                 setCategories(s => ({ ...s, data: categories }));         
                 setTags(s => ({ ...s, data: tags }));         
                 setParent(s => ({ ...s, data: parent }));         
-                setForm(s => ({ ...s, title, meta_title, summary }));      
+                setForm(s => ({ ...s, title, meta_title, summary, meta_keywords }));      
                 setPublished(is_published);
                 setLastSaved(Date.now());
             },
