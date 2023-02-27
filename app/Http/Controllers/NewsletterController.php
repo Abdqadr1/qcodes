@@ -10,6 +10,7 @@ use App\Models\Newsletter;
 
 class NewsletterController extends Controller
 {
+    private string $fromEmail = "info@qluecodes.com";
 
     public function newsletterSignup(Request $request)
     {
@@ -30,7 +31,7 @@ class NewsletterController extends Controller
                 'first_name' => $newsletter->name,
                 'title' => 'Subscribe',
                 'subject' => env('APP_NAME') . " Newsletter Confirmation Email",
-                'from' => "info@employee.com",
+                'from' => $this->fromEmail,
                 'view' => "mail.newsletter.confirm",
                 'to' => $newsletter->email,
                 'link' => URL::to('/newsletter/subscribe?token=' .  $newsletter->token . '&email=' . $newsletter->email),

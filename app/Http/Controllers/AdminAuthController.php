@@ -20,6 +20,7 @@ use RuntimeException;
 class AdminAuthController extends Controller
 {
     private AdminRepositoryInterface $adminRepo;
+    private string $fromEmail = "account@qluecodes.com";
 
     public function __construct(AdminRepositoryInterface $adminRepo)
     {
@@ -53,7 +54,7 @@ class AdminAuthController extends Controller
                 'first_name' => $admin->first_name,
                 'subject' => $subject,
                 'title' => $subject,
-                'from' => "registration@employee.com",
+                'from' => $this->fromEmail,
                 'view' => "mail.admin.registration",
                 'to' => $admin->email,
                 'link' => URL::to('/admin/confirm?token=' .  $token . '&email=' . $request->email),
@@ -106,7 +107,7 @@ class AdminAuthController extends Controller
             MailService::send([
                 'subject' => "Forgot your password?",
                 'title' => "Forgot your password?",
-                'from' => "account@" . env('APP_NAME') . ".com",
+                'from' => $this->fromEmail,
                 'view' => "mail.admin.forgotpassword",
                 'to' => $request->email,
                 'link' => URL::to('/admin/changepassword/' . $token . '?email=' . $request->email),
