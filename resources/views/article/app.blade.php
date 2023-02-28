@@ -10,6 +10,7 @@
     <title> @yield('title', $title ?? config('app.name', 'Laravel'))</title>
     <meta name="keywords" content="@yield('meta_keywords', env('APP_NAME') . ' keywords')">
     <meta name="description" content="@yield('meta_description', env('APP_NAME') . ' description')">
+    <meta name="msvalidate.01" content="82771543F1B228BD5B232A3459905162" />
     <link rel="canonical" href="{{ url()->current() }}">
 
     

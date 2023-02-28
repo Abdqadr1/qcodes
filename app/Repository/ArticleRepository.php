@@ -110,6 +110,12 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return Article::whereId($id)->update($details);
     }
+
+    public function visitArticle($id, array $details)
+    {
+        Article::whereId($id)
+            ->increment('visit', 1, $details);
+    }
     public function deleteArticle($id)
     {
         return DB::transaction(function () use ($id) {

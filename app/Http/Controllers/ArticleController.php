@@ -51,7 +51,7 @@ class ArticleController extends Controller
     public function lastVisited(Request $request)
     {
         $id = $request->route('id');
-        return $this->articleRepo->updateArticle($id, ['last_visited' => now('Africa/Lagos')]);
+        return $this->articleRepo->visitArticle($id, ['last_visited' => now('Africa/Lagos')]);
     }
 
     public function previewArticle(Request $request)

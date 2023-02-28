@@ -1,2 +1,3 @@
 User-agent: *
 Disallow:
+Sitemap: https://qluecodes.com/sitemap.xml

@@ -13,8 +13,10 @@ interface ArticleRepositoryInterface
 
     public function createArticle(array $details);
     public function updateArticle($id, array $details);
+    public function visitArticle($id, array $details);
     public function syncTags($id, array $details);
     public function syncCategories($id, array $details);
+
     public function getArticleById($id);
     public function getArticleBySlug($slug);
     public function deleteArticle($id);

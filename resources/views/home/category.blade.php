@@ -27,7 +27,7 @@
                             <h5 class="card-title">{{ $article->title }}</h5>
                             <p class="card-text">{{ $article->summary }}</p>
                             <p class="text-end">
-                                <a href="{{ route('viewArticle', $article->slug) }}" class="card-link text-end">Read more...</a>
+                                <a href="{{ route('viewArticle', $article->slug) }}" class="text-end btn btn-danger btn-sm">Read more...</a>
                             </p>
                         </div>
                     </div>
