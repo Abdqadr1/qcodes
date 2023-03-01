@@ -21,7 +21,7 @@ class Article extends Model
         "author_id", "parent_id",
         "content", 'published_at',
         'visit', 'is_published',
-        'last_visited'
+        'last_visited', 'meta_keywords'
     ];
 
     public function author()

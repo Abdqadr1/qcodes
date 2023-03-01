@@ -104,6 +104,7 @@ class ArticleRepository implements ArticleRepositoryInterface
     }
     public function createArticle(array $details)
     {
+
         return Article::create($details)->id;
     }
     public function updateArticle($id, array $details)
