@@ -118,7 +118,7 @@ class ArticleController extends Controller
                     'nullable', 'numeric', 'exists:articles,id', Rule::notIn([$id])
                 ],
 
-                'summary' => 'required|min:60|max:300',
+                'summary' => 'required|min:60|max:160',
 
                 'tags' => 'required|array',
                 'tags.*' => 'required|numeric|exists:tags,id',
@@ -134,7 +134,7 @@ class ArticleController extends Controller
                 'parent_id' => [
                     'nullable', 'numeric', 'exists:articles,id'
                 ],
-                'summary' => 'nullable|min:60|max:300',
+                'summary' => 'nullable|min:60|max:160',
 
                 'tags' => 'nullable|array',
                 'tags.*' => 'nullable|numeric|exists:tags,id',
