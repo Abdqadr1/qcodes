@@ -22,9 +22,9 @@
     <p class="fs-4">You can follow us on our social platforms: </p>
 
     <ul class="fs-5 mb-3">
-        <li class="list-group-item">
+        {{-- <li class="list-group-item">
             <a class="socials" href="" target="_blank">Youtube</a>
-        </li>
+        </li> --}}
         <li class="list-group-item">
             <a class="socials" href="https://twitter.com/QlueCodes" target="_blank" >Twitter</a>
         </li>
