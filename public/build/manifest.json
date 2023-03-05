@@ -35,12 +35,12 @@
     "src": "resources/js/bootstrap.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-452a251d.css",
+    "file": "assets/app-76a46224.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   },
   "resources/sass/preview.scss": {
-    "file": "assets/preview-f930fdd7.css",
+    "file": "assets/preview-c6d3cac3.css",
     "isEntry": true,
     "src": "resources/sass/preview.scss"
   }
