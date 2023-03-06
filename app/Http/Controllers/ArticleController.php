@@ -55,14 +55,13 @@ class ArticleController extends Controller
         });
 
 
-        $sameArticles = [];
-        // Article::where('status', $this->status[1])
-        //     ->where('id', '!=', $article->id)
-        //     ->whereRelation('categories', function ($query) use ($catNames) {
-        //         $query->where('name', $catNames);
-        //     })
-        //     ->orderBy('visit', 'desc')
-        //     ->limit(7)->get();
+        $sameArticles = Article::where('status', $this->status[1])
+            ->where('id', '!=', $article->id)
+            ->whereRelation('categories', function ($query) use ($catNames) {
+                $query->where('name', $catNames);
+            })
+            ->orderBy('visit', 'desc')
+            ->limit(7)->get();
 
         return view(
             'article.view',
