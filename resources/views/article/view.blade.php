@@ -50,4 +50,28 @@
     @endforelse
 </div>
 
+<div class="mx-0 row g-2 px-4">
+    @forelse ($categories as $kind)
+        @if ($loop->first)
+            <div class="d-flex">
+                <span class='my-3 border-bottom border-3 border-secondary fs-4'>Read more</span>
+            </div>
+        @endif
+        <div class="col-md-4 d-flex" style="align-self: stretch;">
+            <div class="card article-card" style="width: 100%;">
+                {{-- <img src="{{ $article->banner }}" class="card-img-top" alt="{{ $article->title }}"> --}}
+                <div class="card-body pb-0">
+                    <h5 class="card-title fw-bold">{{ $kind->title }}</h5>
+                    <p class="card-text ellipsis">{{ $kind->summary }}</p>
+                    <p class="text-end">
+                        <a href="{{ route('viewArticle', $kind->slug) }}" class="text-end btn btn-danger btn-sm">Read more</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    @empty
+        <div></div>
+    @endforelse
+</div>
+
 @endsection

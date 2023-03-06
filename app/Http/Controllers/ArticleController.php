@@ -46,7 +46,32 @@ class ArticleController extends Controller
             ->orderBy('visit', 'desc')
             ->limit(3)->get();
 
-        return view('article.view', ['title' => $article->title, 'article' => $article, 'children' => $children]);
+        $article->loadMissing(['categories' => function ($query) {
+            $query->select(['name']);
+        }]);
+
+        $catNames = $article->categories->map(function ($cat) {
+            return $cat->name;
+        });
+
+
+        $sameArticles = Article::where('status', $this->status[1])
+            ->where('id', '!=', $article->id)
+            ->whereRelation('categories', function ($query) use ($catNames) {
+                $query->where('name', $catNames);
+            })
+            ->orderBy('visit', 'desc')
+            ->limit(7)->get();
+
+        return view(
+            'article.view',
+            [
+                'title' => $article->title,
+                'article' => $article,
+                'children' => $children,
+                'categories' => $sameArticles
+            ]
+        );
     }
 
     public function lastVisited(Request $request)
