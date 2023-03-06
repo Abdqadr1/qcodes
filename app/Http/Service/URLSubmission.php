@@ -14,7 +14,7 @@ class URLSubmission
             'https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apikey=' . env('BING_API_KEY', ''),
             [
                 "siteUrl" => $siteURL,
-                "url" => $siteURL . '/article/' . $url
+                "url" => $siteURL . "/article/" . $url
             ]
         );
         if ($response->successful()) {
