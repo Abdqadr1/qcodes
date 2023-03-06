@@ -9,11 +9,12 @@ class URLSubmission
     //
     public static function bingSubmit($url)
     {
+        $siteURL = env('APP_URL');
         $response = Http::post(
             'https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apikey=' . env('BING_API_KEY', ''),
             [
-                "siteUrl" => "https://qluecodes.com",
-                "url" => $url
+                "siteUrl" => $siteURL,
+                "url" => $siteURL . '/article/' . $url
             ]
         );
         if ($response->successful()) {
