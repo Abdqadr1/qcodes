@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Service\URLSubmission;
 use App\Interfaces\ArticleRepositoryInterface;
 use App\Models\Article;
 use Illuminate\Http\JsonResponse;
@@ -162,7 +163,9 @@ class ArticleController extends Controller
             $tags = $request->tags ?? null;
             $categories = $request->categories ?? null;
 
-            $validated['slug'] = Str::slug($validated['title'] ?? '');
+            $url = Str::slug($validated['title'] ?? '');
+
+            $validated['slug'] = $url;
             $validated['author_id'] = $request->user('admin')->id;
 
 
@@ -175,6 +178,7 @@ class ArticleController extends Controller
             if ($id) {
                 unset($validated['author_id']);
                 $this->articleRepo->updateArticle($id, $validated);
+                URLSubmission::bingSubmit($url);
             } else {
                 $id = $this->articleRepo->createArticle($validated);
             }
