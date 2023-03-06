@@ -61,7 +61,7 @@ class ArticleController extends Controller
                 $query->where('name', $catNames);
             })
             ->orderBy('visit', 'desc')
-            ->limit(7)->get();
+            ->get();
 
         return view(
             'article.view',
