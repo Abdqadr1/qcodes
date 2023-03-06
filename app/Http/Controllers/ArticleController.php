@@ -51,7 +51,7 @@ class ArticleController extends Controller
         }]);
 
         $catNames = $article->categories->map(function ($cat) {
-            return $cat->name;
+            return "'" . $cat->name . "'";
         });
 
 
@@ -61,7 +61,7 @@ class ArticleController extends Controller
                 $query->where('name', $catNames);
             })
             ->orderBy('visit', 'desc')
-            ->get();
+            ->limit(7)->get();
 
         return view(
             'article.view',
