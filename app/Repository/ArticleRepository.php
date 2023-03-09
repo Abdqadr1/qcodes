@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ArticleRepository implements ArticleRepositoryInterface
 {
     private array $status;
+    private $articles_per_page = 10;
 
     public function __construct()
     {
@@ -57,7 +58,7 @@ class ArticleRepository implements ArticleRepositoryInterface
             });
         }
         return $articles->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
-            ->paginate(5);
+            ->paginate($this->articles_per_page);
     }
 
     public function getAllArticlesPaginate(Request $request)
@@ -85,7 +86,7 @@ class ArticleRepository implements ArticleRepositoryInterface
             });
         }
         return $articles->select(['id', 'title', 'status', 'summary', 'author_id', 'meta_title', 'slug', 'visit'])
-            ->paginate(5);
+            ->paginate($this->articles_per_page);
     }
 
     public function getMyArticles(Request $request)

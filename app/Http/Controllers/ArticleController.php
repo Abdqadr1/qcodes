@@ -95,7 +95,6 @@ class ArticleController extends Controller
         return view('article.preview', ['title' => $article->title, 'article' => $article]);
     }
 
-
     public function getArticleById(Request $request)
     {
         return $this->articleRepo->getArticleById($request->route('id'));

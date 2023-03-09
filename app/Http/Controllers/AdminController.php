@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Interfaces\AdminRepositoryInterface;
 use App\Models\Admin;
 use App\Rules\PhoneNumber;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
