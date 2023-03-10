@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('parent_id')->nullable();
             $table->string('title', 100)->default('');
             $table->string('meta_title', 160)->default('');
-            $table->string('meta_keywords', 160)->default('');
+            $table->string('meta_keywords')->default('');
             $table->string('slug')->default('');
             $table->tinyText('summary')->nullable();
             $table->enum('status', config('enum.article_status'))->default('In Review');
