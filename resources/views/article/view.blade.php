@@ -4,6 +4,25 @@
 @section('meta_keywords', $article->meta_keywords)
 
 @section('content')
+<script>
+    window.article = @json($article);
+    function updateLastVisited(){
+        fetch(`/article/${article.id}/visited`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((response) => {
+                console.log(response);
+            });
+    };
+    setTimeout(() => {
+        updateLastVisited();
+    }, 10000);
+</script>
+<h1 class="d-none">{{$article->title}}</h1>
 <div class="thebody px-3 px-md-0" id="view">
     
 </div>
@@ -55,24 +74,5 @@
         <div></div>
     @endforelse
 </div>
-
-<script>
-    window.article = @json($article);
-    function updateLastVisited(){
-        fetch(`/article/${article.id}/visited`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((response) => {
-                console.log(response);
-            });
-    };
-    setTimeout(() => {
-        updateLastVisited();
-    }, 10000);
-</script>
 
 @endsection
