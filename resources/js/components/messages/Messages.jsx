@@ -181,7 +181,7 @@ const Messages = ({ httpClient }) => {
                                     </div>
                                     <TableContainer className='d-none d-md-block' id="desktopView">
                                         <Table aria-label="simple table">
-                                        <TableHead> className='fw-bold'
+                                        <TableHead>
                                             <TableRow>
                                                 <TableCell className='fw-bold'>Name</TableCell>
                                                 <TableCell className='fw-bold'>About</TableCell>
