@@ -17,7 +17,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title> @yield('title', $title ?? config('app.name', 'Laravel'))</title>
+    <title>@yield('title', $title ?? config('app.name', 'Laravel'))</title>
     <meta name="keywords" content="@yield('meta_keywords', env('APP_NAME') . ' keywords')">
     <meta name="description" content="@yield('meta_description', env('APP_NAME') . ' description')">
     <meta name="msvalidate.01" content="82771543F1B228BD5B232A3459905162" />
@@ -71,7 +71,7 @@
 
     <!-- Scripts -->
     @viteReactRefresh
-    @vite(['resources/sass/preview.scss', 'resources/js/article-view.js'])
+    @vite(['resources/js/article-view.js', 'resources/sass/preview.scss'])
 </head>
 <body>
     <div id="app">
