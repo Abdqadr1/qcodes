@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['throttle:web'])->group(function () {
+    // generate sitemap
+    Route::get('/sitemap', [HomeController::class, 'getSitemap'])->name('sitemap');
+
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     //contact 
@@ -65,9 +68,4 @@ Route::middleware(['throttle:web'])->group(function () {
 
     //article images
     Route::get('/photos/{folder}/{name}', [ArticleController::class, 'getArticleImages']);
-
-    // generate sitemap
-    Route::get('/generate-sitemap', function () {
-        return 'sitemap.xml';
-    })->middleware('auth:admin');
 });

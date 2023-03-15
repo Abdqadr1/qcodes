@@ -22,6 +22,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function getSitemap()
+    {
+        $articles = Article::orderBy('updated_at', 'desc')
+            ->select(['slug', 'title'])
+            ->where(function ($query) {
+                $query->where('status', $this->articleStatus[1]);
+            })->get();
+        return view('home.sitemap', ['articles' => $articles, 'title' => 'Sitemap']);
+    }
     public function index(Request $request)
     {
         $articles = Article::orderBy('visit', 'desc')

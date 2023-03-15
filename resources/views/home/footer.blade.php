@@ -8,6 +8,7 @@
             <a class="ms-md-2 text-center" href="/terms">Terms Of Service</a>
             <a class="ms-md-2 text-center" href="/privacy">privacy policy</a>
             <a class="ms-md-2 text-center" href="/contact">Contact</a>
+            <a class="ms-md-2 text-center" href="/sitemap">Sitemap</a>
         </div>
     </div>
     {{-- <div class="col-12 text-center mt-3 text-danger">
