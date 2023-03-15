@@ -22,7 +22,6 @@
         updateLastVisited();
     }, 10000);
 </script>
-<h1 class="d-none">{{$article->title}}</h1>
 <div class="thebody px-3 px-md-0" id="view">
     
 </div>
