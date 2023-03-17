@@ -82,7 +82,6 @@
     <div id="app">
         @include('home.navbar')
     <script>
-        window.article = @json($article);
         function updateLastVisited(){
             fetch(`/article/${article.id}/visited`)
                 .then((response) => {
