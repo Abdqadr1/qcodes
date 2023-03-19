@@ -31,7 +31,29 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         }
                     },
-                    style: EditorStyle
+                    style: EditorStyle,
+                    codeBlock: {
+                        languages: [
+                            { language: 'c', label: 'C' },
+                            { language: 'css', label: 'CSS' },
+                            { language: 'csv', label: 'CSV' },
+                            { language: 'git', label: 'Git' },
+                            { language: 'html', label: 'HTML' },
+                            { language: 'http', label: 'HTTP' },
+                            { language: 'java', label: 'Java' },
+                            { language: 'javascript', label: 'JavaScript'},
+                            { language: 'kotlin', label: 'Kotlin' },
+                            { language: 'markdown', label: 'Markdown' },
+                            { language: 'php', label: 'PHP' },
+                            { language: 'plaintext', label: 'Plain text'},
+                            { language: 'python', label: 'Python' },
+                            { language: 'ruby', label: 'Ruby' },
+                            { language: 'sql', label: 'SQL' },
+                            { language: 'typescript', label: 'TypeScript' },
+                            { language: 'xml', label: 'XML' },
+                            { language: 'yaml', label: 'YAML' },
+                        ]
+                    }
                 } }
                 editor={Editor}
                 data={content ?? ""}

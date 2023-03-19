@@ -10,7 +10,6 @@ export default defineConfig({
                 'resources/sass/preview.scss',
                 
                 'resources/js/app.js',
-                'resources/js/article-view.js',
 
                 'resources/js/bootstrap.js'
             ],
@@ -22,7 +21,7 @@ export default defineConfig({
         include: ['ckeditor5-custom-build'],
     },
     build: {
-        chunkSizeWarningLimit: 2000,
+        chunkSizeWarningLimit: 3000,
         commonjsOptions: {
             // exclude: ['ckeditor5-custom-build'],
             include: [/node_modules/, /ckeditor5/],

@@ -4,17 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-85CV4KMTGW"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-85CV4KMTGW');
-    </script>
+    @include('article.analytics')
+    
     <meta name="msvalidate.01" content="82771543F1B228BD5B232A3459905162" />
-
+    <meta name="robots" content="max-snippet:300" />
+    
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -66,14 +60,20 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    <!-- Scripts -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+
     {{-- styles --}}
     <link
         rel="stylesheet"
         href="/css/editor.css"
         />
     
-    <!-- Scripts -->
-    <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+     {{-- highlight js --}}
+    <link href="/highlight/styles/vs2015.min.css" rel="stylesheet" />
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+ rel="stylesheet" />
 
     <!-- Scripts -->
     @vite(['resources/sass/preview.scss'])
@@ -82,8 +82,9 @@
     <div id="app">
         @include('home.navbar')
     <script>
+        const id = {{$article->id}}
         function updateLastVisited(){
-            fetch(`/article/${article.id}/visited`)
+            fetch(`/article/${id}/visited`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -112,7 +113,7 @@
                         </em></span>
                         <div class='mt-3 mt-md-0'>
                             @foreach ($article->tags as $tag)
-                                <a key={tag.id} href={{"/tags/$tag->slug"}} class='btn btn-secondary text-light fw-bold rounded-0 ms-1'>{{ $tag->name }}</a>
+                                <a href={{"/tags/$tag->slug"}} class='btn btn-secondary text-light fw-bold rounded-0 ms-1'>{{ $tag->name }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -174,9 +175,10 @@
             <div></div>
         @endforelse
     </div>
-
-       
         @include('home.footer')
     </div>
+        
+    
+   @include('article.highlightjs')
 </body>
 </html>

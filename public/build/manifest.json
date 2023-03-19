@@ -1,35 +1,19 @@
 {
-  "_EditorStyle-03e04933.js": {
-    "file": "assets/EditorStyle-03e04933.js",
-    "imports": [
-      "_axios-1fc8c87e.js"
-    ]
-  },
-  "_axios-1fc8c87e.js": {
-    "file": "assets/axios-1fc8c87e.js"
+  "_axios-82cf94dd.js": {
+    "file": "assets/axios-82cf94dd.js"
   },
   "resources/js/app.js": {
-    "file": "assets/app-8b77fec0.js",
+    "file": "assets/app-77946a64.js",
     "imports": [
-      "_EditorStyle-03e04933.js",
-      "_axios-1fc8c87e.js"
+      "_axios-82cf94dd.js"
     ],
     "isEntry": true,
     "src": "resources/js/app.js"
   },
-  "resources/js/article-view.js": {
-    "file": "assets/article-view-fc826d3c.js",
-    "imports": [
-      "_EditorStyle-03e04933.js",
-      "_axios-1fc8c87e.js"
-    ],
-    "isEntry": true,
-    "src": "resources/js/article-view.js"
-  },
   "resources/js/bootstrap.js": {
-    "file": "assets/bootstrap-adbb8577.js",
+    "file": "assets/bootstrap-7cc687dc.js",
     "imports": [
-      "_axios-1fc8c87e.js"
+      "_axios-82cf94dd.js"
     ],
     "isEntry": true,
     "src": "resources/js/bootstrap.js"
@@ -40,7 +24,7 @@
     "src": "resources/sass/app.scss"
   },
   "resources/sass/preview.scss": {
-    "file": "assets/preview-08582e43.css",
+    "file": "assets/preview-d614320b.css",
     "isEntry": true,
     "src": "resources/sass/preview.scss"
   }
