@@ -73,38 +73,18 @@ footer a:hover{
 .bgColor{
     background-color: $bgColor !important;
 }
-.ck-content pre.dark-code {
-    background: #272822;
-    color: var(--bs-light);
-    box-shadow: 5px 5px 0 $deepColor;
-    border: 1px solid #c4c4c4;
-    border-radius: 8px;
+.ck-content pre{
+    background: #272822 !important;
+    color: var(--bs-light) !important;
+    box-shadow: 5px 5px 0 $deepColor !important;
+    border: 1px solid #c4c4c4 !important;
+    border-radius: 2px !important;
     direction: ltr;
     font-style: normal;
-    width: min(700px, 92%);
+    width: min(700px, 92%) !important;
     padding: 1em;
-    tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
     display: block;
-    margin: 1.5em auto;
-    font-weight: bold;
+    margin: 2em auto;
 }
-
-.ck-content pre.light-code {
-    background: #dddfe0;
-    color: $imgBgColor;
-    box-shadow: 5px 5px 0 $deepColor;
-    border: 1px solid #c4c4c4;
-    border-radius: 8px;
-    direction: ltr;
-    font-style: normal;
-    width: min(700px, 92%);
-    padding: 1em;
-    tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
-    display: block;
-    margin: 1.5em auto;
-    font-weight: bold;
+.ck-content pre.dark-code {
 }
