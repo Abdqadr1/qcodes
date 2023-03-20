@@ -4,7 +4,7 @@
 @section('meta_keywords', $category->name)
 
 @section('content')
-<div class="container-lg thebody">
+<div class="container thebody">
     <div class="row justify-content-start gy-3 align-items-center">
         <div class="col-12">
             <nav aria-label="breadcrumb">
@@ -15,6 +15,7 @@
                     <li class="breadcrumb-item active" aria-current="page">{{$category->name}}</li>
                 </ol>
             </nav>
+            <h1>Category: {{$category->name}}</h1>
             <div class="my-4">
                 {{$category->content}}
             </div>

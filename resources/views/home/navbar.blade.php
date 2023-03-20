@@ -11,13 +11,22 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link fw-bold @yield('cat-nav', '') text-uppercase" href="/categories">Categories</a>
+                    <a class="nav-link fw-bold {{ $nav_name == 'java' ? 'active' : '' }} text-uppercase" href="/categories/java">Java</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-bold @yield('tag-nav', '') text-uppercase" href="/tags">Tags</a>
+                    <a class="nav-link fw-bold {{$nav_name == 'spring' ? 'active' : ''}} text-uppercase" href="/categories/spring">Spring</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-bold @yield('about-nav', '') text-uppercase" href="/about">About</a>
+                    <a class="nav-link fw-bold {{$nav_name == 'react' ? 'active' : ''}} text-uppercase" href="/categories/react">React</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold {{$nav_name == 'php' ? 'active' : ''}} text-uppercase" href="/categories/php">PHP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold {{$nav_name == 'laravel' ? 'active' : ''}} text-uppercase" href="/categories/laravel">Laravel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold {{$nav_name == 'sql' ? 'active' : ''}} text-uppercase" href="/categories/sql">MySQL</a>
                 </li>
             </ul>
 
@@ -28,7 +37,7 @@
                         <iconify-icon class="fs-3" icon="ic:outline-search">search</iconify-icon>
                     </a>
                 </li>
-                <a class="btn btn-danger w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin/dashboard">Become a writer</a>
+                {{-- <a class="btn btn-danger w-220p ms-md-2 fw-bold mt-3 mt-md-0" href="/admin/dashboard">Become a writer</a> --}}
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))

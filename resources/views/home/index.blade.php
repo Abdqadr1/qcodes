@@ -2,6 +2,10 @@
 
 @section('content')
 <div class="container thebody">
+    <div class="row mx-0">
+       <h1 class="my-4 border-bottom col-8 col-sm-7 col-md-3 border-danger border-3 px-0">Latest Posts</h1> 
+    </div>
+    
     <div class="row justify-content-start gy-3">
         @forelse ($articles as $article)
             <div class="col-md-4 d-flex" style="align-self: stretch;">

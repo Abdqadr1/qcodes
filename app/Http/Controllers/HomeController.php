@@ -38,7 +38,10 @@ class HomeController extends Controller
             ->where(function ($query) {
                 $query->where('status', $this->articleStatus[1]);
             })->paginate(10);
-        return view('home.index', ['articles' => $articles]);
+        return view('home.index', [
+            'articles' => $articles,
+            'nav_name' => ''
+        ]);
     }
 
     public function search(Request $request)
@@ -62,7 +65,10 @@ class HomeController extends Controller
         $results = $results->paginate($perPage = 10, $columns = ['title', 'summary', 'slug'])
             ->withQueryString();
 
-        return view('home.search', ['results' => $results, 'keyword' => $keyword]);
+        return view('home.search', [
+            'results' => $results, 'keyword' => $keyword,
+            'nav_name' => $keyword
+        ]);
     }
 
     public function categoriesSearch(Request $request)
@@ -83,7 +89,10 @@ class HomeController extends Controller
         $results = $results->paginate($perPage = 10, $columns = ['name', 'content', 'slug'])
             ->withQueryString();
 
-        return view('home.categories', ['results' => $results, 'keyword' => $keyword]);
+        return view('home.categories', [
+            'results' => $results, 'keyword' => $keyword,
+            'nav_name' => $keyword
+        ]);
     }
 
     public function tagsSearch(Request $request)
@@ -104,7 +113,10 @@ class HomeController extends Controller
         $results = $results->paginate($perPage = 10, $columns = ['name', 'content', 'slug'])
             ->withQueryString();
 
-        return view('home.tags', ['results' => $results, 'keyword' => $keyword]);
+        return view('home.tags', [
+            'results' => $results, 'keyword' => $keyword,
+            'nav_name' => $keyword
+        ]);
     }
 
     public function admin(Request $request)
@@ -135,8 +147,8 @@ class HomeController extends Controller
     public function getCategoryArticles(Request $request)
     {
         $slug = $request->route('slug');
-        $category = Category::where('slug', $slug)->first();
-        if (!$category) abort(404);
+        $category = Category::where('slug', 'like', '%' . $slug . '%')->first();
+        if (!$category) abort(404, "Category '$slug' Not Found");
 
         $parents = array();
         $parent = $category->parent;
@@ -153,7 +165,8 @@ class HomeController extends Controller
 
         return view('home.category', [
             'category' => $category, 'title' => $slug,
-            'articles' => $articles, 'parents' => $parents
+            'articles' => $articles, 'parents' => $parents,
+            'nav_name' => $slug
         ]);
     }
 
@@ -167,6 +180,9 @@ class HomeController extends Controller
             ->where('status', $this->articleStatus[1])
             ->paginate(10)->withQueryString();
 
-        return view('home.tag', ['tag' => $tag, 'title' => $slug, 'articles' => $articles]);
+        return view('home.tag', [
+            'tag' => $tag, 'title' => $slug, 'articles' => $articles,
+            'nav_name' => $slug
+        ]);
     }
 }
