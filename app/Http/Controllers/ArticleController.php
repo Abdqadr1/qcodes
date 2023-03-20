@@ -41,11 +41,6 @@ class ArticleController extends Controller
             abort(404, "Could not found article or it's not published yet");
         }
 
-        $children = $article?->children()
-            ->where('status', $this->status[1])
-            ->orderBy('visit', 'desc')
-            ->limit(3)->get();
-
         $article->loadMissing(['categories' => function ($query) {
             $query->select(['name']);
         }]);
@@ -55,21 +50,22 @@ class ArticleController extends Controller
         });
 
 
-        $sameArticles = Article::where('status', $this->status[1])
-            ->where('id', '!=', $article->id)
-            ->whereRelation('categories', function ($query) use ($catNames) {
-                $query->where('name', $catNames);
-            })
-            ->orderBy('visit', 'desc')
-            ->limit(7)->get();
+        // $sameArticles = Article::where('status', $this->status[1])
+        //     ->where('id', '!=', $article->id)
+        //     ->whereRelation('categories', function ($query) use ($catNames) {
+        //         $query->where('name', $catNames);
+        //     })
+        //     ->orderBy('visit', 'desc')
+        //     ->limit(7)->get();
 
         return view(
             'article.view',
             [
                 'title' => $article->title,
                 'article' => $article,
-                'children' => $children,
-                'categories' => $sameArticles
+                'children' => [],
+                'categories' => [],
+                'nav_name' => ''
             ]
         );
     }
