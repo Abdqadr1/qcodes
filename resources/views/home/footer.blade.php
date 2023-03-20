@@ -8,7 +8,7 @@
                 <a class="d-block my-1" href="/about">about</a>
                 <a class="d-block my-1" href="/admin/dashboard">Admin</a>
                 <a class="d-block my-1" href="/categories">Categories</a>
-                <a class="d-block my-1" href="/categories/tags">Tags</a>
+                <a class="d-block my-1" href="/tags">Tags</a>
             </div>
 
             <div class="col-12 col-sm-6">

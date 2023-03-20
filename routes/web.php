@@ -61,10 +61,10 @@ Route::middleware(['throttle:web'])->group(function () {
 
     // Route::view('/mail', 'mail.newsletter.confirm', ['first_name' => 'QD', 'link' => 'hgiagidhg.com']);
 
-    Route::view('/about', 'home.about');
-    Route::view('/privacy', 'home.privacy');
-    Route::view('/terms', 'home.terms');
-    Route::view('/contact', 'home.contact');
+    Route::view('/about', 'home.about', ['nav_name' => '']);
+    Route::view('/privacy', 'home.privacy', ['nav_name' => '']);
+    Route::view('/terms', 'home.terms', ['nav_name' => '']);
+    Route::view('/contact', 'home.contact', ['nav_name' => '']);
 
     //article images
     Route::get('/photos/{folder}/{name}', [ArticleController::class, 'getArticleImages']);
