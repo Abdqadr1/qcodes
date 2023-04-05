@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
@@ -78,6 +79,9 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 
     Route::get('/admin/messages', [AdminController::class, 'getAllMessages']);
     Route::delete('/admin/message/delete/{id}', [AdminController::class, 'deleteMessages']);
+
+    Route::get('/admin/mail_list', [NewsletterController::class, "getMailList"]);
+    Route::delete('/admin/mail_list/{id}', [NewsletterController::class, 'deleteMailAddress']);
 
     Route::get('/admin', [AdminAuthController::class, 'getDashboard'])->withoutMiddleware(['throttle:api']);
 });

@@ -11,6 +11,7 @@ use App\Models\Newsletter;
 class NewsletterController extends Controller
 {
     private string $fromEmail = "info@qluecodes.com";
+    private $addressPerPage = 20;
 
     public function newsletterSignup(Request $request)
     {
@@ -87,5 +88,26 @@ class NewsletterController extends Controller
             abort(404);
         }
         abort(400);
+    }
+
+    public function getMailList(Request $request)
+    {
+
+        $keyword = $request->input('keyword');
+        $newsletter = Newsletter::orderBy('updated_at', 'DESC');
+        if ($keyword) {
+            $newsletter->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', '%' . $keyword . '%');
+                $query->orWhere('email', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        return  $newsletter->where("confirmed", true)->paginate($this->addressPerPage);
+    }
+
+    public function deleteMailAddress(Request $request)
+    {
+        $id = $request->route('id');
+        return  Newsletter::findOrFail($id)->delete();
     }
 }

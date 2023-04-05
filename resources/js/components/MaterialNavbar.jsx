@@ -36,6 +36,7 @@ const adminNavItems = {
     'All Articles': '/admin/article/all',
     Notifications: '/admin/notification',
     Messages: '/admin/messages',
+    'Mail List': '/admin/mail_list'
 }
 const auth = {
     LogIn: '/admin/login',

@@ -161,7 +161,7 @@ class HomeController extends Controller
 
         $articles = $category->articles()
             ->where('status', $this->articleStatus[1])
-            ->paginate(10)->withQueryString();
+            ->paginate(15)->withQueryString();
 
         return view('home.category', [
             'category' => $category, 'title' => $slug,
@@ -178,7 +178,7 @@ class HomeController extends Controller
 
         $articles = $tag->articles()
             ->where('status', $this->articleStatus[1])
-            ->paginate(10)->withQueryString();
+            ->paginate(20)->withQueryString();
 
         return view('home.tag', [
             'tag' => $tag, 'title' => $slug, 'articles' => $articles,

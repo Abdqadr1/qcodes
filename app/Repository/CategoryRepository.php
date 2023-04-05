@@ -31,11 +31,11 @@ class CategoryRepository implements CategoryRepositoryInterface
                     $query->orWhere('meta_title', 'like', '%' . $keyword . '%');
                 })
                 ->with(['parent:id,name'])
-                ->paginate(8);
+                ->paginate(10);
         }
         return Category::orderBy('created_at', 'DESC')
             ->with(['parent:id,name'])
-            ->paginate(8);
+            ->paginate(10);
     }
 
     public function createCategory(array $details)

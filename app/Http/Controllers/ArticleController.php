@@ -198,9 +198,11 @@ class ArticleController extends Controller
             if ($id) {
                 unset($validated['author_id']);
                 $this->articleRepo->updateArticle($id, $validated);
-                URLSubmission::bingSubmit($url);
             } else {
                 $id = $this->articleRepo->createArticle($validated);
+            }
+            if ($publish) {
+                URLSubmission::bingSubmit($url);
             }
 
             if ($tags) $this->articleRepo->syncTags($id, $tags);

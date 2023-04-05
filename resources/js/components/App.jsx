@@ -23,6 +23,7 @@ import { Toolbar } from '@mui/material';
 import AdminDashboard from './auth/Dashboard';
 import AdminLogout from './auth/Logout';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import MailList from './maillist/MailList';
 
 const theme = createTheme({
     typography: {
@@ -75,6 +76,7 @@ function App() {
                                 <Route path='/admin/article/edit/:id' element={<EditArticle httpClient={http} />} />
                                 <Route path='/admin/notification' element={<Notification httpClient={http} />} />
                                 <Route path='/admin/messages' element={<Messages httpClient={http} />} />
+                                <Route path='/admin/mail_list' element={<MailList httpClient={http} />} />
                                 <Route path='/admin/dashboard' element={<AdminDashboard httpClient={http} />} />
 
                                 <Route path='/admin/login' element={<AdminLogin httpClient={http} />} />
