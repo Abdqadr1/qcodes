@@ -208,6 +208,7 @@ class AdminAuthController extends Controller
         $id = $request->user('admin')->id;
         return Admin::with('roles')
             ->withCount('articles')
+            ->withSum('articles', 'visit')
             ->where('id', $id)
             ->first([
                 'id', 'email', 'street_address', 'enabled', 'last_login_at',

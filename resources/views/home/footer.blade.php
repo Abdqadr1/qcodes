@@ -15,7 +15,7 @@
                 <a class="d-block my-1" href="/terms">Terms Of Service</a>
                 <a class="d-block my-1" href="/privacy">privacy policy</a>
                 <a class="d-block my-1" href="/contact">Contact</a>
-                <a class="d-block my-1" href="/sitemap">Sitemap</a>
+                {{-- <a class="d-block my-1" href="/sitemap">Sitemap</a> --}}
 
             </div>
             

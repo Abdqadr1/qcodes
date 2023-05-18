@@ -37,6 +37,21 @@ const AdminDashboard = ({ httpClient }) => {
                     </div>
                   </CardContent>
                 </Card>
+          </div>
+
+          <div className='col-md-6'>
+                 <Card className='admin-table' sx={{ minWidth: 275 }}>
+                  <CardContent>
+                    <div className='d-flex justify-content-between align-items-center'>
+                      <Typography sx={{ fontSize: 24, fontWeight: 'bold' }} color="text.secondary" gutterBottom>
+                        All Time Views
+                      </Typography>
+                      <div className='rounded-pill border border-3 d-flex justify-content-center align-items-center' style={{width: '20%', aspectRatio: 1 }}>
+                        <span className='fs-1 fw-bold text-danger'>{data?.data?.articles_sum_visit ?? 0}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
             </div>
             <div className='col-md-6'>
             </div>
