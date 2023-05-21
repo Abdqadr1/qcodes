@@ -51,12 +51,16 @@
  
     <!-- Scripts -->
     <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass&display=swap" rel="stylesheet">
 
     @vite(['resources/sass/app.scss', 'resources/js/bootstrap.js'])
 
     <style>
         body {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Overpass', sans-serif;
         }
     </style>
 </head>

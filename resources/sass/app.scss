@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css2?family=Overpass');
 
 // Variables
 @import 'variables';
@@ -8,6 +8,14 @@
 @import 'bootstrap/scss/bootstrap';
 
 @import 'part';
+
+.nav-item .nav-link {
+    color: $header-color !important;
+}
+
+.article-card .card-title{
+    color: #1f456e !important;
+}
 
 .article-card, .login-paper, 
 .signup-paper, .profile-paper, .admin-table{
@@ -56,7 +64,7 @@ footer{
 
 footer a{
     text-decoration: none;
-    color: rgba(255, 255, 255, .5);
+    color: $header-color;
 }
 footer a:hover{
     text-decoration: underline;

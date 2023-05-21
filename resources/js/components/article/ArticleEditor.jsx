@@ -67,7 +67,7 @@ const ArticleEditor = ({ handleChange, content, handleWordCount }) => {
                         
                          writer.setStyle("font-size", "14px", editor.editing.view.document.getRoot());
                          
-                         writer.setStyle("font-family", "Nunito", editor.editing.view.document.getRoot());
+                         writer.setStyle("font-family", "Overpass", editor.editing.view.document.getRoot());
                          
                          writer.setStyle("margin", "2em 0",  editor.editing.view.document.getRoot());
                     });

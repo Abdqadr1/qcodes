@@ -3,7 +3,7 @@
 @section('content')
 <div class="container thebody">
     <div class="row mx-0">
-       <h1 class="my-4 border-bottom col-8 col-sm-7 col-md-3 border-danger border-3 px-0">Latest Posts</h1> 
+       <h1 style="color:#022d36;" class="my-4 border-bottom col-8 col-sm-7 col-md-3 border-danger border-3 px-0 latest-header">Latest Posts</h1> 
     </div>
     
     <div class="row justify-content-start gy-3">
@@ -33,7 +33,7 @@
             <form class="" method="POST" action="{{ route('newsletter-signup') }}">
                 @csrf
                 @method('post')
-                <p class="my-3 text-center fs-3">Sign Up For Our Newsletter</p>
+                <p style="color:#022d36;" class="my-3 text-center fs-3">Sign Up For Our Newsletter</p>
                 <div class="row">
                     <input name='name' class="form-control mb-1 bg-transparent border border-secondary" id="name" placeholder="Name" required>
                     @error('name') <p class="text-danger mb-2">{{$message}}</p> @enderror

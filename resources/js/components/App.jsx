@@ -28,7 +28,7 @@ import MailList from './maillist/MailList';
 const theme = createTheme({
     typography: {
         allVariants: {
-            fontFamily: 'Nunito',
+            fontFamily: 'Overpass',
             textTransform: 'none',
             fontSize: 16,
         }
