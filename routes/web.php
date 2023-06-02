@@ -47,7 +47,7 @@ Route::middleware(['throttle:web'])->group(function () {
     Route::get('/article/{slug}', [ArticleController::class, 'viewArticle'])->name('viewArticle');
 
     // update article last visited
-    Route::get('/article/{id}/visited', [ArticleController::class, 'lastVisited']);
+    Route::post('/article/{id}/visited', [ArticleController::class, 'lastVisited']);
 
     // newsletter
 

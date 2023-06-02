@@ -37,5 +37,7 @@ class DatabaseSeeder extends Seeder
         foreach ($roles as $role) {
             Role::create($role);
         }
+
+        // Admin::find(1)->roles()->attach(1, ['created_at' => now(), 'updated_at' => now()]);
     }
 }

@@ -79,21 +79,25 @@
         @include('home.navbar')
     <script>
         const id = {{$article->id}}
-        function updateLastVisited(){
-            fetch(`/article/${id}/visited`)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then((response) => {
-                    console.log(response);
-                });
+        const referrer = document.referrer;
+        console.log(referrer);
+        async function updateLastVisited() {
+            const response = await fetch(`/article/${id}/visited`, {
+                method: "POST", 
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ referrer }),
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+            // const json = await response.json();
         };
         setTimeout(() => {
             updateLastVisited();
-        }, 20000);
+        }, 5000);
     </script>
     <div class="thebody px-3 px-md-0">
         <div class="row mx-0 justify-content-center mt-5">
@@ -105,7 +109,12 @@
                     </div>
                     <div class='border-start border-secondary d-flex p-2 border-3 justify-content-md-between align-items-md-center flex-column flex-md-row'>
                         <span>by <em class='text-success'>
-                            {{ $article?->author->first_name. ' ' . $article?->author->last_name }}
+                            @if ($article?->author)
+                                {{ $article?->author->first_name . ' ' . $article?->author->last_name }}
+                            @else
+                                Unknown
+                            @endif
+                            
                         </em></span>
                         <div class='mt-3 mt-md-0'>
                             @foreach ($article->tags as $tag)
