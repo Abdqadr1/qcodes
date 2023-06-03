@@ -6,6 +6,7 @@ use App\Http\Service\MailService;
 use App\Interfaces\AdminRepositoryInterface;
 use App\Models\Admin;
 use App\Models\AdminResetPassword;
+use App\Models\Referrer;
 use App\Rules\PhoneNumber;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
@@ -206,7 +207,8 @@ class AdminAuthController extends Controller
     public function getDashboard(Request $request)
     {
         $id = $request->user('admin')->id;
-        return Admin::with('roles')
+
+        $admin =  Admin::with('roles')
             ->withCount('articles')
             ->withSum('articles', 'visit')
             ->where('id', $id)
@@ -215,5 +217,16 @@ class AdminAuthController extends Controller
                 'first_name', 'last_name', 'bio', 'mobile', 'email_verified_at',
                 'state', 'country'
             ]);
+            
+        $referrers =  Referrer::groupBy("website_name")
+            ->selectRaw("website_name, sum(count) as count_sum")
+            ->orderBy('count_sum', 'desc')
+            ->limit(5)
+            ->get();
+
+        $result = collect($admin);
+        $result['referrers'] = $referrers;
+        
+        return $result->all();
     }
 }

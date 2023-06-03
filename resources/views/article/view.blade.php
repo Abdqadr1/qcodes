@@ -80,7 +80,6 @@
     <script>
         const id = {{$article->id}}
         const referrer = document.referrer;
-        console.log(referrer);
         async function updateLastVisited() {
             const response = await fetch(`/article/${id}/visited`, {
                 method: "POST", 
