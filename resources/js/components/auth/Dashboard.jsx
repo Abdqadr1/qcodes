@@ -58,7 +58,7 @@ const AdminDashboard = ({ httpClient }) => {
               <Card className='admin-table' sx={{ minWidth: 275 }}>
                     <CardContent>
                       <Typography sx={{ fontSize: 24, fontWeight: 'bold' }} color="text.secondary" gutterBottom component="div" variant="h5">
-                        Top Referring Website
+                        Top Referring Websites
                       </Typography>
                       <div>
                         {
