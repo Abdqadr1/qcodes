@@ -63,7 +63,7 @@ const AdminDashboard = ({ httpClient }) => {
                       <div>
                         {
                           data?.data?.referrers.map(ref => (
-                            <div key={ref.toString()} className='d-flex align-items-center justify-content-between'>
+                            <div key={ref.toString()} className='d-flex align-items-center justify-content-between my-2'>
                                 <span className='fw-bold'>
                                   {ref.website_name}
                                 </span>
