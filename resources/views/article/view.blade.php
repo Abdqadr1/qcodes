@@ -96,7 +96,7 @@
         };
         setTimeout(() => {
             updateLastVisited();
-        }, 5000);
+        }, 10000);
     </script>
     <div class="thebody px-3 px-md-0">
         <div class="row mx-0 justify-content-center mt-5">

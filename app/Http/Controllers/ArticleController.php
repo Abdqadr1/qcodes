@@ -74,23 +74,27 @@ class ArticleController extends Controller
     public function lastVisited(Request $request)
     {
         $id = $request->route('id');
-
-        //find if url is present and not empty
         $url = $request->input('referrer');
-        if($url){
-            $url = str_ireplace('www.', '', $url);
-            $website_name = parse_url($url, PHP_URL_HOST);
 
-            // find if link already exists, then increase its count
-            $referrer = Referrer::updateOrCreate([
-                'link' => $url,
-                'website_name' => $website_name,
-            ]);
-            $referrer->count = ($referrer->exists ? $referrer->count : 0) + 1; 
-            $referrer->save();
-        }
+        return DB::transaction(function() use($id, $url) {
+            
+            //find if url is present and not empty
+            if($url){
+                $url = str_ireplace('www.', '', $url);
+                $website_name = parse_url($url, PHP_URL_HOST);
 
-        return $this->articleRepo->visitArticle($id, ['last_visited' => now('Africa/Lagos')]);
+                // find if link already exists, then increase its count
+                $referrer = Referrer::updateOrCreate([
+                    'link' => $url,
+                    'website_name' => $website_name,
+                ]);
+                $referrer->count = ($referrer->exists ? $referrer->count : 0) + 1; 
+                $referrer->save();
+            }
+
+            return $this->articleRepo->visitArticle($id, ['last_visited' => now('Africa/Lagos')]);
+        });
+        
     }
 
     public function previewArticle(Request $request)
