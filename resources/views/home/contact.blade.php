@@ -2,7 +2,7 @@
 
 @section('title', 'Contact | ' . env('APP_NAME'))
 @section('meta_description', 'Contact us at ' . env('APP_NAME'))
-@section('meta_keywords', 'Contact us at ' . env('APP_NAME'))
+@section('meta_keywords', 'Contact us at ' . env('APP_NAME').',help center,send message')
 
 @section('content')
 <style>

@@ -1,5 +1,5 @@
 @extends('home.app')
-@section('title', $keyword . ' | search results')
+@section('title', ($keyword ?? env('APP_NAME')) . ' | search')
 @section('meta_description', 'Search ' . env('APP_NAME'))
 @section('meta_keywords', 'Search ' . env('APP_NAME'))
 
@@ -26,7 +26,7 @@
                 <hr>
                 <h2>Search results for: {{ $keyword }}</h2>
                 @foreach ($results as $result)
-                    <div class="card mt-3 bg-light" style="width: 100%;">
+                    <div class="card mt-3 bg-transparent" style="width: 100%;">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <a href="{{ '/article/'. $result->slug}}">{{ $result->title }}</a>

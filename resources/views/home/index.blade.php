@@ -1,5 +1,10 @@
 @extends('home.app')
 
+
+@section('title',env('APP_NAME'))
+@section('meta_description', "Discover a world of programming and web development with QlueCodes. Explore our extensive collection of tutorials and articles covering various topics such as Java, JavaScript, PHP, Larvel, React, Spring Boot, etc. Stay up-to-date with the latest trends in software development and enhance your coding skills with QlueCodes.")
+@section('meta_keywords', "programming,coding,web development,software development,technology,tutorials,articles,Java,Spring Boot,Amazon S3 integration,observability in Spring Boot,Spring Boot native query, JPQL,dynamic queries in Spring Boot,YAML to properties conversion,properties to YAML conversion")
+
 @section('content')
 <div class="container thebody">
     <div class="row mx-0">

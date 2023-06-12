@@ -1,7 +1,7 @@
 @extends('home.app')
 @section('title', $keyword ?? "Tags" . ' | search results')
-@section('meta_description', 'Categories ' . env('APP_NAME'))
-@section('meta_keywords', 'Categories ' . env('APP_NAME'))
+@section('meta_description', env('APP_NAME'). ' tags')
+@section('meta_keywords', 'Tags')
 @section('tag-nav', 'active')
 
 @section('content')
@@ -27,7 +27,7 @@
                 <hr>
                 <h2>Search results for tags: {{ $keyword }}</h2>
                 @foreach ($results as $result)
-                    <div class="card mt-3 bg-light" style="width: 100%;">
+                    <div class="card mt-3 bg-transparent" style="width: 100%;">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <a href="{{ '/tags/'. $result->slug}}">{{ $result->name }}</a>
